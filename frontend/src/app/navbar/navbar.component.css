@@ -1,9 +1,42 @@
 .navbar-brand{
   font-family: 'Nunito',sans-serif;
   font-weight: 600;
-  font-size: 28px;
+  font-size: 24px;
 
 }
 .navbar{
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
+
+nav a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+/*svg{
+  position: absolute;
+  justify-content: center;
+  fill: white;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+}
+.svg-icon{
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+}
+.svg-front{
+  height: 21px;
+  width: 21px;
+  left: 2px;
+  top:1px;
+}
+.svg-back{
+  height: 24px;
+  width: 24px;
+  left: 0;
+}
+
+*/
