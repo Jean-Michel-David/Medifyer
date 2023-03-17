@@ -14,6 +14,26 @@ nav a {
   align-items: center;
 
 }
+.dropdown-menu{
+  position: relative;
+  border-radius: 2px;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+}
+.dropdown-menu a{
+  font-weight: bold;
+  color: #029791;
+  text-shadow: none;
+}
+.bubble{
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  background-color: white;
+  transform: rotate(45deg) skew(10deg, 10deg);
+  right: 10px;
+  top: -2px;
+  z-index: -1;
+}
 
 /*svg{
   position: absolute;

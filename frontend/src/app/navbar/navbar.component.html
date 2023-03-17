@@ -1,12 +1,12 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark">
-  <a class="navbar-brand" href="">Medifyer</a>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <a class="navbar-brand" routerLink="/">Medifyer</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="">
+        <a class="nav-link" routerLink="/">
           <!-- Testing with icons
             <div class="svg-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-back"><path d="M512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/></svg>
@@ -17,13 +17,20 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">Mes recherches</a>
+        <a class="nav-link" routerLink="/">Mes recherches</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">Panneau admin</a>
+        <a class="nav-link" routerLink="/">Panneau admin</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="">Mon compte</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Mon Compte
+        </a>
+        <div class="dropdown-menu dropdown-menu-right border-0 bg-transparent" aria-labelledby="navbarDropdownMenuLink">
+          <div class="bubble"></div>
+          <a class="dropdown-item bg-light py-2 mb-1" routerLink="/">Se connecter</a>
+          <a class="dropdown-item bg-light py-2" routerLink="/">S'inscrire</a>
+        </div>
       </li>
     </ul>
   </div>
