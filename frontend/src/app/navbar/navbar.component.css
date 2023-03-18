@@ -6,6 +6,8 @@
 }
 .navbar{
   text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transition: all 200ms ease-in-out;
+  height: 50px;
 }
 
 nav a {
