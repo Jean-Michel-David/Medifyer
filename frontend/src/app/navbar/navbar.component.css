@@ -50,7 +50,6 @@ svg{
   fill: white;
   margin-right: 3px;
   filter: drop-shadow( 0 2px 2px rgba(0,0,0,0.3));
-  z-index: -1;
 }
 .svg-front{
   height: 20px;
@@ -61,6 +60,8 @@ svg{
 .svg-back{
   height: 29px;
   width: 29px;
+  z-index: -1;
+
 }
 .card{
   position: absolute;

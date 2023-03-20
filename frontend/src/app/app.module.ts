@@ -11,7 +11,7 @@ import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.com
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
-import { ExporterComponent } from './navbar/exporter/exporter.component';
+import { ExporterComponent } from './formulaire/exporter/exporter.component';
 
 @NgModule({
   declarations: [
