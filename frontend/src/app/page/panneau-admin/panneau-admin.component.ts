@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./panneau-admin.component.css']
 })
 export class PanneauAdminComponent {
-
+  
 }

@@ -12,6 +12,7 @@ import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.compon
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
 import { ExporterComponent } from './formulaire/exporter/exporter.component';
+import { SearchFormComponent } from './admin/search-form/search-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ExporterComponent } from './formulaire/exporter/exporter.component';
     PanneauAdminComponent,
     InscriptionComponent,
     ConnexionComponent,
-    ExporterComponent
+    ExporterComponent,
+    SearchFormComponent
   ],
   imports: [
     BrowserModule,
