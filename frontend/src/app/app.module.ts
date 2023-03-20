@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
 import { MonCompteComponent } from './page/mon-compte/mon-compte.component';
-import { NouvelleRechercheComponent } from './page/nouvelle-recherche/nouvelle-recherche.component';
+import { RechercheComponent } from './page/recherche/recherche.component';
 import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.component';
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
-import { ExporterComponent } from './formulaire/exporter/exporter.component';
+import { ExporterComponent } from './recherche/exporter/exporter.component';
+import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
+import { Form1Component } from './recherche/form1/form1.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { ExporterComponent } from './formulaire/exporter/exporter.component';
     NavbarComponent,
     IndexComponent,
     MonCompteComponent,
-    NouvelleRechercheComponent,
+    RechercheComponent,
     MesRecherchesComponent,
     PanneauAdminComponent,
     InscriptionComponent,
     ConnexionComponent,
-    ExporterComponent
+    ExporterComponent,
+    FormulairesComponent,
+    Form1Component,
   ],
   imports: [
     BrowserModule,
