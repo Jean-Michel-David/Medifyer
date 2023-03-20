@@ -11,14 +11,9 @@ import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.com
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
-<<<<<<< HEAD
-import { ExporterComponent } from './formulaire/exporter/exporter.component';
-import { SearchFormComponent } from './admin/search-form/search-form.component';
-=======
 import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
->>>>>>> 0a73d3b77976296484e778233a17a6aa22a8bbfb
 
 @NgModule({
   declarations: [
