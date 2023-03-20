@@ -27,12 +27,8 @@ import { Form1Component } from './recherche/form1/form1.component';
     InscriptionComponent,
     ConnexionComponent,
     ExporterComponent,
-<<<<<<< HEAD
-    SearchFormComponent
-=======
     FormulairesComponent,
     Form1Component,
->>>>>>> 0a73d3b77976296484e778233a17a6aa22a8bbfb
   ],
   imports: [
     BrowserModule,
