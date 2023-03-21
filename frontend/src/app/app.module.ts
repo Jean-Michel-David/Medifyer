@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -14,6 +13,7 @@ import { ConnexionComponent } from './page/connexion/connexion.component';
 import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
+import { SearchFormComponent } from './admin/search-form/search-form.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +29,7 @@ import { Form1Component } from './recherche/form1/form1.component';
     ExporterComponent,
     FormulairesComponent,
     Form1Component,
+    SearchFormComponent
   ],
   imports: [
     BrowserModule,
