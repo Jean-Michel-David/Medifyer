@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./search-form.component.css']
 })
 export class SearchFormComponent {
-  recherche! : string;
+  wantedUser! : string;
 
 }

@@ -7,12 +7,12 @@ import { User } from '../user';
   providedIn: 'root'
 })
 export class AdminGetRechercheService {
-  private backendUrl = "localhost/Medifyer/backend/mockDB.php";
+  private backendUrl = "http://localhost/Medifyer/backend/mockDB.php";
 
   constructor(private http : HttpClient) {}
 
   getUserList() : Observable<User[]>{
     console.log('trying to get some data');
-    return this.http.get<User[]>(this.backendUrl);
+    return this.http.get<User[]>(this.backendUrl + "?getUserList=true");
   }
 }
