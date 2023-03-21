@@ -12,7 +12,7 @@ export class AdminGetRechercheService {
   constructor(private http : HttpClient) {}
 
   getUserList() : Observable<User[]>{
-    console.log('trying to get some data');
+    console.log('Requesting user list');
     return this.http.get<User[]>(this.backendUrl + "?getUserList=true");
   }
 }
