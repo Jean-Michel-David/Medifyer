@@ -13,6 +13,7 @@ export class PanneauAdminComponent implements OnInit{
   constructor(private service : AdminGetRechercheService) {}
 
   ngOnInit(): void {
+    //Initial user list to display
     this.userList = this.service.getUserList();
   }
 }

@@ -12,6 +12,7 @@ export class AdminGetRechercheService {
   constructor(private http : HttpClient) {}
 
   getUserList() : Observable<User[]>{
+    // TODO : add security token or something
     console.log('Requesting user list');
     return this.http.get<User[]>(this.backendUrl + "?getUserList=true");
   }
