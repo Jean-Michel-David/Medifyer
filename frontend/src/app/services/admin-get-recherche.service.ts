@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { User } from '../user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,8 @@ export class AdminGetRechercheService {
 
   constructor(private http : HttpClient) {}
 
-  getData() : Observable<any>{
+  getUserList() : Observable<User[]>{
     console.log('trying to get some data');
-    return this.http.get<any>(this.backendUrl);
+    return this.http.get<User[]>(this.backendUrl);
   }
 }
