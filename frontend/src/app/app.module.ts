@@ -14,6 +14,8 @@ import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
 import { SearchFormComponent } from './admin/search-form/search-form.component';
+import { AdminGetRechercheService } from './services/admin-get-recherche.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,9 +35,10 @@ import { SearchFormComponent } from './admin/search-form/search-form.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AdminGetRechercheService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
