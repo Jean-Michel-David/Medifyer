@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdminGetRechercheService } from 'src/app/services/admin-get-recherche.service';
-import { User } from 'src/app/user';
+import { User } from 'src/app/admin/user';
 
 @Component({
   selector: 'app-panneau-admin',
