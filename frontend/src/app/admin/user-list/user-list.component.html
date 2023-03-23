@@ -1,5 +1,5 @@
 
-<button href="" class="list-group-item list-group-item-action" 
+<button class="list-group-item list-group-item-action" 
 *ngFor="let user of (userList | async)"
 (click)="onGetUserSearches($event, user?.id)">
     {{user?.id}} : {{ user?.nom }}
