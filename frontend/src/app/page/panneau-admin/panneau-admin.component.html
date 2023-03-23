@@ -1,10 +1,9 @@
 <div class="mainAdminContainer">
     <app-search-form (searchUser)="searchUser($event)"></app-search-form>
     
-    <div class="container">
+    <!-- <div class="container">
+    </div> -->
 
-        <a href="" class="list-group-item list-group-item-action" *ngFor="let user of (userList | async)"> this user : {{ user?.nom }}</a>
-
-    </div>
+    <app-user-list *ngIf="showUserList" [userList]="userList" (fetchUserQuestions)="fetchQuestions($event)"></app-user-list>
     
 </div>

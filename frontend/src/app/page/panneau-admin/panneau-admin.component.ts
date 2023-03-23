@@ -11,17 +11,23 @@ import { User } from 'src/app/admin/user';
 export class PanneauAdminComponent implements OnInit, OnDestroy{
   userList! : Observable<User[]>;
   subscription! : Subscription;
+  showUserList : boolean = true;
 
   constructor(private service : AdminGetRechercheService) {}
-  ngOnDestroy(): void {
-    
-  }
   ngOnInit(): void {
     //Initial user list to display
     this.userList = this.service.getUserList();
   }
+  ngOnDestroy(): void {
+    
+  }
 
   searchUser(search : string) : void {
     this.userList = this.service.getUserList(1, search);
+  }
+
+  fetchQuestions(user : number) : void{
+    this.showUserList = false;
+    console.log('fetching questions for user with ID : ' + user);
   }
 }

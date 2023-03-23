@@ -6,6 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./search-form.component.css']
 })
 export class SearchFormComponent implements OnInit {
+  // TODO : change the divs and put a form instead in the html so when enter pressed, form is submitted
   wantedUser! : string;
   @Output() searchUser : EventEmitter<string> = new EventEmitter();
 
