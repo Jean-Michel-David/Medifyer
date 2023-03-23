@@ -4,19 +4,19 @@ export interface Question {
   Intervention_Traitement : string;
   Résultats : string;
 
-  Patient_Language_Naturel : [];
-  Patient_Terme_Mesh : [];
-  Patient_Synonyme : [];
+  Patient_Language_Naturel : string[];
+  Patient_Terme_Mesh : string[];
+  Patient_Synonyme : string[];
 
-  Intervention_Language_Naturel : [];
-  Intervention_Terme_Mesh : [];
-  Intervention_Synonyme : [];
+  Intervention_Language_Naturel : string[];
+  Intervention_Terme_Mesh : string[];
+  Intervention_Synonyme : string[];
 
-  Résultats_Language_Naturel : [];
-  Résultats_Terme_Mesh : [];
-  Résultats_Synonyme : [];
+  Résultats_Language_Naturel : string[];
+  Résultats_Terme_Mesh : string[];
+  Résultats_Synonyme : string[];
 
-  Equations_PatientPopPath : [];
-  Equations_Intervention : [];
-  Equations_Resultats : [];
+  Equations_PatientPopPath : string[][];
+  Equations_Intervention : string[][];
+  Equations_Resultats : string[][];
 }
