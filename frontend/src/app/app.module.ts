@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
+
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
 import { MonCompteComponent } from './page/mon-compte/mon-compte.component';
@@ -36,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [AdminGetRechercheService],
   bootstrap: [AppComponent]
