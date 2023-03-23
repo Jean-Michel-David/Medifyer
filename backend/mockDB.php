@@ -38,5 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 'isAdmin' => 'false'
             ]
         ]);
+        return;
+    }
+
+    // Getting the list of search equations of a particular user
+    if (!empty($_GET['getUserSearches'])) {
+        echo json_encode([
+            '1' => 'Quel est l’impact de la thérapie par la réalité virtuelle sur la qualité de vie des patients présentant des vertiges ou des troubles vestibulaires ?'
+            ,'2' => 'Velit culpa dolor velit magna cupidatat qui pariatur pariatur pariatur aliqua deserunt aliqua.'
+            ,'3' => 'Est commodo eiusmod duis est sint enim enim veniam minim.'
+        ]);
+        return;
     }
 }
+

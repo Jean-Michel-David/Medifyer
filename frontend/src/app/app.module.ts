@@ -18,6 +18,8 @@ import { Form1Component } from './recherche/form1/form1.component';
 import { SearchFormComponent } from './admin/search-form/search-form.component';
 import { AdminGetRechercheService } from './services/admin-get-recherche.service';
 import { HttpClientModule } from '@angular/common/http';
+import { UserListComponent } from './admin/user-list/user-list.component';
+import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-recherches.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { HttpClientModule } from '@angular/common/http';
     ExporterComponent,
     FormulairesComponent,
     Form1Component,
-    SearchFormComponent
+    SearchFormComponent,
+    UserListComponent,
+    ListeRecherchesComponent
   ],
   imports: [
     BrowserModule,
