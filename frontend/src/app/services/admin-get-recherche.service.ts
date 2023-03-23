@@ -11,9 +11,14 @@ export class AdminGetRechercheService {
 
   constructor(private http : HttpClient) {}
 
-  getUserList() : Observable<User[]>{
+  getUserList(page? : number, search? : string) : Observable<User[]>{
     // TODO : add security token or something
     console.log('Requesting user list');
-    return this.http.get<User[]>(this.backendUrl + "?getUserList=true");
+    
+    if (typeof(search) === "undefined" || search!.length < 1)
+      return this.http.get<User[]>(this.backendUrl + "?getUserList=&page=" + page); // Initial list / list without search
+    
+    return this.http.get<User[]>(this.backendUrl + "?getUserList=" + search + 
+    "&page=" + (typeof(page) === undefined ? 1 : page));
   }
 }

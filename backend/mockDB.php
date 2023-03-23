@@ -7,23 +7,36 @@ header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 //Getting the list of users
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if (isset($_GET['getUserList']))
-    echo json_encode([
-        [
-            'id' => '1',
-            'nom' => 'Strens',
-            'prenom' => 'Daniel',
-            'email' => 'LA217024@student.helha.be',
-            'pfp' => 'NULL',
-            'isAdmin' => 'false'
-        ],
-        [
-            'id' => '2',
-            'nom' => 'Matteo',
-            'prenom' => 'Firenze',
-            'matricule' => 'LA217891@student.helha.be',
-            'pfp' => 'NULL',
-            'isAdmin' => 'false'
-        ]
-    ]);
+    if (isset($_GET['getUserList'])) {
+        if (strlen($_GET['getUserList']) == 0)
+        echo json_encode([
+            [
+                'id' => '1',
+                'nom' => 'Strens',
+                'prenom' => 'Daniel',
+                'email' => 'LA217024@student.helha.be',
+                'pfp' => 'NULL',
+                'isAdmin' => 'false'
+            ],
+            [
+                'id' => '2',
+                'nom' => 'Matteo',
+                'prenom' => 'Firenze',
+                'matricule' => 'LA217891@student.helha.be',
+                'pfp' => 'NULL',
+                'isAdmin' => 'false'
+            ]
+        ]);
+
+        else echo json_encode([
+            [
+                'id' => '1',
+                'nom' => 'Strens',
+                'prenom' => 'Daniel',
+                'email' => 'LA217024@student.helha.be',
+                'pfp' => 'NULL',
+                'isAdmin' => 'false'
+            ]
+        ]);
+    }
 }
