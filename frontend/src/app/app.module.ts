@@ -20,6 +20,7 @@ import { AdminGetRechercheService } from './services/admin-get-recherche.service
 import { HttpClientModule } from '@angular/common/http';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-recherches.component';
+import { SauvegarderComponent } from './recherche/sauvegarder/sauvegarder.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-rec
     SearchFormComponent,
     UserListComponent,
     ListeRecherchesComponent,
+    SauvegarderComponent,
     
   ],
   imports: [
