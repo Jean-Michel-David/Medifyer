@@ -1,0 +1,5 @@
+<button class="list-group-item list-group-item-action" 
+*ngFor="let recherche of (userSearches | async)"
+(click)="onDevelopQuestion($event, recherche!.id)">
+    {{recherche?.id}} : {{ recherche?.question }}
+</button>
