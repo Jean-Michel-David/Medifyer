@@ -1,5 +1,6 @@
-<form class="forms" #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <app-form1></app-form1>
+<form class="forms" [formGroup]="form">
+    <app-form1 [firstPart]="form.controls['firstPart']"></app-form1>
     <button class="btn mt-4">Générer</button>
+    <p>{{form.controls['firstPart'].controls['firstName'].value}}</p>
 </form>
 

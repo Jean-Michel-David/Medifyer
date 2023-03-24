@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule,FormGroup } from '@angular/forms';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
@@ -38,13 +38,15 @@ import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-rec
     Form1Component,
     SearchFormComponent,
     UserListComponent,
-    ListeRecherchesComponent
+    ListeRecherchesComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AdminGetRechercheService],
   bootstrap: [AppComponent]
