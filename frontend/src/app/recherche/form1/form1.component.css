@@ -1,0 +1,17 @@
+:host{
+    width: 70%;
+    min-width: 300px;
+}
+
+label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+label svg{
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    opacity: 60%;
+}
