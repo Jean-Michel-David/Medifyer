@@ -1,6 +1,9 @@
 <form class="forms" [formGroup]="form">
     <app-form1 [firstPart]="form.controls['firstPart']"></app-form1>
+    <button class="btn mt-4" (click)="displayForm2()" *ngIf="!form2Visible">Continuer</button>
+    <app-form2 *ngIf="form2Visible"></app-form2>
+    <button class="btn mt-4" (click)="displayForm3()" *ngIf="form2Visible && !form3Visible">Continuer</button>
+    <app-form3 *ngIf="form2Visible && form3Visible"></app-form3>
     <button class="btn mt-4">Générer</button>
-    <p>{{form.controls['firstPart'].controls['firstName'].value}}</p>
 </form>
 

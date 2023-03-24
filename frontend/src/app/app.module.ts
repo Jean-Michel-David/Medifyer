@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule,FormsModule,FormGroup } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
@@ -21,6 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-recherches.component';
 import { SauvegarderComponent } from './recherche/sauvegarder/sauvegarder.component';
+import { Form2Component } from './recherche/form2/form2.component';
+import { Form3Component } from './recherche/form3/form3.component';
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { SauvegarderComponent } from './recherche/sauvegarder/sauvegarder.compon
     UserListComponent,
     ListeRecherchesComponent,
     SauvegarderComponent,
-    
+    Form2Component,
+    Form3Component,
+
   ],
   imports: [
     BrowserModule,

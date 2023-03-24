@@ -4,3 +4,23 @@
     align-items: center;
     width: 100%;
 }
+
+input[type='checkbox']{
+  display: none;
+}
+.formPart{
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 200ms;
+}
+
+input[type='checkbox']:checked + .formPart{
+  height: auto;
+  opacity: 1;
+  transition: all 200ms;
+}
+
+#showForm2:checked #showForm2Label{
+  display: none;
+}

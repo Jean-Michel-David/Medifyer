@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form1',
@@ -7,9 +7,13 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./form1.component.css']
 })
 export class Form1Component implements OnInit{
-  
+
+  constructor(private fb: FormBuilder) {}
+
+  admin = false;
+
   @Input()
-  firstPart!: FormGroup;
+  firstPart!:FormGroup;
 
   ngOnInit(): void {
   }
