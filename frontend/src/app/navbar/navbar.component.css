@@ -95,3 +95,26 @@ a:hover + .card{
   right: 6px;
   padding: 5px;
 }
+
+@media (max-width: 991px) {
+  .navbar, .navbar-collapse{
+    background-color: #343a40;
+  }
+  .navbar{
+    padding-top: 2px;
+    width: 100%;
+    padding: 0;
+  }
+  .navbar a{
+    margin-left: 5px;
+  }
+  .navbar-toggler{
+    margin-right: 5px;
+  }
+  .dropdown{
+    flex-direction: column;
+  }
+  .dropdown-menu{
+   filter:none;
+  }
+}
