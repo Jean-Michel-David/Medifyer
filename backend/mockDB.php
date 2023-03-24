@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             ],
             [
                 'id' => '2',
-                'nom' => 'Matteo',
-                'prenom' => 'Firenze',
+                'nom' => 'Firenze',
+                'prenom' => 'Matteo',
                 'matricule' => 'LA217891@student.helha.be',
                 'pfp' => 'NULL',
                 'isAdmin' => 'false'
