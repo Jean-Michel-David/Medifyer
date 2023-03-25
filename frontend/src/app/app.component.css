@@ -1,10 +1,10 @@
 .parallax {
     /* The image used */
     background-image: url("/assets/img/library.jpg");
-  
+
     /* Set a specific height */
-    min-height: 100%;
-  
+    min-height: 100vh;
+
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;

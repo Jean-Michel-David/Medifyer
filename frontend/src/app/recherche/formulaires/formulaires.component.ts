@@ -21,8 +21,27 @@ export class FormulairesComponent{
     resultats: ['']
   });
 
+  secondPart = this.fb.group({
+    patient: this.fb.group({
+      natural: this.fb.array([this.fb.control('')]),
+      mesh: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([this.fb.control('')]),
+    }),
+    intervention: this.fb.group({
+      natural: this.fb.array([this.fb.control('')]),
+      mesh: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([this.fb.control('')]),
+    }),
+    resultats: this.fb.group({
+      natural: this.fb.array([this.fb.control('')]),
+      mesh: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([this.fb.control('')]),
+    })
+  });
+
   form = this.fb.group({
-    firstPart: this.firstPart
+    firstPart: this.firstPart,
+    secondPart: this.secondPart
   });
 
   displayForm2(){
