@@ -7,25 +7,23 @@
     <div class="column-group" formGroupName="patient">
       <div class="column" formArrayName="natural">
         <h5>Natural</h5>
-        <div *ngFor="let term of ($any(secondPart.controls['patient']).controls['natural']).controls; let i=index">
-          <input class="form-control" id="term-{{ i }}" type="text" [formControlName]="i">
+        <div *ngFor="let term of ($any(secondPart.controls['patient']).controls['natural']).controls; let i=index" class="natural">
+          <input class="form-control" id="termNatural-{{ i }}" type="text" [formControlName]="i">
+          <a href="https://www.hetop.eu/hetop/fr/?q=&home#q={{($any(secondPart.controls['patient']).controls['natural']).at(i).value}}" target="_blank" class="btn">> HeTop</a>
         </div>
         <button type="button" (click)="addTerm('patient','natural')">+ Ajouter un nouveau mot</button>
       </div>
-      <div class="column-big-group">
-        <div class="column-term-group">
-          <div class="column" formArrayName="mesh">
-            <h5>Mesh</h5>
-            <input *ngFor="let term of ($any(secondPart.controls['patient']).controls['mesh']).controls; let i=index"
-            class="form-control" id="term-{{ i }}" type="text" [formControlName]="i">
-          </div>
-          <div class="column" formArrayName="synonym">
-            <h5>Synonym</h5>
-            <input *ngFor="let term of ($any(secondPart.controls['patient']).controls['synonym']).controls; let i=index"
-            class="form-control" id="term-{{ i }}" type="text" [formControlName]="i">
-          </div>
-        </div>
-        <button type="button" (click)="addTerm('patient','mesh')" (click)="addTerm('patient','synonym')">+ Ajouter un nouveau mot</button>
+      <div class="column" formArrayName="mesh">
+        <h5>Mesh</h5>
+        <input *ngFor="let term of ($any(secondPart.controls['patient']).controls['mesh']).controls; let i=index"
+        class="form-control" id="term-{{ i }}" type="text" [formControlName]="i" (focusout)='checkMeshTerm($event,"patient",i)'>
+        <button type="button" (click)="addTerm('patient','mesh')">+ Ajouter un nouveau mot</button>
+      </div>
+      <div class="column" formArrayName="synonym">
+        <h5>Synonym</h5>
+        <input *ngFor="let term of ($any(secondPart.controls['patient']).controls['synonym']).controls; let i=index"
+        class="form-control" id="termSynonym-{{ i }}" type="text" [formControlName]="i">
+        <button type="button"(click)="addTerm('patient','synonym')">+ Ajouter un nouveau mot</button>
       </div>
     </div>
   </div>
