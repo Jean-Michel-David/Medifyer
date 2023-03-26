@@ -49,4 +49,11 @@ export class Form2Component implements OnInit{
       (event.target as HTMLElement).classList.remove('notvalid');
     }
   }
+
+  moveTerm(event:Event,group:string,term:number){
+    let synonym = ((this.secondPart.controls[group] as FormGroup).controls['synonym'] as FormArray);
+    let mesh = ((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray);
+    synonym.push(this.fb.control(mesh.at(term).value));
+    mesh.removeAt(term);
+  }
 }

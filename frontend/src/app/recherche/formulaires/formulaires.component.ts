@@ -25,17 +25,17 @@ export class FormulairesComponent{
     patient: this.fb.group({
       natural: this.fb.array([this.fb.control('')]),
       mesh: this.fb.array([this.fb.control('')]),
-      synonym: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([]),
     }),
     intervention: this.fb.group({
       natural: this.fb.array([this.fb.control('')]),
       mesh: this.fb.array([this.fb.control('')]),
-      synonym: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([]),
     }),
     resultats: this.fb.group({
       natural: this.fb.array([this.fb.control('')]),
       mesh: this.fb.array([this.fb.control('')]),
-      synonym: this.fb.array([this.fb.control('')]),
+      synonym: this.fb.array([]),
     })
   });
 
