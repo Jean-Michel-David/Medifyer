@@ -23,18 +23,18 @@ export class FormulairesComponent{
 
   secondPart = this.fb.group({
     patient: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     }),
     intervention: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     }),
     resultats: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     })
   });
