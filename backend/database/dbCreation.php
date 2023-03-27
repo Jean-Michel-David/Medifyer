@@ -60,8 +60,8 @@ $dbCreatingString = "CREATE TABLE Users(
     FOREIGN KEY(user_id) REFERENCES Users(user_id)
     );
 
-    CREATE TABLE Infobulles(
-        Id_Infobulles INT AUTO_INCREMENT,
+    CREATE TABLE Infos(
+        Id_Info INT AUTO_INCREMENT,
         libelle_info VARCHAR(40),
         texte_info LONGTEXT,
         PRIMARY KEY(Id_Infobulles)
