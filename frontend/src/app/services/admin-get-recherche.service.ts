@@ -22,7 +22,7 @@ export class AdminGetRechercheService {
     // TODO : remove any '&' from the search string
     console.log('Requesting user list');
 
-    // Initial list / list without search
+    // Initial list / list with empty search string
     if (typeof(search) === "undefined")
       return this.http.get<User[]>(this.backendUrl + "?getUserList=&page=" + page); 
     
