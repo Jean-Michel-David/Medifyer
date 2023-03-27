@@ -58,4 +58,12 @@ $dbCreatingString = "CREATE TABLE Users(
     PRIMARY KEY(recherche_id, user_id),
     FOREIGN KEY(recherche_id) REFERENCES Recherches(recherche_id),
     FOREIGN KEY(user_id) REFERENCES Users(user_id)
-    );";
+    );
+
+    CREATE TABLE Infobulles(
+        Id_Infobulles INT AUTO_INCREMENT,
+        libelle_info VARCHAR(40),
+        texte_info LONGTEXT,
+        PRIMARY KEY(Id_Infobulles)
+    );
+    ";
