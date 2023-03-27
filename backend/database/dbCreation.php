@@ -6,7 +6,7 @@ $dbCreatingString = "CREATE TABLE Users(
     psw_user VARCHAR(255),
     pfp_user VARCHAR(10),
     admin_user BOOLEAN,
-    email_user VARCHAR(50),
+    email_user VARCHAR(50) NOT NULL,
     PRIMARY KEY(user_id)
     );
     
@@ -58,4 +58,12 @@ $dbCreatingString = "CREATE TABLE Users(
     PRIMARY KEY(recherche_id, user_id),
     FOREIGN KEY(recherche_id) REFERENCES Recherches(recherche_id),
     FOREIGN KEY(user_id) REFERENCES Users(user_id)
-    );";
+    );
+
+    CREATE TABLE Infos(
+        Id_Info INT AUTO_INCREMENT,
+        libelle_info VARCHAR(40),
+        texte_info LONGTEXT,
+        PRIMARY KEY(Id_Infobulles)
+    );
+    ";
