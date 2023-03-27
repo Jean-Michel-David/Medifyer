@@ -39,10 +39,29 @@ export class FormulairesComponent{
     })
   });
 
+  thirdPart = this.fb.group({
+    includeAll: this.fb.array([]),
+    includeOne: this.fb.array([]),
+    exclude: this.fb.array([]),
+  });
+
   form = this.fb.group({
     firstPart: this.firstPart,
-    secondPart: this.secondPart
+    secondPart: this.secondPart,
+    thirdPart: this.thirdPart
   });
+
+  groups:string[] = [
+    "Patient / Population / Pathologie",
+    "Intervention / Traitement",
+    "Résultats"
+  ];
+
+  formGroups:string[] = [
+    "patient",
+    "intervention",
+    "resultats"
+  ]
 
   displayForm2(){
     this.form2Visible = true;

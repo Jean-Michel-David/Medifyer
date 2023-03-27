@@ -11,18 +11,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class Form2Component implements OnInit{
   @Input()
   secondPart!:FormGroup;
+  @Input()
+  formGroups!:string[];
+  @Input()
+  groups!:string[];
 
-  groups:string[] = [
-    "Patient / Population / Pathologie",
-    "Intervention / Traitement",
-    "Résultats"
-  ];
 
-  formGroups:string[] = [
-    "patient",
-    "intervention",
-    "resultats"
-  ]
 
   constructor(private fb : FormBuilder,private http:HttpClient){}
 
