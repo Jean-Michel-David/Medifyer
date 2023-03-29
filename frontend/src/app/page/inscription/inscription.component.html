@@ -1,1 +1,62 @@
-<p>inscription works!</p>
+<form>
+  <input
+    type="text"
+    id="lastname"
+    placeholder="Nom"
+    [(ngModel)]="newUser.lastname"
+    [ngModelOptions]="{standalone: true}"
+    #lastname="ngModel"
+    required
+  >
+  <br>
+  <div
+    class="input_error"
+  >
+  </div>
+  <input
+    type="text"
+    id="firstname"
+    placeholder="Prénom"
+    [(ngModel)]="newUser.firstname"
+    [ngModelOptions]="{standalone: true}"
+    #firstname="ngModel"
+    required
+  >
+  <br>
+  <input
+    type="email"
+    id="email"
+    placeholder="Adresse Mail"
+    [(ngModel)]="newUser.email"
+    [ngModelOptions]="{standalone: true}"
+    #email="ngModel"
+    required
+  >
+  <br>
+  <input
+    type="password"
+    id="pwd"
+    placeholder="Mot de passe"
+    [(ngModel)]="newUser.pwd"
+    [ngModelOptions]="{standalone: true}"
+    #pwd="ngModel"
+    required
+  >
+  <br>
+  <input
+    type="password"
+    id ="cpwd"
+    placeholder="Confirmer mot de passe"
+    [(ngModel)]="newUser.cpwd"
+    [ngModelOptions]="{standalone: true}"
+    #cpwd="ngModel"
+    required
+  >
+  <br>
+  <button
+    type="submit"
+    (click)="addNewUser()"
+  >
+    S'incrire
+  </button>
+</form>
