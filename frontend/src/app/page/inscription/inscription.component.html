@@ -1,4 +1,4 @@
-<form>
+<form #userForm="ngForm">
   <input
     type="text"
     id="lastname"
@@ -10,8 +10,15 @@
   >
   <br>
   <div
-    class="input_error"
+    *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
   >
+    <div
+      *ngIf="lastname.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre nom
+    </div>
+
   </div>
   <input
     type="text"
@@ -22,6 +29,16 @@
     #firstname="ngModel"
     required
   >
+  <div
+    *ngIf="firstname.invalid && (lastname.dirty || lastname.touched)"
+  >
+    <div
+      *ngIf="firstname.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre prénom
+    </div>
+  </div>
   <br>
   <input
     type="email"
@@ -31,7 +48,18 @@
     [ngModelOptions]="{standalone: true}"
     #email="ngModel"
     required
+    
   >
+  <div
+    *ngIf="email.invalid && (email.dirty ||email.touched)"
+  >
+    <div
+      *ngIf="email.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre adresse mail
+    </div>
+  </div>
   <br>
   <input
     type="password"
@@ -41,7 +69,18 @@
     [ngModelOptions]="{standalone: true}"
     #pwd="ngModel"
     required
+
   >
+  <div
+    *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"
+  >
+    <div
+      *ngIf="pwd.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre mot de passe
+    </div>
+  </div>
   <br>
   <input
     type="password"
@@ -53,9 +92,27 @@
     required
   >
   <br>
+  <div
+    *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)"
+  >
+    <div
+      *ngIf="cpwd.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre confirmation de mot de passe
+    </div>
+  </div>
   <button
     type="submit"
     (click)="addNewUser()"
+    [disabled]=
+    "
+    !newUser.lastname &&
+    !newUser.firstname &&
+    !newUser.email &&
+    !newUser.pwd &&
+    !newUser.cpwd
+    "
   >
     S'incrire
   </button>
