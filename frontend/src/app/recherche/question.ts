@@ -1,3 +1,5 @@
+import { Operateurs } from "./operateurs";
+
 export interface Question {
   Question : string;
   Patient_Pop_Path : string;
@@ -16,7 +18,7 @@ export interface Question {
   Résultats_Terme_Mesh : string[];
   Résultats_Synonyme : string[];
 
-  Equations_PatientPopPath : string[][];
-  Equations_Intervention : string[][];
-  Equations_Resultats : string[][];
+  Equations_PatientPopPath : Operateurs;
+  Equations_Intervention : Operateurs;
+  Equations_Resultats : Operateurs;
 }
