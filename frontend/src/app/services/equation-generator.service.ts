@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Equation } from '../recherche/equation';
+import { Operateurs } from '../recherche/operateurs';
 import { Question } from '../recherche/question';
 @Injectable({
   providedIn: 'root'
@@ -12,47 +13,58 @@ export class EquationGeneratorService {
    *  @param question An object of type 'Question' from which the method shall extract the relevant informations
    *  @returns The equation string to be used in pubmed
    */
-  generateEquation(question : Question) : Equation {
-    /**
-     *  Final string example : 
-     * ("Vestibular Diseases"[Mesh] OR "Vertigo"[Mesh] OR "Dizziness"[Mesh])
-     *  AND 
-     * ("Virtual Reality"[Mesh] OR "Virtual Reality Exposure Therapy"[Mesh]) 
-     * AND 
-     * "Quality of Life"[Mesh]
-    */
+  public generateEquation(question : Question) : Equation {
     let equation = {
       text : "",
-      numberOfArticles : null
-    };
-    
-    //Patients : 
-    question.Equations_PatientPopPath.forEach(entry => {
-      equation.text = equation.text.concat(this.addEntrySet(entry));
-    });
+      numberOfArticles : 0
+    }
 
+    equation.text = this.getEquationBit(question.Equations_PatientPopPath)
+      .concat(" AND ")
+      .concat(this.getEquationBit(question.Equations_Intervention))
+      .concat(" AND ")
+      .concat(this.getEquationBit(question.Equations_Resultats));
     return equation;
   }
 
-  private addEntrySet(entry : string[]) : string {
-    let entrySet = "";
-    switch (entry.length) {
-      case 2:
-        // If the term is alone
-        entrySet = entrySet.concat(entry[1]);
-        break;
+  /**
+   * This function will create a PubMed ready string from a Operator object
+   * @param op Operator object from which you need the equation string
+   * @returns The equation srting concerning the given Operator
+   */
+  private getEquationBit(op : Operateurs) : string {
+    let str = "";
 
-      case 3 :
-        let firstTerm = entry[0];
-        let relation = entry[1];
-        let secondTerm = entry[2];
+    if (op.inclureTous.length > 0) {
+      str += this.concatTerms(op.inclureTous, "AND");
+    }
+    
+    if (op.auMoins1.length > 0) {
+      op.auMoins1.forEach((entry) => {
+        if (str.length > 0) str += " AND ";
+        
+        str += this.concatTerms(entry, "OR");
+      });
+    }
 
-        break;
+    if (op.exclure.length > 0) {    
+      str += " NOT " + this.concatTerms(op.exclure, "OR");
+    }
+    
+    return str;
+  }
 
-      default:
-        //If there is a problem with the entry, we don't take it into account.
-        break;
-      }
-    return "";
+  /**
+   * This function concats the given terms with the given operator for them to be used in a 
+   * @param termes Terms from which to create the desired string
+   * @returns a string formatted from the terms to include
+   */
+  private concatTerms(termes : string[], operator : string) : string {
+    let str = "(" + termes[0];
+
+    for(let i = 1; i < termes.length; i++)
+      str += ` ${operator} ` + termes[i];
+
+    return str.concat(")");
   }
 }
