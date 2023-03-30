@@ -1,5 +1,5 @@
 export interface Operateurs {
-  garderTous : string[];
+  inclureTous : string[];
   auMoins1 : string[][];
   exclure : string[];
 }
