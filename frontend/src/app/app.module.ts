@@ -23,7 +23,9 @@ import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-rec
 import { SauvegarderComponent } from './recherche/sauvegarder/sauvegarder.component';
 import { Form2Component } from './recherche/form2/form2.component';
 import { Form3Component } from './recherche/form3/form3.component';
-
+import { ButtonModule } from 'primeng/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AnimateModule } from 'primeng/animate';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { Form3Component } from './recherche/form3/form3.component';
     SauvegarderComponent,
     Form2Component,
     Form3Component,
+    
 
   ],
   imports: [
@@ -52,7 +55,10 @@ import { Form3Component } from './recherche/form3/form3.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    AnimateModule
   ],
   providers: [AdminGetRechercheService],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TimeInterval } from 'rxjs';
 
 
 @Component({
@@ -16,8 +17,6 @@ export class Form2Component implements OnInit{
   @Input()
   groups!:string[];
 
-
-
   constructor(private fb : FormBuilder,private http:HttpClient){}
 
   ngOnInit(): void {
@@ -29,7 +28,6 @@ export class Form2Component implements OnInit{
 
   checkMeshTerm(event:Event,group:string,term:number){
     let meshTerm = (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value);
-
     if(meshTerm.length > 1){
       let req = this.http.get('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=mesh&term='
       + meshTerm
@@ -52,6 +50,9 @@ export class Form2Component implements OnInit{
       (event.target as HTMLElement).classList.remove('valid');
       (event.target as HTMLElement).classList.remove('notvalid');
     }
+  }
+
+  checkTimer(event:Event){
   }
 
   moveTerm(event:Event,group:string,term:number){
