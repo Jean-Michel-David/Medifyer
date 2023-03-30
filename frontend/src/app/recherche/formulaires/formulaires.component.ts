@@ -23,26 +23,45 @@ export class FormulairesComponent{
 
   secondPart = this.fb.group({
     patient: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     }),
     intervention: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     }),
     resultats: this.fb.group({
-      natural: this.fb.array([this.fb.control('')]),
-      mesh: this.fb.array([this.fb.control('')]),
+      natural: this.fb.array([]),
+      mesh: this.fb.array([]),
       synonym: this.fb.array([]),
     })
   });
 
+  thirdPart = this.fb.group({
+    includeAll: this.fb.array([]),
+    includeOne: this.fb.array([]),
+    exclude: this.fb.array([]),
+  });
+
   form = this.fb.group({
     firstPart: this.firstPart,
-    secondPart: this.secondPart
+    secondPart: this.secondPart,
+    thirdPart: this.thirdPart
   });
+
+  groups:string[] = [
+    "Patient / Population / Pathologie",
+    "Intervention / Traitement",
+    "Résultats"
+  ];
+
+  formGroups:string[] = [
+    "patient",
+    "intervention",
+    "resultats"
+  ]
 
   displayForm2(){
     this.form2Visible = true;

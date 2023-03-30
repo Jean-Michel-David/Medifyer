@@ -11,8 +11,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class Form2Component implements OnInit{
   @Input()
   secondPart!:FormGroup;
-  @ViewChild('formTerms')
-  formTerms!: ElementRef;
+  @Input()
+  formGroups!:string[];
+  @Input()
+  groups!:string[];
 
 
 
@@ -26,9 +28,11 @@ export class Form2Component implements OnInit{
   }
 
   checkMeshTerm(event:Event,group:string,term:number){
-    if((((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value).length > 1){
+    let meshTerm = (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value);
+
+    if(meshTerm.length > 1){
       let req = this.http.get('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=mesh&term='
-      + ((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value
+      + meshTerm
       +'[Mesh]',
       {responseType: 'text'}).subscribe(
         response => {
@@ -53,7 +57,28 @@ export class Form2Component implements OnInit{
   moveTerm(event:Event,group:string,term:number){
     let synonym = ((this.secondPart.controls[group] as FormGroup).controls['synonym'] as FormArray);
     let mesh = ((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray);
-    synonym.push(this.fb.control(mesh.at(term).value));
+    let foundEmpty = false;
+
+    for (let i = 0; i < synonym.length; i++) {
+      const element = synonym.at(i);
+      if (element.value.length <= 0){
+        synonym.setControl(i , this.fb.control(mesh.at(term).value));
+        foundEmpty = true;
+      }
+    }
+
+    if(!foundEmpty) {synonym.push(this.fb.control(mesh.at(term).value));}
+
     mesh.removeAt(term);
+  }
+
+  checkIfEmpty(category:string,group:string){
+    let length = ((this.secondPart.controls[group] as FormGroup).controls[category] as FormArray).length;
+    let formArray = ((this.secondPart.controls[group] as FormGroup).controls[category] as FormArray);
+    if( length == 0 || (formArray.at(length- 1)).value.length > 0){
+      return true;
+    } else {
+      return false;
+    }
   }
 }

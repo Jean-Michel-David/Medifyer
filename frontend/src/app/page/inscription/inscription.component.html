@@ -1,1 +1,119 @@
-<p>inscription works!</p>
+<form #userForm="ngForm">
+  <input
+    type="text"
+    id="lastname"
+    placeholder="Nom"
+    [(ngModel)]="newUser.lastname"
+    [ngModelOptions]="{standalone: true}"
+    #lastname="ngModel"
+    required
+  >
+  <br>
+  <div
+    *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+  >
+    <div
+      *ngIf="lastname.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre nom
+    </div>
+
+  </div>
+  <input
+    type="text"
+    id="firstname"
+    placeholder="Prénom"
+    [(ngModel)]="newUser.firstname"
+    [ngModelOptions]="{standalone: true}"
+    #firstname="ngModel"
+    required
+  >
+  <div
+    *ngIf="firstname.invalid && (lastname.dirty || lastname.touched)"
+  >
+    <div
+      *ngIf="firstname.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre prénom
+    </div>
+  </div>
+  <br>
+  <input
+    type="email"
+    id="email"
+    placeholder="Adresse Mail"
+    [(ngModel)]="newUser.email"
+    [ngModelOptions]="{standalone: true}"
+    #email="ngModel"
+    required
+    
+  >
+  <div
+    *ngIf="email.invalid && (email.dirty ||email.touched)"
+  >
+    <div
+      *ngIf="email.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre adresse mail
+    </div>
+  </div>
+  <br>
+  <input
+    type="password"
+    id="pwd"
+    placeholder="Mot de passe"
+    [(ngModel)]="newUser.pwd"
+    [ngModelOptions]="{standalone: true}"
+    #pwd="ngModel"
+    required
+
+  >
+  <div
+    *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"
+  >
+    <div
+      *ngIf="pwd.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre mot de passe
+    </div>
+  </div>
+  <br>
+  <input
+    type="password"
+    id ="cpwd"
+    placeholder="Confirmer mot de passe"
+    [(ngModel)]="newUser.cpwd"
+    [ngModelOptions]="{standalone: true}"
+    #cpwd="ngModel"
+    required
+  >
+  <br>
+  <div
+    *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)"
+  >
+    <div
+      *ngIf="cpwd.errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer votre confirmation de mot de passe
+    </div>
+  </div>
+  <button
+    type="submit"
+    (click)="addNewUser()"
+    [disabled]=
+    "
+    !newUser.lastname &&
+    !newUser.firstname &&
+    !newUser.email &&
+    !newUser.pwd &&
+    !newUser.cpwd
+    "
+  >
+    S'incrire
+  </button>
+</form>
