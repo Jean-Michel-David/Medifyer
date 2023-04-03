@@ -8,6 +8,7 @@ class User implements JsonSerializable
   private $email;
   private $pwd;
   private $photo;
+  private $adminStatus;
 
   /**
    * Get the value of id
@@ -118,6 +119,21 @@ class User implements JsonSerializable
     return $this;
   }
 
+  /**
+   * returns isAdmin
+   */
+  public function isAdmin() {
+    return $this->adminStatus;
+  }
+  /**
+   * Set the value of adminStatus
+   */
+  public function setAdminStatus($status) {
+    $this->adminStatus = $status;
+
+    return $this;
+  }
+
   public function jsonSerialize(): mixed
   {
     return array(
@@ -127,6 +143,7 @@ class User implements JsonSerializable
       'email' => $this->getEmail(),
       'pwd' => $this->getPwd(),
       'photo' => $this->getPhoto(),
+      'adminStatus' => $this->isAdmin()
     );
   }
 }
