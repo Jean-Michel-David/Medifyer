@@ -2,7 +2,7 @@
 class DBConnection
 {
     private $db;
-    private $dbName = "";
+    private $dbName = "medifyer";
     private $user = "root";
     private $psw = "";
 

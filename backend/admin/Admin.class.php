@@ -1,12 +1,12 @@
 <?php
-require_once('credentials.php');
+require_once("../credentials.php");
+
 class Admin {
-    /**
-     * @param tso tsobatso
-     */
-    function getUserList($creds = NULL, string $parameters = "", int $page = 1, int $usersByPage = 10) {
+    public static function getUserList($creds = NULL, string $parameters = "", int $page = 1, int $usersByPage = 10) {
         //Verify credentials
-        if (!hasAdminCredentials($creds)) {
+        $credentials = new Credentials();
+
+        if (!$credentials->hasAdminCredentials($creds)) {
             return false;
         }
 
@@ -14,7 +14,7 @@ class Admin {
         require('./database/dbConnection.php');
 
         //Actual query
-        $sqlQuery = "   SELECT nom_user, prenom_user, email_user, pfp_user, admin_user 
+        $sqlQuery = "   SELECT user_id, nom_user, prenom_user, email_user, pfp_user, admin_user 
                         FROM `users`
                         WHERE :searchString REGEXP LOWER(nom_user)
                             OR :searchString REGEXP LOWER(prenom_user)

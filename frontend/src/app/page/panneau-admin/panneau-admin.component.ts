@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AdminGetRechercheService } from 'src/app/services/admin-get-recherche.service';
 import { User } from 'src/app/admin/user';
 import { QuestionShort } from 'src/app/recherche/question-short';
@@ -9,7 +9,7 @@ import { QuestionShort } from 'src/app/recherche/question-short';
   templateUrl: './panneau-admin.component.html',
   styleUrls: ['./panneau-admin.component.css']
 })
-export class PanneauAdminComponent implements OnInit, OnDestroy{
+export class PanneauAdminComponent implements OnInit{
   userList! : Observable<User[]>;
   userSearches! : Observable<QuestionShort[]>;
   showUserList : boolean = true;
@@ -18,9 +18,6 @@ export class PanneauAdminComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     //Initial user list to display
     this.userList = this.service.getUserList();
-  }
-  ngOnDestroy(): void {
-    
   }
 
   /**

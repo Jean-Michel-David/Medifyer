@@ -1,6 +1,6 @@
-<div class="mainAdminContainer">
-    <app-search-form (searchUser)="searchUser($event)"></app-search-form>
+<div class="col-md-10 mx-auto d-flex flex-column">
+    <app-search-form class="col-md-8 mx-auto" (searchUser)="searchUser($event)"></app-search-form>
     
-    <app-user-list *ngIf="showUserList" [userList]="userList" (fetchUserQuestions)="fetchQuestions($event)"></app-user-list>
+    <app-user-list class="p-2" *ngIf="showUserList" [userList]="userList" (fetchUserQuestions)="fetchQuestions($event)"></app-user-list>
     <app-liste-recherches *ngIf="!showUserList" [userSearches]="userSearches"></app-liste-recherches>
 </div>
