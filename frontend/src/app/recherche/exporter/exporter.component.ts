@@ -131,7 +131,6 @@ export class ExporterComponent {
         break;
 
         default:
-          str += prop + " : " + obj[prop] + "\n\n\n";
         break;
       }
     }

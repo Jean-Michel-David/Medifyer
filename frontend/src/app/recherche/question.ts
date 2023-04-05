@@ -1,6 +1,7 @@
 import { Operateurs } from "./operateurs";
 
 export interface Question {
+  id : number;
   Question : string;
   Patient_Pop_Path : string;
   Intervention_Traitement : string;
