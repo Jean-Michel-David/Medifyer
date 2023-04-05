@@ -35,8 +35,7 @@ class Credentials {
     /**
      * This function checks if the credentials belong to an admin
      */
-    public function hasAdminCredentials($authorizationHeader)
-    {
+    public function hasAdminCredentials($authorizationHeader) : bool {
         $userId = $this->extractUserId($authorizationHeader);
         require_once('./database/dbConnection.php');
         $dbConn = new dbConnection();
@@ -48,7 +47,8 @@ class Credentials {
         ]);
         $result = $statment->fetch();
         $dbConn->disconnect();
-
+//        if ($result['admin_user'] == '1')
+//            return true;
         return ($result['admin_user'] == '1');
     }
 
