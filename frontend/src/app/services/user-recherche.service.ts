@@ -8,11 +8,11 @@ import { Question } from '../recherche/question';
 })
 export class UserRechercheService {
 
-  private backendUrl = "http://localhost/Medifyer/backend/userRecherche.php";
+  private backendUrl = "http://localhost/Medifyer/backend/question/userRecherche.php";
   constructor(private http : HttpClient) { }
 
-  sauvegarder(question: Question):Observable<any>{
-    return this.http.post(this.backendUrl,question);
+  sauvegarder(question: Question):Observable<Question>{
+    return this.http.post<Question>(this.backendUrl,question);
   }
 }
 
