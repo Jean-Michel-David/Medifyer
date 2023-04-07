@@ -416,7 +416,6 @@ class Question implements JsonSerializable
       'resultat_rech' => $this->getRésultats(),
       'public_rech' => $this->getAcces(),
       'commentaire_rech' => $this->getCommentaires(),
-      'user_id' => 1,//to change
       'id' => $this->getId(),
 
       'termesFrancaisPopulation' => $this->getPatient_Language_Naturel(),
