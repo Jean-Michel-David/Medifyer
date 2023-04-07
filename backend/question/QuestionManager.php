@@ -4,19 +4,28 @@ class QuestionManager{
   @Description insert a question into the db and echo the new question's id.
    If the id of the question is already set we update the db.
   **/
-    public function saveQuestion(Question $question,$con){
+    public function saveQuestion(Question $question,$con,$authorization){
         $paramUpdate = array();
         $paramsInsert = array();
+        //$credsObj = new Credentials();
 
         if ($question->getId() > 0) {
-            $sql="UPDATE `recherches` SET`question_rech`=:question_rech,`population_rech`=:population_rech,`traitement_rech`=:traitement_rech,`resultat_rech`=:resultat_rech,
-            `public_rech`=:public_rech,`commentaire_rech`=:commentaire_rech WHERE 'recherche_id'=:recherche_id;
-            ";
+            $sql="UPDATE recherches SET `question_rech`=:question_rech,`population_rech`=:population_rech,`traitement_rech`=:traitement_rech,`resultat_rech`=:resultat_rech,
+            `public_rech`=:public_rech,`commentaire_rech`=:commentaire_rech 
+            WHERE recherche_id=:recherche_id;
 
-            $paramUpdate = array(
-                'recherche_id' => json_encode($question->getId()),
-            
-            );
+            UPDATE termes SET `termesFrancaisPopulation`=:termesFrancaisPopulation,`termesFrancaisResultat`=:termesFrancaisResultat,
+            `termesFrancaisTraitement`=:termesFrancaisResultat,`termesMeshPopulation`=:termesMeshPopulation,
+            `termesMeshResultat`=:termesMeshResultat,`termesMeshTraitement`=:termesMeshTraitement,`synonymesPopulation`=:synonymesPopulation,
+            `synonymesResultat`=:synonymesResultat,`synonymesTraitement`=:synonymesTraitement 
+            WHERE recherche_id=:recherche_id;
+
+            SET @terme_id = (SELECT terme_id FROM termes WHERE recherche_id = :recherche_id);
+
+            UPDATE equation SET `relationsPopulation`=:relationsPopulation,`relationsTraitement`=:relationsTraitement,`relationsResultat`=:relationsResultat
+            WHERE terme_id = @terme_id;";
+
+            $paramUpdate = array('recherche_id' => $question->getId(),);
             
           } else {
               $sql="INSERT INTO recherches (question_rech,population_rech,traitement_rech,resultat_rech,public_rech,commentaire_rech,user_id) 
@@ -44,7 +53,7 @@ class QuestionManager{
             'resultat_rech' => json_encode($question->getRésultats()),
             'public_rech' => json_encode($question->getAcces()),
             'commentaire_rech' => json_encode($question->getCommentaires()),
-            'user_id' => 1,//to change
+            'user_id' => 1,//json_encode($credsObj->extractUserId($authorization))
 
             'termesFrancaisPopulation' => json_encode($question->getPatient_Language_Naturel()),
             'termesFrancaisResultat' => json_encode($question->getRésultats_Language_Naturel()),
@@ -60,13 +69,19 @@ class QuestionManager{
             'relationsTraitement' => json_encode($question->getEquations_Intervention()),
             'relationsResultat' => json_encode($question->getEquations_Resultats()),
             );
+
             $params = array_merge($paramUpdate,$paramsInsert);
             $query = $insert->execute($params); //return true si le query a bien été exécuté
-            $insert->closeCursor();
-
-            if($query == true){     //on vient récuper l'id de la question qu'on vient d'insérer en DB
-                $this->fetchAndSetIdRecherche($question,$con);
+            
+            if($query == true && ($question->getId() < 0)){     
+                $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
+                $insert = $con->prepare($sql);
+                $params = array ('user_id' => 1); //json_encode($credsObj->extractUserId($authorization))
+                $insert->execute($params);
+                $result = $insert->fetch(PDO::FETCH_ASSOC);
+                $question ->setId($result["recherche_id"]);
             }
+            $insert->closeCursor();
             echo json_encode($question);
             
         }catch(PDOException $e){
@@ -74,17 +89,5 @@ class QuestionManager{
         }finally{
             $insert->closeCursor();
         }
-    }
-
-/**
-  @Description fetch the id of the last "recherche" saved by the user and set it on the question object.
-  **/
-    private function fetchAndSetIdRecherche(Question $question,$con){
-        $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
-        $insert = $con->prepare($sql);
-        $params = array ('user_id' => 1,); //to change
-        $insert->execute($params);
-        $result = $insert->fetch(PDO::FETCH_ASSOC);
-        $question ->setId($result["recherche_id"]);
     }
 }

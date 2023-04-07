@@ -6,6 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require('../database/dbConnection.php');
 require('Question.class.php');
 require('QuestionManager.php');
+//require('../credentials.php');
 $dbConnection = new DBConnection();
 $con = $dbConnection->connect();
 $questionManager = new QuestionManager();
@@ -34,6 +35,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $question->setEquations_Intervention($json_obj["Equations_Intervention"]);
   $question->setEquations_Resultats($json_obj["Equations_Resultats"]);
 
-  $questionManager->saveQuestion($question,$con);
+  $headers = apache_request_headers();
+  $questionManager->saveQuestion($question,$con,$headers);//$headers['Authorization']
 }
 ?>
