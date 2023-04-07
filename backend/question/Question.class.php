@@ -1,6 +1,6 @@
 <?php
 
-class Question
+class Question implements JsonSerializable
 {
   private $id;
   private $acces;
@@ -405,5 +405,33 @@ class Question
     $this->commentaires = $commentaires;
 
     return $this;
+  }
+
+  public function jsonSerialize(): mixed
+  {
+    return array(
+      'question_rech' => $this->getQuestion(),
+      'population_rech' => $this->getPatient_Pop_Path(),
+      'traitement_rech' => $this->getIntervention_Traitement(),
+      'resultat_rech' => $this->getRésultats(),
+      'public_rech' => $this->getAcces(),
+      'commentaire_rech' => $this->getCommentaires(),
+      'user_id' => 1,//to change
+      'id' => $this->getId(),
+
+      'termesFrancaisPopulation' => $this->getPatient_Language_Naturel(),
+      'termesFrancaisResultat' => $this->getRésultats_Language_Naturel(),
+      'termesFrancaisTraitement' => $this->getIntervention_Language_Naturel(),
+      'termesMeshPopulation' => $this->getPatient_Terme_Mesh(),
+      'termesMeshResultat' => $this->getRésultats_Terme_Mesh(),
+      'termesMeshTraitement' => $this->getIntervention_Terme_Mesh(),
+      'synonymesPopulation' => $this->getPatient_Synonyme(),
+      'synonymesResultat' => $this->getRésultats_Synonyme(),
+      'synonymesTraitement' => $this->getIntervention_Synonyme(),
+
+      'relationsPopulation' => $this->getEquations_PatientPopPath(),
+      'relationsTraitement' => $this->getEquations_Intervention(),
+      'relationsResultat' => $this->getEquations_Resultats()
+    );
   }
 }
