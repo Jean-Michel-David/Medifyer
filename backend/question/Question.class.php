@@ -410,27 +410,27 @@ class Question implements JsonSerializable
   public function jsonSerialize(): mixed
   {
     return array(
-      'question_rech' => $this->getQuestion(),
-      'population_rech' => $this->getPatient_Pop_Path(),
-      'traitement_rech' => $this->getIntervention_Traitement(),
-      'resultat_rech' => $this->getRésultats(),
-      'public_rech' => $this->getAcces(),
-      'commentaire_rech' => $this->getCommentaires(),
+      'Question' => $this->getQuestion(),
+      'Patient_Pop_Path' => $this->getPatient_Pop_Path(),
+      'Intervention_Traitement' => $this->getIntervention_Traitement(),
+      'Résultats' => $this->getRésultats(),
+      'acces' => $this->getAcces(),
+      'commentaires' => $this->getCommentaires(),
       'id' => $this->getId(),
 
-      'termesFrancaisPopulation' => $this->getPatient_Language_Naturel(),
-      'termesFrancaisResultat' => $this->getRésultats_Language_Naturel(),
-      'termesFrancaisTraitement' => $this->getIntervention_Language_Naturel(),
-      'termesMeshPopulation' => $this->getPatient_Terme_Mesh(),
-      'termesMeshResultat' => $this->getRésultats_Terme_Mesh(),
-      'termesMeshTraitement' => $this->getIntervention_Terme_Mesh(),
-      'synonymesPopulation' => $this->getPatient_Synonyme(),
-      'synonymesResultat' => $this->getRésultats_Synonyme(),
-      'synonymesTraitement' => $this->getIntervention_Synonyme(),
+      'Patient_Language_Naturel' => $this->getPatient_Language_Naturel(),
+      'Résultats_Language_Naturel' => $this->getRésultats_Language_Naturel(),
+      'Intervention_Language_Naturel' => $this->getIntervention_Language_Naturel(),
+      'Patient_Terme_Mesh' => $this->getPatient_Terme_Mesh(),
+      'Résultats_Terme_Mesh' => $this->getRésultats_Terme_Mesh(),
+      'Intervention_Terme_Mesh' => $this->getIntervention_Terme_Mesh(),
+      'Patient_Synonyme' => $this->getPatient_Synonyme(),
+      'Résultats_Synonyme' => $this->getRésultats_Synonyme(),
+      'Intervention_Synonyme' => $this->getIntervention_Synonyme(),
 
-      'relationsPopulation' => $this->getEquations_PatientPopPath(),
-      'relationsTraitement' => $this->getEquations_Intervention(),
-      'relationsResultat' => $this->getEquations_Resultats()
+      'Equations_PatientPopPath' => $this->getEquations_PatientPopPath(),
+      'Equations_Intervention' => $this->getEquations_Intervention(),
+      'Equations_Resultats' => $this->getEquations_Resultats()
     );
   }
 }
