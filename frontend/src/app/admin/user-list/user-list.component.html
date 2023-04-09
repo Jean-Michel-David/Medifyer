@@ -1,6 +1,10 @@
-
 <button class="list-group-item list-group-item-action" 
 *ngFor="let user of (userList | async)"
 (click)="onGetUserSearches($event, user?.id)">
     {{user?.id}} : {{ user?.nom }}
 </button>
+
+<div class="">
+    <button (click)="onPreviousPage()">Page précédente</button>
+    <button (click)="onNextPage()">Page suivante</button>
+</div>

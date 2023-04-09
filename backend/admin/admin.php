@@ -1,42 +1,27 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
+
 require_once("./Admin.class.php");
+$headers = getallheaders();
+if (empty($headers['Authorization'])) {
+    http_response_code(401);
+    exit;
+}
 
 /**
  * Getting the list of users
  */
-if (isset($_GET['getUserList'])) {
-    
-    if (strlen($_GET['getUserList']) == 0)
-    echo json_encode([
-        [
-            'id' => '1',
-            'nom' => 'Strens',
-            'prenom' => 'Daniel',
-            'email' => 'LA217024@student.helha.be',
-            'pfp' => 'NULL',
-            'isAdmin' => 'false'
-        ],
-        [
-            'id' => '2',
-            'nom' => 'Firenze',
-            'prenom' => 'Matteo',
-            'matricule' => 'LA217891@student.helha.be',
-            'pfp' => 'NULL',
-            'isAdmin' => 'false'
-        ]
-    ]);
+if (isset($_GET['getUserList'], $_GET['page'])) {
+    $userList = AdminManager::getUserList($headers['Authorization'], $_GET['getUserList'], $_GET['page']);
+    if (!$userList) {
+        http_response_code(400);
+        exit;
+    }
 
-    else echo json_encode([
-        [
-            'id' => '1',
-            'nom' => 'Strens',
-            'prenom' => 'Daniel',
-            'email' => 'LA217024@student.helha.be',
-            'pfp' => 'NULL',
-            'isAdmin' => 'false'
-        ]
-    ]);
-    return;
+    echo json_encode($userList);
+    exit;
 }
 
 // Getting the list of search equations of a particular user

@@ -13,11 +13,12 @@ export class PanneauAdminComponent implements OnInit{
   userList! : Observable<User[]>;
   userSearches! : Observable<QuestionShort[]>;
   showUserList : boolean = true;
+  page : number = 1;
 
   constructor(private service : AdminGetRechercheService) {}
   ngOnInit(): void {
     //Initial user list to display
-    this.userList = this.service.getUserList();
+    this.userList = this.service.getUserList(1);
   }
 
   /**
@@ -25,7 +26,7 @@ export class PanneauAdminComponent implements OnInit{
    * @param search String to narrow the selection
    */
   searchUser(search : string) : void {
-    this.userList = this.service.getUserList(1, search);
+    this.userList = this.service.getUserList(this.page, search);
   }
 
   /**
@@ -36,5 +37,14 @@ export class PanneauAdminComponent implements OnInit{
     this.showUserList = false;
     console.log('fetching questions for user with ID : ' + user);
     this.userSearches = this.service.getUserSearches(user);
+  }
+
+  /**
+   * This function changes the page for the users browsing
+   * @param $page the new page
+   * @TODO : Modify the page system so it's nice looking, and in a style like "1 ... 4 <5> 6 ... 8"
+   */
+  changePage($page : number) {
+
   }
 }

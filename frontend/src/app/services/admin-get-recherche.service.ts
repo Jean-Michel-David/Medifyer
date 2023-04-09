@@ -17,7 +17,7 @@ export class AdminGetRechercheService {
    * @param search The string used to narrow the list (typically name or matricule)
    * @returns The list of users
    */
-  getUserList(page? : number, search? : string) : Observable<User[]>{
+  getUserList(page : number, search? : string) : Observable<User[]>{
     // TODO : add security token or something
     // TODO : remove any '&' from the search string
     console.log('Requesting user list');

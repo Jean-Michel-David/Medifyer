@@ -1,37 +1,63 @@
 <?php
-require_once("../credentials.php");
+require_once(dirname(__FILE__) . '/../credentials.php');
 
-class Admin {
-    public static function getUserList($creds = NULL, string $parameters = "", int $page = 1, int $usersByPage = 10) {
+class AdminManager {
+    public static function getUserList($creds, string $parameters, int $page, int $usersByPage = 10) {
         //Verify credentials
         $credentials = new Credentials();
-
-        if (!$credentials->hasAdminCredentials($creds)) {
+        if (!$credentials->hasAdminCredentials($creds))
             return false;
-        }
 
-        //include variable $db (PDO connection to the database)
-        require('./database/dbConnection.php');
+        //include class dbConnection (PDO connection to the database)
+        require_once('./database/dbConnection.php');
+        $db = new DBConnection();
 
         //Actual query
-        $sqlQuery = "   SELECT user_id, nom_user, prenom_user, email_user, pfp_user, admin_user 
-                        FROM `users`
-                        WHERE :searchString REGEXP LOWER(nom_user)
-                            OR :searchString REGEXP LOWER(prenom_user)
-                            OR :searchString REGEXP LOWER(email_user)
-                        ORDER BY nom_user, prenom_user
-                        LIMIT :startUser, :numberOfUsers;";
+        $sqlQuery = " SELECT user_id, nom_user, prenom_user, email_user, pfp_user, admin_user 
+                     FROM `users`
+                     WHERE LOWER(nom_user) LIKE LOWER(:searchString)
+                        OR LOWER(prenom_user) LIKE LOWER(:searchString)
+                        OR LOWER(email_user) LIKE LOWER(:searchString)
+                     ORDER BY nom_user, prenom_user
+                     LIMIT :startUser, :numberOfUsers;";
 
-        $statement = $db->prepare($sqlQuerry);
+        $statement = $db->connect()->prepare($sqlQuery);
 
+        $statement->bindValue('searchString','%' . $parameters . '%');
         $statement->bindValue('startUser', ($page - 1) * $usersByPage, PDO::PARAM_INT);
         $statement->bindValue('numberOfUsers', $usersByPage, PDO::PARAM_INT);
-        $statement->bindValue('searchString', $parameters, PDO::PARAM_STR);
 
         $statement->execute();
 
         $users = $statement->fetchAll();
+        $db->disconnect();
 
         return $users;
+    }
+
+    public static function getUserSearches($creds, string $userId) {
+        //Verify credentials
+        $credentials = new Credentials();
+        if (!$credentials->hasAdminCredentials($creds))
+            return false;
+
+        //include class dbConnection (PDO connection to the database)
+        require_once('./database/dbConnection.php');
+        $db = new DBConnection();
+
+        //Actual query
+        $sqlQuery = "   SELECT recherche_id, question_rech 
+                        FROM `recherches` 
+                        WHERE user_id = :userId";
+
+        $statement = $db->connect()->prepare($sqlQuery);
+
+        $statement->bindValue('userId', $userId);
+        $statement->execute();
+
+        $recherches = $statement->fetchAll();
+        $db->disconnect();
+
+        return $recherches;
     }
 }

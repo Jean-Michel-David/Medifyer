@@ -37,6 +37,9 @@ class Credentials {
      */
     public function hasAdminCredentials($authorizationHeader) : bool {
         $userId = $this->extractUserId($authorizationHeader);
+        if ($userId == null)
+            return false;
+
         require_once('./database/dbConnection.php');
         $dbConn = new dbConnection();
         

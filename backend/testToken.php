@@ -1,6 +1,7 @@
 <?php
-require_once ("./users/User.class.php");
+require_once("./users/User.class.php");
 require_once("./credentials.php");
+require_once("./admin/Admin.class.php");
 echo '<h1>test token</h1>';
 
 //Creation of a token
@@ -24,3 +25,10 @@ print("<br>First : " . $hasTheCredentials);
 
 $hasTheCredentials = ($credsObj->hasAdminCredentials("Bearer " . $secondToken)) ? "yes" : "no";
 print("<br>Second : " . $hasTheCredentials);
+
+print_r(
+    AdminManager::getUserList("Bearer " . $token, "217024", 1)
+);
+
+print('<br><br>');
+print_r(AdminManager::getUserSearches("Bearer " . $token, 1));
