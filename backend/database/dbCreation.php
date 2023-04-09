@@ -6,7 +6,7 @@ $dbCreatingString = "CREATE TABLE Users(
     psw_user VARCHAR(255),
     pfp_user VARCHAR(10),
     admin_user BOOLEAN,
-    email_user VARCHAR(50) NOT NULL,
+    email_user VARCHAR(50) NOT NULL UNIQUE,
     PRIMARY KEY(user_id)
     );
     
