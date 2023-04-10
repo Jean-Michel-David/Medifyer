@@ -40,9 +40,21 @@ export class FormulairesComponent{
   });
 
   thirdPart = this.fb.group({
-    includeAll: this.fb.array([]),
-    includeOne: this.fb.array([]),
-    exclude: this.fb.array([]),
+    patient: this.fb.group({
+      includeAll: this.fb.array([]),
+      includeOnce: this.fb.array([]),
+      includeNone: this.fb.array([])
+    }),
+    intervention: this.fb.group({
+      includeAll: this.fb.array([]),
+      includeOnce: this.fb.array([]),
+      includeNone: this.fb.array([])
+    }),
+    resultats: this.fb.group({
+      includeAll: this.fb.array([]),
+      includeOnce: this.fb.array([]),
+      includeNone: this.fb.array([])
+    })
   });
 
   form = this.fb.group({
