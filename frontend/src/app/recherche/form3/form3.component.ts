@@ -1,5 +1,5 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-form3',
@@ -14,11 +14,14 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
     ])
   ]
 })
-export class Form3Component {
+export class Form3Component implements OnInit{
+  ngOnInit(): void {
+    this.thirdPart = this.formGlobal.controls['thirdPart'] as FormGroup;
+  }
   @Input()
   formGlobal!:FormGroup;
 
-  thirdPart:FormGroup = (this.formGlobal.controls['thirdPart'] as FormGroup);
+  thirdPart!:FormGroup;
 
 
 }
