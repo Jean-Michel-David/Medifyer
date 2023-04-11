@@ -5,6 +5,7 @@ class Question implements JsonSerializable
   private $id;
   private $acces;
   private $commentaires;
+  private $coWorkers;
   private $question;
   private $Patient_Pop_Path;
   private $Intervention_Traitement;
@@ -407,6 +408,26 @@ class Question implements JsonSerializable
     return $this;
   }
 
+  /**
+   * Get the value of coWorkers
+   */ 
+  public function getCoWorkers()
+  {
+    return $this->coWorkers;
+  }
+
+  /**
+   * Set the value of coWorkers
+   *
+   * @return  self
+   */ 
+  public function setCoWorkers($coWorkers)
+  {
+    $this->coWorkers = $coWorkers;
+
+    return $this;
+  }
+
   public function jsonSerialize(): mixed
   {
     return array(
@@ -417,6 +438,7 @@ class Question implements JsonSerializable
       'acces' => $this->getAcces(),
       'commentaires' => $this->getCommentaires(),
       'id' => $this->getId(),
+      'coWorker'=>$this->getCoWorkers(),
 
       'Patient_Language_Naturel' => $this->getPatient_Language_Naturel(),
       'Résultats_Language_Naturel' => $this->getRésultats_Language_Naturel(),
@@ -433,4 +455,6 @@ class Question implements JsonSerializable
       'Equations_Resultats' => $this->getEquations_Resultats()
     );
   }
+
+  
 }
