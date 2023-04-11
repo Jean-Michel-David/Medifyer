@@ -8,7 +8,7 @@ import { User } from '../admin/user';
   providedIn: 'root'
 })
 export class AdminGetRechercheService {
-  private backendUrl = "http://localhost/Medifyer/backend/mockDB.php";
+  private backendUrl = "http://localhost/Medifyer/backend/admin/admin.php";
 
   constructor(private http : HttpClient) {}
 
@@ -24,15 +24,15 @@ export class AdminGetRechercheService {
 
     // Initial list / list with empty search string
     if (typeof(search) === "undefined")
-      return this.http.get<User[]>(this.backendUrl + "?getUserList=&page=" + page); 
-    
+      return this.http.get<User[]>(this.backendUrl + "?getUserList=&page=" + page);
+
     // List when searching for a name / matricule
-    return this.http.get<User[]>(this.backendUrl + "?getUserList=" + search + 
+    return this.http.get<User[]>(this.backendUrl + "?getUserList=" + search +
     "&page=" + (typeof(page) === undefined ? 1 : page));
   }
 
   /**
-   * This function fetches the results of 
+   * This function fetches the results of
    * @param user The ID of the selected user
    * @returns The list of short questions (only ID and question) - all the questions of the selected user
    */
