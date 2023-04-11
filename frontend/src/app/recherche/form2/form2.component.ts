@@ -26,6 +26,14 @@ export class Form2Component implements OnInit{
     ((this.secondPart.controls[group] as FormGroup).controls[column] as FormArray).push(this.fb.control(''));
   }
 
+  checkEmptyWhenLeaving(event:Event,group:string,category:string,term:number){
+    let meshTerm = (((this.secondPart.controls[group] as FormGroup).controls[category] as FormArray).at(term).value);
+    let length = ((this.secondPart.controls[group] as FormGroup).controls[category] as FormArray).length;
+    if(length > 1 &&length != term+1 && meshTerm.length <= 0 ){
+      ((this.secondPart.controls[group] as FormGroup).controls[category] as FormArray).removeAt(term);
+    }
+  }
+
   checkMeshTerm(event:Event,group:string,term:number){
     let meshTerm = (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value);
     if(meshTerm.length > 1){

@@ -1,6 +1,32 @@
 <div  @insertTrigger class="form-part bg-light p-4 rounded" [formGroup]="thirdPart">
-    <div class="card flex justify-content-center">
-        <p-button label="Check" icon="pi pi-check"></p-button>
-        <p></p>
+  <button type="button" class="btn btn-dark" (click)="generate()">Generer liste mot</button>
+
+  <div class="card flex flex-wrap gap-3">
+    <div class="p-2 border-1 surface-border border-round w-15rem" pDroppable (onDrop)="drop('patient','includeAll')">
+      <p class="text-center">Include All</p>
+        <ul class="list-group">
+            <li *ngFor="let control of ($any(thirdPart.controls['patient']).controls['includeAll']).controls; index as i" class="list-group-item" pDraggable (onDragStart)="dragStart(control,'patient','includeAll',i)" (onDragEnd)="dragEnd()">
+                {{control.value}}
+            </li>
+        </ul>
     </div>
+    <div class="p-2 border-1 surface-border border-round w-15rem" pDroppable (onDrop)="drop('patient','includeNone')">
+        <p class="text-center">Include None</p>
+        <ul class="list-group">
+            <li *ngFor="let control of getArray('patient','includeNone'); index as i" class="list-group-item" pDraggable (onDragStart)="dragStart(control,'patient','includeNone',i)" (onDragEnd)="dragEnd()">
+                {{control.value}}
+            </li>
+        </ul>
+    </div>
+    <div class="p-2 border-1 surface-border border-round w-15rem" pDroppable (onDrop)="dropIncludeOnce('patient',j)" *ngFor="let array of ($any(thirdPart.controls['patient']).controls['includeOnce']).controls; let j=index">
+      <p class="text-center">Include Once - {{j}}</p>
+      <button type="button" class="btn btn-dark" (click)="removeIncludeOnce('patient',j)">Retirer le groupe Include Once</button>
+      <ul class="list-group">
+          <li *ngFor="let control of (($any(thirdPart.controls['patient']).controls['includeOnce']).at(j)).controls; index as i" class="list-group-item" pDraggable (onDragStart)="dragStartIncludeOnce(control,'patient',j,i)" (onDragEnd)="dragEnd()">
+              {{control.value}}
+          </li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-dark" (click)="addIncludeOnce('patient')">Ajouter un groupe Include Once</button>
+  </div>
 </div>

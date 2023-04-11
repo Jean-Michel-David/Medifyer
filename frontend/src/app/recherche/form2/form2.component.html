@@ -10,7 +10,7 @@
       <div class="column" formArrayName="natural">
         <h5>Langage Naturel (FR)</h5>
         <div *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['natural']).controls; let i=index" class="natural">
-          <input class="form-control" id="termNatural-{{ i }}" type="text" [formControlName]="i">
+          <input class="form-control" id="termNatural-{{ i }}" type="text" [formControlName]="i" (focusout)="checkEmptyWhenLeaving($event,formGroups[j],'natural',i)">
           <a href="https://www.hetop.eu/hetop/fr/?q=&home#q={{($any(secondPart.controls[formGroups[j]]).controls['natural']).at(i).value}}" target="_blank" class="btn">> HeTop</a>
         </div>
         <button type="button" class="btn btn-dark" (click)="addTerm(formGroups[j],'natural')" *ngIf="checkIfEmpty('natural',formGroups[j])">+ Ajouter un nouveau mot</button>
@@ -18,7 +18,7 @@
       <div class="column" formArrayName="mesh">
         <h5>Terme Mesh (EN)</h5>
         <div class="mesh" *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['mesh']).controls; let i=index">
-          <input class="form-control" id="term-{{ i }}" type="text" [formControlName]="i" (focusout)='checkMeshTerm($event,formGroups[j],i)' #mesh>
+          <input class="form-control" id="term-{{ i }}" type="text" [formControlName]="i" (focusout)='checkEmptyWhenLeaving($event,formGroups[j],"mesh",i);checkMeshTerm($event,formGroups[j],i)' #mesh>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" *ngIf="mesh.classList.contains('valid')"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
           <button *ngIf="mesh.classList.contains('notvalid')" (click)="moveTerm($event,formGroups[j],i)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z"/></svg>
@@ -36,7 +36,7 @@
       <div class="column" formArrayName="synonym">
         <h5>Synonyme (EN)</h5>
         <input *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['synonym']).controls; let i=index"
-        class="form-control" id="termSynonym-{{ i }}" type="text" [formControlName]="i">
+        class="form-control" id="termSynonym-{{ i }}" type="text" [formControlName]="i" (focusout)='checkEmptyWhenLeaving($event,formGroups[j],"synonym",i)'>
         <button type="button" class="btn btn-dark" (click)="addTerm(formGroups[j],'synonym')" *ngIf="checkIfEmpty('synonym',formGroups[j])">+ Ajouter un nouveau mot</button>
       </div>
     </div>

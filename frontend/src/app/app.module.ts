@@ -26,6 +26,9 @@ import { Form3Component } from './recherche/form3/form3.component';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimateModule } from 'primeng/animate';
+import { DragDropModule } from 'primeng/dragdrop';
+import { RippleModule  } from 'primeng/ripple';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +50,7 @@ import { AnimateModule } from 'primeng/animate';
     SauvegarderComponent,
     Form2Component,
     Form3Component,
-    
+
 
   ],
   imports: [
@@ -58,7 +61,9 @@ import { AnimateModule } from 'primeng/animate';
     ReactiveFormsModule,
     ButtonModule,
     BrowserAnimationsModule,
-    AnimateModule
+    AnimateModule,
+    DragDropModule,
+    RippleModule
   ],
   providers: [AdminGetRechercheService],
   bootstrap: [AppComponent]

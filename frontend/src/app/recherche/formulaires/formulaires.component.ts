@@ -42,17 +42,23 @@ export class FormulairesComponent{
   thirdPart = this.fb.group({
     patient: this.fb.group({
       includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([]),
+      includeOnce: this.fb.array([
+        this.fb.array([])
+      ]),
       includeNone: this.fb.array([])
     }),
     intervention: this.fb.group({
       includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([]),
+      includeOnce: this.fb.array([
+        this.fb.array([])
+      ]),
       includeNone: this.fb.array([])
     }),
     resultats: this.fb.group({
       includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([]),
+      includeOnce: this.fb.array([
+        this.fb.array([])
+      ]),
       includeNone: this.fb.array([])
     })
   });
