@@ -22,6 +22,10 @@ export class Form3Component implements OnInit{
 
   @Input()
   formGlobal!:FormGroup;
+  @Input()
+  formGroups!:string[];
+  @Input()
+  groups!:string[];
 
   thirdPart!:FormGroup;
   secondPart!:FormGroup;
@@ -42,7 +46,13 @@ export class Form3Component implements OnInit{
   }
 
   removeIncludeOnce(group:string,index:number){
-    ((this.thirdPart.controls[group] as FormGroup).controls['includeOnce'] as FormArray).removeAt(index);
+    let includeOnce = ((this.thirdPart.controls[group] as FormGroup).controls['includeOnce'] as FormArray);
+
+    for (let i = 0; i < (includeOnce.at(index) as FormArray).length; i++) {
+      (includeOnce.at(0) as FormArray).push((includeOnce.at(index) as FormArray).at(i))
+    }
+
+    includeOnce.removeAt(index);
   }
 
   reset(){
@@ -68,26 +78,15 @@ export class Form3Component implements OnInit{
       let array = ((this.secondPart.controls[element] as FormGroup).controls['mesh'] as FormArray);
       let length = array.length;
       for (let i = 0; i < length; i++) {
-        target.push(this.fb.control(array.at(i).value + '[Mesh]'));
+        if((array.at(i) as FormControl).value.length > 0) target.push(this.fb.control(array.at(i).value + '[Mesh]'));
       }
 
       array = ((this.secondPart.controls[element] as FormGroup).controls['synonym'] as FormArray);
       length = array.length;
       for (let i = 0; i < length; i++) {
-        target.push(array.at(i));
+        if((array.at(i) as FormControl).value.length > 0) target.push(array.at(i));
       }
     });
-  }
-
-  getArray(group:string,include:string):FormControl[]{
-    let formArray = ((this.thirdPart.controls[group] as FormGroup).controls[include] as FormArray);
-    let array:FormControl[] = [];
-
-    for (let i = 0; i < formArray.length; i++) {
-      array[i] = formArray.at(i) as FormControl;
-    }
-
-    return array;
   }
 
   dragStart(control: FormControl,group:string,include:string,index:number){
