@@ -13,22 +13,22 @@ export class AdminGetRechercheService {
   constructor(private http : HttpClient) {}
 
   /** This function fetches a list of users for the admin.
-   *  @param page The page (first page of users, second page of users,...)
+   *  @param userCount The userCount (first userCount of users, second userCount of users,...)
    * @param search The string used to narrow the list (typically name or matricule)
    * @returns The list of users
    */
-  getUserList(page : number, search? : string) : Observable<User[]>{
+  getUserList(userCount : number, search? : string) : Observable<User[]>{
     // TODO : add security token or something
     // TODO : remove any '&' from the search string
     console.log('Requesting user list');
 
     // Initial list / list with empty search string
     if (typeof(search) === "undefined")
-      return this.http.get<User[]>(this.backendUrl + "?getUserList=&page=" + page);
+      return this.http.get<User[]>(this.backendUrl + "?getUserList=&userCount=" + userCount);
 
     // List when searching for a name / matricule
     return this.http.get<User[]>(this.backendUrl + "?getUserList=" + search +
-    "&page=" + (typeof(page) === undefined ? 1 : page));
+    "&userCount=" + (typeof(userCount) === undefined ? 1 : userCount));
   }
 
   /**

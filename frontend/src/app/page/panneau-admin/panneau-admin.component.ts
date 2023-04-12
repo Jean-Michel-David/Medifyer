@@ -10,15 +10,19 @@ import { QuestionShort } from 'src/app/recherche/question-short';
   styleUrls: ['./panneau-admin.component.css']
 })
 export class PanneauAdminComponent implements OnInit{
-  userList! : Observable<User[]>;
+  userList! : User[];
   userSearches! : Observable<QuestionShort[]>;
   showUserList : boolean = true;
-  page : number = 1;
+  userCount = 0;
+  searchString! : string;
 
   constructor(private service : AdminGetRechercheService) {}
   ngOnInit(): void {
     //Initial user list to display
-    this.userList = this.service.getUserList(1);
+    this.service.getUserList(0).subscribe((users) => {
+      this.userList = users;
+    });
+    this.searchString = "";
   }
 
   /**
@@ -26,8 +30,12 @@ export class PanneauAdminComponent implements OnInit{
    * @param search String to narrow the selection
    */
   searchUser(search : string) : void {
-    this.userList = this.service.getUserList(this.page, search);
-    this.page = 1;
+    this.userCount = 0;
+    this.searchString = search;
+
+    this.service.getUserList(this.userCount, this.searchString).subscribe((users) => {
+      this.userList = users;
+    });
   }
 
   /**
@@ -36,7 +44,7 @@ export class PanneauAdminComponent implements OnInit{
    */
   fetchQuestions(user : number) : void{
     this.showUserList = false;
-    console.log('fetching questions for user with ID : ' + user);
+    console.log('fetching questions for user with ID : ' + user);    
     this.userSearches = this.service.getUserSearches(user);
   }
 
@@ -45,8 +53,10 @@ export class PanneauAdminComponent implements OnInit{
    * @param $page the new page
    * @TODO : Modify the page system so it's nice looking, and in a style like "1 ... 4 <5> 6 ... 8"
    */
-  changePage($page : number) : void {
-
+  getMoreUsers($event : number) : void {
+    this.service.getUserList($event, this.searchString).subscribe((users) => {
+      this.userList = [...this.userList, ...users];
+    });    
   }
 
   /**

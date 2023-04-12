@@ -13,8 +13,9 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
     /**
      * Getting the list of users
      */
-    if (isset($_GET['getUserList']) && !empty($_GET['page'])) {
-        $userList = AdminManager::getUserList(/*$headers['Authorization']*/null, $_GET['getUserList'], $_GET['page']);
+    if (isset($_GET['getUserList']) && isset($_GET['userCount'])) {
+        $userList = AdminManager::getUserList(/*$headers['Authorization']*/null, $_GET['getUserList'], $_GET['userCount']);
+
         if (!$userList) {
             http_response_code(400);
             exit();

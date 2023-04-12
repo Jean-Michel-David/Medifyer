@@ -1,7 +1,9 @@
 <div>
   <div class="row">
+    
     <div class="col">
-      <input type="search" class="form-control" [(ngModel)]="wantedUser" placeholder="nom, prenom ou matricule"/>
+      <input type="search" class="form-control" [(ngModel)]="wantedUser" placeholder="nom, prenom ou matricule"
+      (keydown.enter)="onSearchUser()" />
     </div>
     <div class="col">
       <button id="search-button" type="button" class="btn btn-primary" (click)="onSearchUser()">

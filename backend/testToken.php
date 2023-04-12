@@ -7,7 +7,7 @@ echo '<h1>test token</h1>';
 //Creation of a token
 $credsObj = new Credentials();
 $user = new User();
-$user->setId(69)
+$user->setId(1)
      ->setEmail("user@e.mail")
      ->setPwd("toshdkfhsdfhlekqgj")
      ->setPhoto("null")
@@ -27,7 +27,7 @@ $hasTheCredentials = ($credsObj->hasAdminCredentials("Bearer " . $secondToken)) 
 print("<br>Second : " . $hasTheCredentials);
 
 print_r(
-    AdminManager::getUserList("Bearer " . $token, "217024", 1)
+    AdminManager::getUserList("Bearer " . $token, "", 0)
 );
 
 print('<br><br>');

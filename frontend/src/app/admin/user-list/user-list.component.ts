@@ -8,24 +8,26 @@ import { User } from '../user';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit{
-  @Input() userList! : Observable<User[]>;
+  @Input() userList! : User[];
   @Output() fetchUserQuestions : EventEmitter<number> = new EventEmitter();
   
-  @Input() page! : number;
-  @Output() changePage : EventEmitter<number> = new EventEmitter();
+  @Output() getMoreUsers : EventEmitter<number> = new EventEmitter();
 
-  ngOnInit() : void {
+  ngOnInit() : void {}
 
-  }
+  /**
+   * this function extracts the searches of a user
+   * @param event unused
+   * @param user the user from which to extract the searches
+   */
   onGetUserSearches(event : any, user : number | undefined) : void{
     this.fetchUserQuestions.emit(user);
   }
 
-  onPreviousPage() {
-    this.page--;
-  }
-
-  onNextPage() {
-    this.page++;
+  /**
+   * This function fetches more users to display
+   */
+  onGetNext() {
+    this.getMoreUsers.emit(this.userList.length);
   }
 }

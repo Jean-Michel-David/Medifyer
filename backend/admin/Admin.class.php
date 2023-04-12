@@ -6,11 +6,11 @@ class AdminManager {
      * this function returns the users matching the search string
      * @param $creds the string containing the credentials
      * @param string $parameters the search string
-     * @param int $page the page of users
+     * @param int $userCount the number of users to skip
      * @param int $usersByPage optionnal parameter : number of users to display
      * @return array|false array if there is no problem, false if something went wrong
      */
-    public static function getUserList($creds, string $parameters, int $page, int $usersByPage = 10) {
+    public static function getUserList($creds, string $parameters, int $userCount, int $usersByPage = 10) {
         //Verify credentials
         $credentials = new Credentials();
         //if (!$credentials->hasAdminCredentials($creds))
@@ -32,7 +32,7 @@ class AdminManager {
         $statement = $db->connect()->prepare($sqlQuery);
 
         $statement->bindValue('searchString','%' . $parameters . '%');
-        $statement->bindValue('startUser', ($page - 1) * $usersByPage, PDO::PARAM_INT);
+        $statement->bindValue('startUser', $userCount, PDO::PARAM_INT);
         $statement->bindValue('numberOfUsers', $usersByPage, PDO::PARAM_INT);
 
         $statement->execute();
