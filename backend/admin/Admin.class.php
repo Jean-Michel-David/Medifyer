@@ -2,6 +2,14 @@
 require_once(dirname(__FILE__) . '/../credentials.php');
 
 class AdminManager {
+    /**
+     * this function returns the users matching the search string
+     * @param $creds the string containing the credentials
+     * @param string $parameters the search string
+     * @param int $page the page of users
+     * @param int $usersByPage optionnal parameter : number of users to display
+     * @return array|false array if there is no problem, false if something went wrong
+     */
     public static function getUserList($creds, string $parameters, int $page, int $usersByPage = 10) {
         //Verify credentials
         $credentials = new Credentials();
@@ -35,6 +43,11 @@ class AdminManager {
         return $users;
     }
 
+    /**
+     * @param $creds the string containing the credentials
+     * @param string $userId the id of the user from which to select the researches
+     * @return array|false array if there is no problem, false if something went wrong
+     */
     public static function getUserSearches($creds, string $userId) {
         //Verify credentials
         $credentials = new Credentials();
@@ -60,4 +73,18 @@ class AdminManager {
 
         return $recherches;
     }
+
+    public static function getInfobulles($creds) {
+        //Verify credentials
+        $credentials = new Credentials();
+        //if (!$credentials->hasAdminCredentials($creds))
+        //    return false;
+
+        //include class dbConnection (PDO connection to the database)
+        require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+        $db = new DBConnection();
+
+
+    }
+
 }
