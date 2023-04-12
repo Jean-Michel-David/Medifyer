@@ -1,42 +1,59 @@
-<form #userForm="ngForm">
+<form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
   <input
     type="text"
     id="lastname"
     placeholder="Nom"
-    [(ngModel)]="newUser.lastname"
-    [ngModelOptions]="{standalone: true}"
-    #lastname="ngModel"
-    required
+    formControlName="lastname"
   >
   <br>
   <div
-    *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)"
+    *ngIf="submitted && f['lastname'].invalid && (f['lastname'].dirty || f['lastname'].touched)"
   >
     <div
-      *ngIf="lastname.errors?.['required']"
+      *ngIf="f['lastname'].errors?.['required']"
       class="input_error"
     >
       Veuillez entrer votre nom
     </div>
-
+    <div
+      *ngIf="f['lastname'].errors?.['minLength']"
+      class="input_error"
+    >
+      Votre nom doit faire plus de 2 caractères
+    </div>
+    <div
+      *ngIf="f['lastname'].errors?.['maxLength']"
+      class="input_error"
+    >
+      Votre nom ne peut pas dépasser 50 caractères
+    </div>
   </div>
   <input
     type="text"
     id="firstname"
     placeholder="Prénom"
-    [(ngModel)]="newUser.firstname"
-    [ngModelOptions]="{standalone: true}"
-    #firstname="ngModel"
-    required
+    formControlName="firstname"
   >
   <div
-    *ngIf="firstname.invalid && (lastname.dirty || lastname.touched)"
+    *ngIf="submitted && f['firstname'].invalid && (f['firstname'].dirty || f['firstname'].touched)"
   >
     <div
-      *ngIf="firstname.errors?.['required']"
+      *ngIf="f['firstname'].errors?.['required']"
       class="input_error"
     >
       Veuillez entrer votre prénom
+    </div>
+    <div
+      *ngIf="f['firstname'].errors?.['minLength']"
+      class="input_error"
+    >
+      Votre prénom doit faire plus de 2 caractères
+    </div>
+    <div
+      *ngIf="f['firstname'].errors?.['maxLength']"
+      class="input_error"
+    >
+      Votre prénom ne peut pas dépasser 50 caractères
     </div>
   </div>
   <br>
@@ -44,20 +61,23 @@
     type="email"
     id="email"
     placeholder="Adresse Mail"
-    [(ngModel)]="newUser.email"
-    [ngModelOptions]="{standalone: true}"
-    #email="ngModel"
-    required
-    
+    formControlName="email"
+
   >
   <div
-    *ngIf="email.invalid && (email.dirty ||email.touched)"
+    *ngIf="submitted && f['email'].invalid && (f['email'].dirty ||f['email'].touched)"
   >
     <div
-      *ngIf="email.errors?.['required']"
+      *ngIf="f['email'].errors?.['required']"
       class="input_error"
     >
       Veuillez entrer votre adresse mail
+    </div>
+    <div
+      *ngIf="f['email'].errors?.['pattern']"
+      class="input_error"
+    >
+      Veuillez entrer une adresse mail de la Helha
     </div>
   </div>
   <br>
@@ -65,20 +85,22 @@
     type="password"
     id="pwd"
     placeholder="Mot de passe"
-    [(ngModel)]="newUser.pwd"
-    [ngModelOptions]="{standalone: true}"
-    #pwd="ngModel"
-    required
-
+    formControlName="pwd"
   >
   <div
-    *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"
+    *ngIf="submitted && f['pwd'].invalid && (f['pwd'].dirty || f['pwd'].touched)"
   >
     <div
-      *ngIf="pwd.errors?.['required']"
+      *ngIf="f['pwd'].errors?.['required']"
       class="input_error"
     >
       Veuillez entrer votre mot de passe
+    </div>
+    <div
+      *ngIf="f['pwd'].errors?.['minLength']"
+      class="input_error"
+    >
+      Votre mot de passe est trop court (minimum 9 caractères)
     </div>
   </div>
   <br>
@@ -86,33 +108,32 @@
     type="password"
     id ="cpwd"
     placeholder="Confirmer mot de passe"
-    [(ngModel)]="newUser.cpwd"
-    [ngModelOptions]="{standalone: true}"
-    #cpwd="ngModel"
-    required
+    formControlName="cpwd"
   >
   <br>
   <div
-    *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)"
+    *ngIf="submitted && f['cpwd'].invalid && (f['cpwd'].dirty || f['cpwd'].touched)"
   >
     <div
-      *ngIf="cpwd.errors?.['required']"
+      *ngIf="f['cpwd'].errors?.['required']"
       class="input_error"
     >
       Veuillez entrer votre confirmation de mot de passe
+    </div>
+    <div
+      *ngIf="f['cpwd'].errors?.['minLength']"
+    >
+      La confirmation de mot de passe est trop courte (minimum 9 caractères)
+    </div>
+    <div
+      *ngIf="f['cpwd'].errors?.['matching']"
+    >
+      Les mots de passes ne correspondent pas
     </div>
   </div>
   <button
     type="submit"
     (click)="addNewUser()"
-    [disabled]=
-    "
-    !newUser.lastname &&
-    !newUser.firstname &&
-    !newUser.email &&
-    !newUser.pwd &&
-    !newUser.cpwd
-    "
   >
     S'incrire
   </button>

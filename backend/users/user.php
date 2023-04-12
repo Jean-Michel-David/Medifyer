@@ -10,7 +10,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 
 $credentials = new Credentials();
-$userManager = new UserManager($db);
+$db = new DBConnection();
+$cnx = $db->connect();
+$userManager = new UserManager($cnx);
 $regex = '/la[0-9]{6}@student\.helha\.be/';
 $pwdhashed = '';
 $options = [
