@@ -9,7 +9,7 @@ class QuestionManager{
         $paramsInsert = array();
         //$credsObj = new Credentials();
 
-        if ($question->getId() > 0) {
+        if ($question->getId() > 0) {   //si la question est déjà présente dans la db
             $sql="UPDATE recherches SET `question_rech`=:question_rech,`population_rech`=:population_rech,`traitement_rech`=:traitement_rech,`resultat_rech`=:resultat_rech,
             `public_rech`=:public_rech,`commentaire_rech`=:commentaire_rech 
             WHERE recherche_id=:recherche_id;
@@ -27,7 +27,7 @@ class QuestionManager{
 
             $paramUpdate = array('recherche_id' => $question->getId(),);
             
-          } else {
+          } else { //si c'est une nouvelle question
               $sql="INSERT INTO recherches (question_rech,population_rech,traitement_rech,resultat_rech,public_rech,commentaire_rech,user_id) 
               VALUES (:question_rech,:population_rech,:traitement_rech,:resultat_rech,:public_rech,:commentaire_rech,:user_id);
               
@@ -40,14 +40,15 @@ class QuestionManager{
                
                SET @last_id_in_table = LAST_INSERT_ID();
                
-               INSERT INTO equation(`relationsPopulation`, `relationsTraitement`, `relationsResultat`, `terme_id`)
-                VALUES (:relationsPopulation,:relationsTraitement,:relationsResultat,@last_id_in_table);";       
+               INSERT INTO equation(relationsPopulation, relationsTraitement, relationsResultat, terme_id)
+                VALUES (:relationsPopulation,:relationsTraitement,:relationsResultat,@last_id_in_table);";
+                
           }
         try{
             $insert = $con->prepare($sql);
             
             $paramsInsert = array (
-            'question_rech' => json_encode($question->getQuestion()) ,
+            'question_rech' => json_encode($question->getQuestion()),
             'population_rech' => json_encode($question->getPatient_Pop_Path()),
             'traitement_rech' => json_encode($question->getIntervention_Traitement()),
             'resultat_rech' => json_encode($question->getRésultats()),
@@ -71,17 +72,10 @@ class QuestionManager{
             );
 
             $params = array_merge($paramUpdate,$paramsInsert);
-            $query = $insert->execute($params); //return true si le query a bien été exécuté
-            
-            if($query == true && ($question->getId() < 0)){     
-                $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
-                $insert = $con->prepare($sql);
-                $params = array ('user_id' => 1); //json_encode($credsObj->extractUserId($authorization))
-                $insert->execute($params);
-                $result = $insert->fetch(PDO::FETCH_ASSOC);
-                $question ->setId($result["recherche_id"]);
-            }
+            $insert->execute($params); //return true si le query a bien été exécuté
             $insert->closeCursor();
+            $this->insertCoWorkers($con,$question);
+            
             echo json_encode($question);
             
         }catch(PDOException $e){
@@ -90,4 +84,43 @@ class QuestionManager{
             $insert->closeCursor();
         }
     }
+
+
+
+    function insertCoWorkers($con, $question) {
+        if($question->getId() < 0){
+            //si c'était une nouvelle question alors on récupère son id et on le met dans l'obj question
+            $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
+            $insert = $con->prepare($sql);
+            $params = array ('user_id' => 1); //json_encode($credsObj->extractUserId($authorization))
+            $insert->execute($params);
+            $result = $insert->fetch(PDO::FETCH_ASSOC);
+            $question ->setId($result["recherche_id"]);
+            
+            //on vient ensuite insérer les CoWorkers en db
+            $id_array = $question->getCoWorkers();
+            foreach ($id_array as $id) {
+                $sql = ("INSERT INTO aaccesa(recherche_id,user_id) VALUES(:recherche_id,:CoWorkers)");
+                $params = array ('recherche_id' => $question->getId(),'CoWorkers' => $id);
+                $insert = $con->prepare($sql);
+                $insert->execute($params);
+            }
+        } else {
+            $sql = "SELECT user_id FROM aaccesa WHERE recherche_id = :recherche_id";
+            $params = array ('recherche_id' => $question->getId());
+            $insert = $con->prepare($sql);
+            $insert->execute($params);
+            
+            $result = $insert->fetchAll(PDO::FETCH_COLUMN);
+            
+            $toInsert = array_diff($question->getCoWorkers(), $result);
+            foreach($toInsert as $id) {
+                $sql = ("INSERT INTO aaccesa(recherche_id,user_id) VALUES(:recherche_id,:CoWorkers)");
+                $params = array ('recherche_id' => $question->getId(),'CoWorkers' => $id);
+                $insert = $con->prepare($sql);
+                $insert->execute($params);
+            }
+        }
+    }
+    
 }

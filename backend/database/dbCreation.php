@@ -64,6 +64,13 @@ $dbCreatingString = "CREATE TABLE Users(
         Id_Info INT AUTO_INCREMENT,
         libelle_info VARCHAR(40),
         texte_info LONGTEXT,
-        PRIMARY KEY(Id_Infobulles)
+        PRIMARY KEY(Id_Info)
     );
-    ";
+    
+    /*Insert initiaux*/
+    INSERT INTO `infos` (`Id_Info`, `libelle_info`, `texte_info`) 
+    VALUES  (NULL, 'infobulle_questionDeRecherche', 'Quelle est la question de recherche ?\r\nExemple :'), 
+            (NULL, 'infobulle_PatientPopPath', 'Qui est concerné ? Quelle pathologie ? Quelle population ?\r\nExemple : '), 
+            (NULL, 'infobulle_interventionTraitement', 'Quel est le traitement appliqué ?\r\nExemple : '), 
+            (NULL, 'infobulle_resultat', 'Que va t\'on mesurer ? (douleur, périmètre de marche,...)\r\nExemple : ');
+";

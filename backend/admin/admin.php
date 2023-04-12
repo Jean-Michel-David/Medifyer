@@ -1,35 +1,56 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Methods: GET, POST');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 
 require_once("./Admin.class.php");
 $headers = getallheaders();
-if (empty($headers['Authorization'])) {
-    http_response_code(401);
-    exit;
-}
+//if (empty($headers['Authorization'] | null)) {
+//    http_response_code(401);
+//    exit();
+//}
+if($_SERVER['REQUEST_METHOD'] == "GET") {
+    /**
+     * Getting the list of users
+     */
+    if (isset($_GET['getUserList']) && !empty($_GET['page'])) {
+        $userList = AdminManager::getUserList(/*$headers['Authorization']*/null, $_GET['getUserList'], $_GET['page']);
+        if (!$userList) {
+            http_response_code(400);
+            exit();
+        }
 
-/**
- * Getting the list of users
- */
-if (isset($_GET['getUserList'], $_GET['page'])) {
-    $userList = AdminManager::getUserList($headers['Authorization'], $_GET['getUserList'], $_GET['page']);
-    if (!$userList) {
-        http_response_code(400);
-        exit;
+        echo json_encode($userList);
+        exit();
     }
 
-    echo json_encode($userList);
-    exit;
+    /**
+     *  Getting the list of search equations of a particular user
+     */
+    if (!empty($_GET['getUserSearches'])) {
+        $searches = AdminManager::getUserSearches(/*$headers['Authorization']*/null, $_GET['getUserSearches']);
+
+        if (!$searches) {
+            http_response_code(400);
+            exit();
+        }
+
+        echo json_encode($searches);
+        exit();
+    }
+
+    /**
+     *  Getting the infobulles
+     */
+    if (isset($_GET['getInfoBulles'])) {
+
+    }
 }
 
-// Getting the list of search equations of a particular user
-if (!empty($_GET['getUserSearches'])) {
-    echo json_encode([
-            ['id' => '1', 'question' => 'Quel est l’impact de la thérapie par la réalité virtuelle sur la qualité de vie des patients présentant des vertiges ou des troubles vestibulaires ?']
-        , ['id' => '2', 'question' => 'Velit culpa dolor velit magna cupidatat qui pariatur pariatur pariatur aliqua deserunt aliqua.']
-        , ['id' => '3', 'question' => 'Est commodo eiusmod duis est sint enim enim veniam minim.']
-    ]);
-    return;
+elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+    /**
+     * Setting an infobulle
+     */
+
 }

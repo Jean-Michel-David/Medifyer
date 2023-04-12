@@ -1,12 +1,12 @@
 <?php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-require_once('./vendor/autoload.php');
-require_once('./env.php');
+require_once(dirname(__FILE__) . '/./vendor/autoload.php');
+require_once(dirname(__FILE__) . '/./env.php');
 global $verySecretKey;
 global $serverName;
 
-require_once('./users/User.class.php');
+require_once(dirname(__FILE__) . '/./users/User.class.php');
 
 if (empty($verySecretKey))
     exit;
@@ -40,7 +40,7 @@ class Credentials {
         if ($userId == null)
             return false;
 
-        require_once('./database/dbConnection.php');
+        require_once(dirname(__FILE__) . '/./database/dbConnection.php');
         $dbConn = new dbConnection();
         
         $sqlQuery = "SELECT admin_user FROM users WHERE user_id = :userId";

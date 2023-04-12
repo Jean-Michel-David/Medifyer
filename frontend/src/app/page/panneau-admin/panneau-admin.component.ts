@@ -27,6 +27,7 @@ export class PanneauAdminComponent implements OnInit{
    */
   searchUser(search : string) : void {
     this.userList = this.service.getUserList(this.page, search);
+    this.page = 1;
   }
 
   /**
@@ -44,7 +45,14 @@ export class PanneauAdminComponent implements OnInit{
    * @param $page the new page
    * @TODO : Modify the page system so it's nice looking, and in a style like "1 ... 4 <5> 6 ... 8"
    */
-  changePage($page : number) {
+  changePage($page : number) : void {
 
+  }
+
+  /**
+   * This function returns to the selection of the user
+   */
+  retour() : void {
+    this.showUserList = true;
   }
 }

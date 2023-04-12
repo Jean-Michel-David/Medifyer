@@ -1,5 +1,33 @@
 :host{
-    width: 70%;
-    min-width: 300px;
-    margin-top: 20px;
-  }
+  width: 70%;
+  min-width: 300px;
+  margin-top: 20px;
+}
+
+li{
+  cursor:grab;
+}
+
+label,h5{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+label svg{
+  height: 32px;
+  width: 32px;
+  margin-right: 10px;
+  opacity: 60%;
+}
+
+.column{
+  width: 150px;
+  margin: 5px;
+  min-height: 100px;
+}
+
+.list-group-item{
+  text-align: center;
+  overflow-wrap: break-word;
+}
