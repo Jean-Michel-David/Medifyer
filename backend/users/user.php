@@ -1,9 +1,9 @@
 <?php
 
-require('User.class.php');
-require('../database/dbConnection.php');
-require('UserManager.php');
-require ('../credentials.php');
+require(dirname(__FILE__) . '/./User.class.php');
+require(dirname(__FILE__) . '../database/dbConnection.php');
+require(dirname(__FILE__) . '/./UserManager.php');
+require (dirname(__FILE__) . '../credentials.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
