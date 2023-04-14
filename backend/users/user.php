@@ -9,6 +9,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 
+$user = new User();
 $credentials = new Credentials();
 $db = new DBConnection();
 $cnx = $db->connect();
@@ -19,21 +20,25 @@ $options = [
   'cost' => 12,
 ];
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  $json_obj = json_decode(file_get_contents('php://input'), true);
+  $userManager->getUser($json_obj['email']);
+  return json_encode($user);
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json_obj = json_decode(file_get_contents('php://input'), true);
-  $user = new User();
   $user->setId($json_obj['id']);
-  if ($json_obj['firstname'] == null && strlen($json_obj['firstname'])>50) {
+  if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {
     http_response_code(400);
     "Prénom Invalide ! ";
     exit;
   }
-  if ($json_obj['lastname'] == null & strlen($json_obj['lastname'])>50) {
+  if ($json_obj['lastname'] == null || strlen($json_obj['lastname'])>50) {
     http_response_code(400);
     echo "Nom Invalide ! ";
     exit;
   }
-  if ($json_obj['email'] == null && strlen($json_obj['email'])>50 && !preg_match($regex, $json_obj['email'])) {
+  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
     http_response_code(400);
     echo "Email Invalide !";
     exit;
@@ -50,6 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setPwd($pwdhashed);
   $user->setPhoto($json_obj['photo']);
   $userManager->saveUser($user);
-  $credentials->createToken($user);
   echo json_encode($user);
+  return $credentials->createToken($user);
 }
