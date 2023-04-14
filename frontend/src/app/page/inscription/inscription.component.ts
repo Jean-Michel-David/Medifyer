@@ -75,9 +75,6 @@ export class InscriptionComponent implements OnInit{
 
   onSubmit() {
     this.submitted = true;
-    if (this.inscriptionForm.invalid) {
-      return;
-    }
   }
 }
 

@@ -1,1 +1,54 @@
-<p>connexion works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input
+    type="text"
+    name="email"
+    id="email"
+    placeholder="Adresse mail"
+    formControlName="email"
+  >
+  <div
+    *ngIf="submitted && f['email'].invalid && (f['email'].dirty || f['email'].touched)"
+  >
+    <div
+      *ngIf="f['email'].errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entrer une adresse mail
+    </div>
+    <div
+      *ngIf="f['email'].errors?.['pattern']"
+      class="input_error"
+    >
+      Veuillez entrer une adresse mail de la Helha
+    </div>
+  </div>
+  <input
+    type="password"
+    name="pwd"
+    id="pwd"
+    placeholder="Mot de passe"
+    formControlName="pwd"
+  >
+  <div
+    *ngIf="submitted && f['pwd'].invalid && (f['pwd'].dirty || f['pwd'].touched)"
+  >
+    <div
+      *ngIf="f['pwd'].errors?.['required']"
+      class="input_error"
+    >
+      Veuillez entre votre mot de passe
+    </div>
+    <div
+      *ngIf="f['pwd'].errors?.['minLength']"
+      class="input_error"
+    >
+      Votre mot de passe est trop court
+    </div>
+  </div>
+  <button
+    type="submit"
+    (click)="login()"
+  >
+    Se connecter
+  </button>
+</form>
