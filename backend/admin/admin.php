@@ -16,11 +16,19 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
     if (isset($_GET['getUserList']) && isset($_GET['userCount'])) {
         $userList = AdminManager::getUserList(/*$headers['Authorization']*/null, $_GET['getUserList'], $_GET['userCount']);
 
-        if (!$userList) {
+        //Error, bad request
+        if (gettype($userList) == "boolean") {
             http_response_code(400);
             exit();
         }
 
+        //HTTP RESPONSE no content
+        if (gettype($userList) == "array" && !$userList) {
+            http_response_code(204);
+        }
+
+        //Success
+        http_response_code(200);
         echo json_encode($userList);
         exit();
     }
@@ -36,22 +44,18 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
             exit();
         }
 
+        http_response_code(200);
         echo json_encode($searches);
         exit();
-    }
-
-    /**
-     *  Getting the infobulles
-     */
-    if (isset($_GET['getInfoBulles'])) {
-
     }
 }
 
 elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     /**
-     * Setting an infobulle
+     * Setting an info
      */
+    if (!empty($_POST['infoLabel']) && !empty($_POST['infoText'])) {
 
+    }
 }

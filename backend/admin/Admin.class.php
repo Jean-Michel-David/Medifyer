@@ -44,6 +44,7 @@ class AdminManager {
     }
 
     /**
+     * This function will fetch the searches of the desired user
      * @param $creds the string containing the credentials
      * @param string $userId the id of the user from which to select the researches
      * @return array|false array if there is no problem, false if something went wrong
@@ -74,7 +75,14 @@ class AdminManager {
         return $recherches;
     }
 
-    public static function getInfobulles($creds) {
+    /**
+     * This function will update an info
+     * @param $creds The credentials of the admin
+     * @param string $label The label of the info to change
+     * @param string $text The new text for the info
+     * @return int The number of affected rows (1 if it worked, 0 if it didn't) -Can be treated as boolean-
+     */
+    public static function setInfobulles($creds, string $label, string $text) {
         //Verify credentials
         $credentials = new Credentials();
         //if (!$credentials->hasAdminCredentials($creds))
@@ -84,7 +92,21 @@ class AdminManager {
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
 
+        //Actual query
+        $sqlQuery = "UPDATE `infos` 
+                     SET `texte_info` = :newText 
+                     WHERE libelle_info = :libelle";
 
+        $statement = $db->connect()->prepare($sqlQuery);
+
+        $statement->bindValue('newText',$text);
+        $statement->bindValue('libelle', $label);
+
+        $statement->execute();
+
+        $count = $statement->rowCount();
+        $db->disconnect();
+        return $count;
     }
 
 }

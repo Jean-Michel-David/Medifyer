@@ -15,9 +15,12 @@ export class PanneauAdminComponent implements OnInit{
   showUserList : boolean = true;
   userCount = 0;
   searchString! : string;
+  showGetMore! : boolean;
 
   constructor(private service : AdminGetRechercheService) {}
   ngOnInit(): void {
+    this.showGetMore = true;
+
     //Initial user list to display
     this.service.getUserList(0).subscribe((users) => {
       this.userList = users;
@@ -30,6 +33,7 @@ export class PanneauAdminComponent implements OnInit{
    * @param search String to narrow the selection
    */
   searchUser(search : string) : void {
+    this.showGetMore = true;
     this.userCount = 0;
     this.searchString = search;
 
@@ -43,6 +47,7 @@ export class PanneauAdminComponent implements OnInit{
    * @param user Selected user
    */
   fetchQuestions(user : number) : void{
+    console.log('fetching things');
     this.showUserList = false;
     console.log('fetching questions for user with ID : ' + user);    
     this.userSearches = this.service.getUserSearches(user);
@@ -50,12 +55,16 @@ export class PanneauAdminComponent implements OnInit{
 
   /**
    * This function changes the page for the users browsing
-   * @param $page the new page
+   * @param $event the number of already fetched users
    * @TODO : Modify the page system so it's nice looking, and in a style like "1 ... 4 <5> 6 ... 8"
    */
   getMoreUsers($event : number) : void {
+    let oldCount = $event;
+
     this.service.getUserList($event, this.searchString).subscribe((users) => {
       this.userList = [...this.userList, ...users];
+      if (oldCount == this.userList.length)
+        this.showGetMore = false;
     });    
   }
 

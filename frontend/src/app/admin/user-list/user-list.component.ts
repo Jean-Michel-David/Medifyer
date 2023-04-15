@@ -9,8 +9,9 @@ import { User } from '../user';
 })
 export class UserListComponent implements OnInit{
   @Input() userList! : User[];
+  @Input() showGetMore! : boolean;
+
   @Output() fetchUserQuestions : EventEmitter<number> = new EventEmitter();
-  
   @Output() getMoreUsers : EventEmitter<number> = new EventEmitter();
 
   ngOnInit() : void {}

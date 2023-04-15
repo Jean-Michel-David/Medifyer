@@ -62,7 +62,7 @@ $dbCreatingString = "CREATE TABLE Users(
 
     CREATE TABLE Infos(
         Id_Info INT AUTO_INCREMENT,
-        libelle_info VARCHAR(40),
+        libelle_info VARCHAR(40) NOT NULL UNIQUE,
         texte_info LONGTEXT,
         PRIMARY KEY(Id_Info)
     );

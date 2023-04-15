@@ -3,17 +3,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QuestionShort } from '../recherche/question-short';
 import { User } from '../admin/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGetRechercheService {
-  private backendUrl = "http://localhost/Medifyer/backend/admin/admin.php";
+  private backendUrl = environment.backendUrl + "/admin/admin.php";
 
   constructor(private http : HttpClient) {}
 
   /** This function fetches a list of users for the admin.
-   *  @param userCount The userCount (first userCount of users, second userCount of users,...)
+   *  @param userCount the number of users already fetched
    * @param search The string used to narrow the list (typically name or matricule)
    * @returns The list of users
    */
@@ -32,7 +33,7 @@ export class AdminGetRechercheService {
   }
 
   /**
-   * This function fetches the results of
+   * This function fetches the searches of selected user
    * @param user The ID of the selected user
    * @returns The list of short questions (only ID and question) - all the questions of the selected user
    */

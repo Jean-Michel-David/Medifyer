@@ -5,12 +5,11 @@
 </button>
 
 
-<nav aria-label="Page navigation" style="margin-top: 10px;">
+<nav *ngIf="showGetMore" aria-label="Page navigation" style="margin-top: 10px;">
     <ul class="pagination justify-content-center">
         <li class="page-item">
-            <button class="page-link" (click)="onGetNext()">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
+            <button class="page-link" style="height: 40px; width: 40px; padding: 5px;" (click)="onGetNext()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
             </button>
         </li>
     </ul>
