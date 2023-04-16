@@ -1,13 +1,14 @@
 <?php
+require_once(dirname(__FILE__) . '/../credentials.php');
 class QuestionManager{
 /**
-  @Description insert a question into the db and echo the new question's id.
+  @Description insert a question into the db
    If the id of the question is already set we update the db.
   **/
     public function saveQuestion(Question $question,$con,$authorization){
         $paramUpdate = array();
         $paramsInsert = array();
-        //$credsObj = new Credentials();
+        $credsObj = new Credentials();
 
         if ($question->getId() > 0) {   //si la question est déjà présente dans la db
             $sql="UPDATE recherches SET `question_rech`=:question_rech,`population_rech`=:population_rech,`traitement_rech`=:traitement_rech,`resultat_rech`=:resultat_rech,
@@ -48,33 +49,33 @@ class QuestionManager{
             $insert = $con->prepare($sql);
             
             $paramsInsert = array (
-            'question_rech' => json_encode($question->getQuestion()),
-            'population_rech' => json_encode($question->getPatient_Pop_Path()),
-            'traitement_rech' => json_encode($question->getIntervention_Traitement()),
-            'resultat_rech' => json_encode($question->getRésultats()),
-            'public_rech' => json_encode($question->getAcces()),
-            'commentaire_rech' => json_encode($question->getCommentaires()),
-            'user_id' => 1,//json_encode($credsObj->extractUserId($authorization))
+            'question_rech' => json_encode($question->getQuestion(),JSON_UNESCAPED_UNICODE),
+            'population_rech' => json_encode($question->getPatient_Pop_Path(),JSON_UNESCAPED_UNICODE),
+            'traitement_rech' => json_encode($question->getIntervention_Traitement(),JSON_UNESCAPED_UNICODE),
+            'resultat_rech' => json_encode($question->getRésultats(),JSON_UNESCAPED_UNICODE),
+            'public_rech' => json_encode($question->getAcces(),JSON_UNESCAPED_UNICODE),
+            'commentaire_rech' => json_encode($question->getCommentaires(),JSON_UNESCAPED_UNICODE),
+            'user_id' => 1/*$credsObj->extractUserId($authorization)*/,
 
-            'termesFrancaisPopulation' => json_encode($question->getPatient_Language_Naturel()),
-            'termesFrancaisResultat' => json_encode($question->getRésultats_Language_Naturel()),
-            'termesFrancaisTraitement' => json_encode($question->getIntervention_Language_Naturel()),
-            'termesMeshPopulation' => json_encode($question->getPatient_Terme_Mesh()),
-            'termesMeshResultat' => json_encode($question->getRésultats_Terme_Mesh()),
-            'termesMeshTraitement' => json_encode($question->getIntervention_Terme_Mesh()),
-            'synonymesPopulation' => json_encode($question->getPatient_Synonyme()),
-            'synonymesResultat' => json_encode($question->getRésultats_Synonyme()),
-            'synonymesTraitement' => json_encode($question->getIntervention_Synonyme()),
+            'termesFrancaisPopulation' => json_encode($question->getPatient_Language_Naturel(),JSON_UNESCAPED_UNICODE),
+            'termesFrancaisResultat' => json_encode($question->getRésultats_Language_Naturel(),JSON_UNESCAPED_UNICODE),
+            'termesFrancaisTraitement' => json_encode($question->getIntervention_Language_Naturel(),JSON_UNESCAPED_UNICODE),
+            'termesMeshPopulation' => json_encode($question->getPatient_Terme_Mesh(),JSON_UNESCAPED_UNICODE),
+            'termesMeshResultat' => json_encode($question->getRésultats_Terme_Mesh(),JSON_UNESCAPED_UNICODE),
+            'termesMeshTraitement' => json_encode($question->getIntervention_Terme_Mesh(),JSON_UNESCAPED_UNICODE),
+            'synonymesPopulation' => json_encode($question->getPatient_Synonyme(),JSON_UNESCAPED_UNICODE),
+            'synonymesResultat' => json_encode($question->getRésultats_Synonyme(),JSON_UNESCAPED_UNICODE),
+            'synonymesTraitement' => json_encode($question->getIntervention_Synonyme(),JSON_UNESCAPED_UNICODE),
 
             'relationsPopulation' => json_encode($question->getEquations_PatientPopPath()) ,
-            'relationsTraitement' => json_encode($question->getEquations_Intervention()),
-            'relationsResultat' => json_encode($question->getEquations_Resultats()),
+            'relationsTraitement' => json_encode($question->getEquations_Intervention(),JSON_UNESCAPED_UNICODE),
+            'relationsResultat' => json_encode($question->getEquations_Resultats(),JSON_UNESCAPED_UNICODE),
             );
 
             $params = array_merge($paramUpdate,$paramsInsert);
             $insert->execute($params); //return true si le query a bien été exécuté
             $insert->closeCursor();
-            $this->insertCoWorkers($con,$question);
+            $this->insertCoWorkers($con,$question,$authorization);
             
             echo json_encode($question);
             
@@ -86,13 +87,15 @@ class QuestionManager{
     }
 
 
-
-    function insertCoWorkers($con, $question) {
+/**
+  @Description set the new question's id. And set the coworkers for the question
+  **/
+    function insertCoWorkers($con, $question,$authorization) {
         if($question->getId() < 0){
             //si c'était une nouvelle question alors on récupère son id et on le met dans l'obj question
             $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
             $insert = $con->prepare($sql);
-            $params = array ('user_id' => 1); //json_encode($credsObj->extractUserId($authorization))
+        $params = array ('user_id' => 1/*$credsObj->extractUserId($authorization)*/); 
             $insert->execute($params);
             $result = $insert->fetch(PDO::FETCH_ASSOC);
             $question ->setId($result["recherche_id"]);
@@ -106,6 +109,7 @@ class QuestionManager{
                 $insert->execute($params);
             }
         } else {
+            //si la question existe déjà on regarde la différence entre les nouveaux et anciens users et on les rajoute
             $sql = "SELECT user_id FROM aaccesa WHERE recherche_id = :recherche_id";
             $params = array ('recherche_id' => $question->getId());
             $insert = $con->prepare($sql);
@@ -122,5 +126,34 @@ class QuestionManager{
             }
         }
     }
+/**
+  @Description return the questions of the connected user
+  **/
+  function getUserSearches($con, $authorization) {
+    $credsObj = new Credentials();
+    try {
+        $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+                FROM `recherches` 
+                WHERE user_id = :userId";
+
+        $statement = $con->prepare($sqlQuery);
+
+        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization)*/);
+        $statement->execute();
+
+        $recherches = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // décoder les données JSON
+        foreach ($recherches as &$recherche) {
+            $recherche['question'] = json_decode($recherche['question']);
+        }
+
+        return $recherches;
+    } catch(PDOException $e){
+        die($e);
+    } finally{
+        $statement->closeCursor();
+    }
+}
     
 }

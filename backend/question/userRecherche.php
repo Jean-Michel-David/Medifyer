@@ -3,13 +3,14 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 
-require('../database/dbConnection.php');
-require('Question.class.php');
-require('QuestionManager.php');
-//require('../credentials.php');
+require_once('../database/dbConnection.php');
+require_once('Question.class.php');
+require_once('QuestionManager.php');
+
 $dbConnection = new DBConnection();
 $con = $dbConnection->connect();
 $questionManager = new QuestionManager();
+$headers = getallheaders();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $json_obj = json_decode(file_get_contents('php://input'), true);
@@ -36,7 +37,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     ->setEquations_Intervention($json_obj["Equations_Intervention"])
     ->setEquations_Resultats($json_obj["Equations_Resultats"]);
 
-  $headers = apache_request_headers();
-  $questionManager->saveQuestion($question,$con,$headers);//$headers['Authorization']
+
+$questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
+
+} else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+  $recherches = $questionManager->getUserSearches($con,$headers/*['Authorization']*/);
+
+    //Error, bad request
+    if (gettype($recherches) == "boolean") {
+      http_response_code(400);
+      exit();
+  }
+
+  //HTTP RESPONSE no content
+  if (gettype($recherches) == "array" && !$recherches) {
+      http_response_code(204);
+  }
+
+  //Success
+  http_response_code(200);
+  echo json_encode($recherches);
+  exit();
 }
 ?>

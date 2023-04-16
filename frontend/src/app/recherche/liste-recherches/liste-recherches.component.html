@@ -1,8 +1,39 @@
 <!-- Rajouter le nom et prénom de l'utilisateur en haut -->
 
-<button class="list-group-item list-group-item-action"
-*ngFor="let recherche of (userSearches | async)"
-(click)="onDevelopQuestion($event, recherche!.id)">
-<!-- {{recherche?.id}} :  -->
-    {{ recherche?.question }}
-</button>
+<div class="bigDiv container py-4 px-4 rounded">
+<ng-container *ngIf="userSearches; then userSearche; else recherchePerso"></ng-container>
+  <ng-template #userSearche>
+    <div  class="questionDiv list-group-item my-2 rounded-2"
+    *ngFor='let recherche of (userSearches | async)'
+    (click)="onDevelopQuestion($event, recherche!.id)">
+      <div class="row">
+        <div class="col-sm-11">
+          <p class="libelQ my-auto h5">Question de recherche</p>
+          <p class="my-auto">
+            {{ recherche?.question }}
+          </p>
+        </div>
+        <div class="col-sm-1 svgContainer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #recherchePerso>
+    <div  class="questionDiv list-group-item my-2 rounded-2"
+    *ngFor='let recherche of (recherches | async)'
+    (click)="onDevelopQuestion($event, recherche!.id)">
+      <div class="row">
+        <div class="col-sm-11">
+          <p class="libelQ my-auto h5">Question de recherche</p>
+          <p class="my-auto">
+            {{ recherche?.question }}
+          </p>
+        </div>
+        <div class="col-sm-1 svgContainer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
