@@ -15,7 +15,7 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const jwt = localStorage.getItem('authenticationToken');
+    let jwt = localStorage.getItem('authenticationToken');
     
     //If there isn't any jwt stored
     if (jwt === null || jwt.length < 1 || jwt == 'undefined')
@@ -26,6 +26,7 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
       return next.handle(request);
 
     //Adding jwt
+    jwt = 'Bearer ' + jwt;
     const newRequest = request.clone({
       setHeaders: {
         Authorization: jwt

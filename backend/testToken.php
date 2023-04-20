@@ -16,15 +16,15 @@ $user->setId(1)
      ->setAdminStatus(1);
 
 $token = $credsObj->createToken($user);
-$user->setId(1);
+$user->setId(2);
 $secondToken = $credsObj->createToken($user);
-print($secondToken);
+print('<br> First token (admin): ' . $token);
 
 $hasTheCredentials = ($credsObj->hasAdminCredentials("Bearer " . $token)) ? "yes" : "no";
-print("<br>First : " . $hasTheCredentials);
+print("<br>First : " . $hasTheCredentials . "<br>");
 
 $hasTheCredentials = ($credsObj->hasAdminCredentials("Bearer " . $secondToken)) ? "yes" : "no";
-print("<br>Second : " . $hasTheCredentials);
+print("<br>Second : " . $hasTheCredentials. "<br>");
 
 print_r(
     AdminManager::getUserList("Bearer " . $token, "", 0)
