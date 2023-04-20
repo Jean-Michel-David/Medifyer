@@ -1,9 +1,9 @@
 <?php
 
 require(dirname(__FILE__) . '/./User.class.php');
-require(dirname(__FILE__) . '../database/dbConnection.php');
+require(dirname(__FILE__) . '/../database/dbConnection.php');
 require(dirname(__FILE__) . '/./UserManager.php');
-require (dirname(__FILE__) . '../credentials.php');
+require (dirname(__FILE__) . '/../credentials.php');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
@@ -14,7 +14,7 @@ $credentials = new Credentials();
 $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
-$regex = '/la[0-9]{6}@student\.helha\.be/';
+$regex = '/^la[0-9]{6}@student\.helha\.be$/i';
 $pwdhashed = '';
 $options = [
   'cost' => 12,
