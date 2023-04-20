@@ -1,9 +1,10 @@
 <form class="forms" [formGroup]="form">
+    <app-exporter [question]="toQuestion()"></app-exporter>
     <app-form1 [firstPart]="form.controls['firstPart']"></app-form1>
     <button class="btn mt-4" (click)="displayForm2()" *ngIf="!form2Visible">Continuer</button>
     <app-form2 [secondPart]="form.controls['secondPart']" [formGroups]="formGroups"  [groups]="groups" *ngIf="form2Visible"></app-form2>
     <button class="btn mt-4" (click)="displayForm3()"  *ngIf="form2Visible && !form3Visible">Continuer</button>
     <app-form3 [formGlobal]="form" [formGroups]="formGroups"  [groups]="groups" *ngIf="form2Visible && form3Visible"></app-form3>
-    <button class="btn mt-4" (click)="printOperateurs()">Générer</button>
+    <button class="btn mt-4" (click)="toEquation()" *ngIf="form2Visible && form3Visible">Générer</button>
 </form>
 

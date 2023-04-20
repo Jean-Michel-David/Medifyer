@@ -91,64 +91,55 @@ export class FormulairesComponent{
     this.form3Visible = true;
   }
 
-  toOperateurs():Operateurs{
+  toOperateurs(group:FormGroup):Operateurs{
 
     let operateurs:Operateurs = {
-      inclureTous:[],
-      auMoins1:[],
-      exclure:[]
+      inclureTous:(group.controls['includeAll'] as FormArray).controls.map( element => element.value as string),
+      auMoins1:(group.controls['includeOnce'] as FormArray).controls.filter(element => (element as FormArray).length > 0).map( element => element.value as string[]),
+      exclure:(group.controls['includeNone'] as FormArray).controls.map( element => element.value as string)
     };
-
-    var groups:FormGroup[] = [this.thirdPart.controls['patient'],this.thirdPart.controls['intervention'],this.thirdPart.controls['resultats']];
-
-    groups.forEach(group =>{
-      (group.controls['includeAll'] as FormArray).controls.forEach( element => {
-        operateurs.inclureTous.push(element.value as string);
-      });
-
-      (group.controls['includeOnce'] as FormArray).controls.forEach( element => {
-        operateurs.auMoins1.push(element.value as string[])
-      });
-
-      (group.controls['includeNone'] as FormArray).controls.forEach( element => {
-        operateurs.exclure.push(element.value as string);
-      });
-    })
 
     return operateurs;
 
   }
 
-  /*toQuestion():Question{
+  toQuestion():Question{
     var question:Question = {
-      id :-1,
+      id :0,
       acces:1,
-      commentaires:"attention faute d'ortographe",
+      commentaires:"",
       coWorker : [],
-      Question : "test modif",
-      Patient_Pop_Path : "Problèmes d'équilibre",
-      Intervention_Traitement : "Traitement par réalité virtuelle",
-      Résultats : "Amélioration de la qualité de vie",
+      Question : this.form.controls["firstPart"].controls["question"].value ?? "" ,
+      Patient_Pop_Path : this.form.controls["firstPart"].controls["patient"].value ?? "",
+      Intervention_Traitement : this.form.controls["firstPart"].controls["intervention"].value ?? "",
+      Résultats : this.form.controls["firstPart"].controls["resultats"].value ?? "",
   
-      Patient_Language_Naturel : ["Problèmes d'équilibre","Vertiges"],
-      Patient_Terme_Mesh : ["vestibular diseases","Vertigo","dizziness"],
-      Patient_Synonyme : ["Fall"],
+      Patient_Language_Naturel : this.form.controls["secondPart"].controls["patient"].controls["natural"].controls.map(control => control.value as string),
+      Patient_Terme_Mesh :  this.form.controls["secondPart"].controls["patient"].controls["mesh"].controls.map(control => control.value as string),
+      Patient_Synonyme :  this.form.controls["secondPart"].controls["patient"].controls["synonym"].controls.map(control => control.value as string),
   
-      Intervention_Language_Naturel : ["Réalité virtuelle"],
-      Intervention_Terme_Mesh : ["Virtual reality","virtual reality exposure therapy"],
-      Intervention_Synonyme : ["video Game"],
+      Intervention_Language_Naturel :  this.form.controls["secondPart"].controls["intervention"].controls["natural"].controls.map(control => control.value as string),
+      Intervention_Terme_Mesh : this.form.controls["secondPart"].controls["intervention"].controls["mesh"].controls.map(control => control.value as string),
+      Intervention_Synonyme : this.form.controls["secondPart"].controls["intervention"].controls["synonym"].controls.map(control => control.value as string),
   
-      Résultats_Language_Naturel : ["TSOBATSO TEST DE modif"],
-      Résultats_Terme_Mesh : ["quality of live"],
-      Résultats_Synonyme : ["better mobility"],
+      Résultats_Language_Naturel : this.form.controls["secondPart"].controls["resultats"].controls["natural"].controls.map(control => control.value as string),
+      Résultats_Terme_Mesh : this.form.controls["secondPart"].controls["resultats"].controls["mesh"].controls.map(control => control.value as string),
+      Résultats_Synonyme : this.form.controls["secondPart"].controls["resultats"].controls["synonym"].controls.map(control => control.value as string),
   
-      Equations_PatientPopPath :,
-      Equations_Intervention : this.mockOperateurs,
-      Equations_Resultats : this.mockOperateurs
+      Equations_PatientPopPath : this.toOperateurs(this.form.controls['thirdPart'].controls['patient']),
+      Equations_Intervention : this.toOperateurs(this.form.controls['thirdPart'].controls['intervention']),
+      Equations_Resultats : this.toOperateurs(this.form.controls['thirdPart'].controls['resultats'])
     }
-  }*/
 
-  printOperateurs(){
-    console.log(this.toOperateurs())
+    return question;
+  }
+
+  toEquation(){
+    console.log(this.toOperateurs(this.form.controls['thirdPart'].controls['patient']));
+    console.log(this.op.generateEquation(this.toQuestion()));
+  }
+
+  exporter(){
+    
   }
 }
