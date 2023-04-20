@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { Equation } from '../recherche/equation';
 import { Operateurs } from '../recherche/operateurs';
 import { Question } from '../recherche/question';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root'
 })
 export class EquationGeneratorService {
 
-  constructor() { }
+  constructor(private http : HttpClient) { }
 
   /** This function will generate the pubmed ready search equation.
    *  @param question An object of type 'Question' from which the method shall extract the relevant informations
@@ -19,12 +22,43 @@ export class EquationGeneratorService {
       numberOfArticles : 0
     }
 
-    equation.text = this.getEquationBit(question.Equations_PatientPopPath)
-      .concat(" AND ")
-      .concat(this.getEquationBit(question.Equations_Intervention))
-      .concat(" AND ")
-      .concat(this.getEquationBit(question.Equations_Resultats));
+    if (!this.isEmptyOp(question.Equations_PatientPopPath))
+      equation.text = this.getEquationBit(question.Equations_PatientPopPath);
+    
+    if (!this.isEmptyOp(question.Equations_Intervention)) {
+      if (equation.text.length > 0)
+        equation.text += " AND ";
+      equation.text += this.getEquationBit(question.Equations_Intervention);
+    }
+    
+    if (!this.isEmptyOp(question.Equations_Resultats)) {
+      if (equation.text.length > 0)
+        equation.text += " AND ";
+      equation.text += this.getEquationBit(question.Equations_Resultats);
+    }
+
+    let req = this.http.get('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term='
+        + equation.text,
+        {responseType: 'text'}).subscribe(
+          response => {
+            let parser = new DOMParser();
+            let xml = parser.parseFromString(response, 'text/xml');
+            let count:number = parseInt(xml.getElementsByTagName('eSearchResult')[0].getElementsByTagName('Count')[0].innerHTML);
+            
+            equation.numberOfArticles = count;
+            req.unsubscribe();
+        });
+
+    console.log(equation.text);
     return equation;
+  }
+
+  private isEmptyOp(op : Operateurs) : boolean {
+    return (
+      op.auMoins1.length == 0 &&
+      op.exclure.length == 0 &&
+      op.inclureTous.length == 0
+    );
   }
 
   /**
@@ -35,11 +69,11 @@ export class EquationGeneratorService {
   private getEquationBit(op : Operateurs) : string {
     let str = "";
 
-    if (op.inclureTous.length > 0) {
+    if (typeof op.inclureTous !== 'undefined' && op.inclureTous.length > 0) {
       str += this.concatTerms(op.inclureTous, "AND");
     }
     
-    if (op.auMoins1.length > 0) {
+    if (typeof op.auMoins1 !== 'undefined' && op.auMoins1.length > 0) {
       op.auMoins1.forEach((entry) => {
         if (str.length > 0) str += " AND ";
         
@@ -47,7 +81,7 @@ export class EquationGeneratorService {
       });
     }
 
-    if (op.exclure.length > 0) {    
+    if (typeof op.exclure !== 'undefined' && op.exclure.length > 0) {    
       str += " NOT " + this.concatTerms(op.exclure, "OR");
     }
     
@@ -68,3 +102,4 @@ export class EquationGeneratorService {
     return str.concat(")");
   }
 }
+/*(test[Mesh]) AND (undefined) AND (testicles[Mesh])…D (undefined) AND (vertigo[Mesh]) AND (undefined)*/
