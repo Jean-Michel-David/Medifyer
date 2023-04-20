@@ -83,7 +83,7 @@ class Credentials {
         global $serverName;
 
         $issuedAt   = new DateTimeImmutable();
-        $expire     = $issuedAt->modify('+2 hour')->getTimestamp();
+        $expire     = $issuedAt->modify('+5 hour')->getTimestamp();
 
         $data = [
             'iat'  => $issuedAt->getTimestamp(),         // Issued at: time when the token was generated

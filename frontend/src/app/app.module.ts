@@ -16,8 +16,7 @@ import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
 import { SearchFormComponent } from './admin/search-form/search-form.component';
-import { AdminGetRechercheService } from './services/admin-get-recherche.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UserListComponent } from './admin/user-list/user-list.component';
 import { ListeRecherchesComponent } from './recherche/liste-recherches/liste-recherches.component';
 import { SauvegarderComponent } from './recherche/sauvegarder/sauvegarder.component';
@@ -29,6 +28,7 @@ import { AnimateModule } from 'primeng/animate';
 import { DragDropModule } from 'primeng/dragdrop';
 import { RippleModule  } from 'primeng/ripple';
 
+import { AuthHeaderInterceptor } from './auth-header.interceptor';
 
 @NgModule({
   declarations: [
@@ -50,8 +50,6 @@ import { RippleModule  } from 'primeng/ripple';
     SauvegarderComponent,
     Form2Component,
     Form3Component,
-
-
   ],
   imports: [
     BrowserModule,
@@ -65,7 +63,9 @@ import { RippleModule  } from 'primeng/ripple';
     DragDropModule,
     RippleModule
   ],
-  providers: [AdminGetRechercheService],
+  providers: [
+    {provide : HTTP_INTERCEPTORS, useClass : AuthHeaderInterceptor, multi : true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

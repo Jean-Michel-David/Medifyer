@@ -13,8 +13,8 @@ class AdminManager {
     public static function getUserList($creds, string $parameters, int $userCount, int $usersByPage = 10) {
         //Verify credentials
         $credentials = new Credentials();
-        //if (!$credentials->hasAdminCredentials($creds))
-        //    return false;
+        if (!$credentials->hasAdminCredentials($creds))
+            return false;
 
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
@@ -52,8 +52,8 @@ class AdminManager {
     public static function getUserSearches($creds, string $userId) {
         //Verify credentials
         $credentials = new Credentials();
-        //if (!$credentials->hasAdminCredentials($creds))
-        //    return false;
+        if (!$credentials->hasAdminCredentials($creds))
+            return false;
 
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');

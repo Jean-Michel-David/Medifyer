@@ -1,20 +1,29 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
+// If this is a preflight request, respond with the appropriate headers and exit
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    exit;
+}
 
 require_once("./Admin.class.php");
 $headers = getallheaders();
-//if (empty($headers['Authorization'] | null)) {
-//    http_response_code(401);
-//    exit();
-//}
+
+
+if (empty($headers['Authorization'])) {
+   http_response_code(401);
+   exit();
+}
 if($_SERVER['REQUEST_METHOD'] == "GET") {
     /**
      * Getting the list of users
      */
     if (isset($_GET['getUserList']) && isset($_GET['userCount'])) {
-        $userList = AdminManager::getUserList(/*$headers['Authorization']*/null, $_GET['getUserList'], $_GET['userCount']);
+        $userList = AdminManager::getUserList($headers['Authorization'], $_GET['getUserList'], $_GET['userCount']);
 
         //Error, bad request
         if (gettype($userList) == "boolean") {
@@ -37,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
      *  Getting the list of search equations of a particular user
      */
     if (!empty($_GET['getUserSearches'])) {
-        $searches = AdminManager::getUserSearches(/*$headers['Authorization']*/null, $_GET['getUserSearches']);
+        $searches = AdminManager::getUserSearches($headers['Authorization'], $_GET['getUserSearches']);
 
         if (!$searches) {
             http_response_code(400);
