@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
+import { Question } from '../question';
 import { QuestionShort } from '../question-short';
 
 @Component({
@@ -12,15 +13,22 @@ export class ListeRecherchesComponent implements OnInit{
 
   @Input()
   userSearches! : Observable<QuestionShort[]>;
+  @Output()
+  question = new EventEmitter<Question>;
 
   recherches! : Observable<QuestionShort[]>;
 
   constructor(protected api : UserRechercheService){}
+
   ngOnInit(): void {
     this.getQuestions();
   }
+
   onDevelopQuestion(e : any, id : number) : void {
-    console.log("Question with ID : " + id + " selected for development");
+    const sub = this.api.developper(id).subscribe((question) => {
+      this.question.emit(question);
+      sub.unsubscribe();
+    });
   }
 
   getQuestions() {

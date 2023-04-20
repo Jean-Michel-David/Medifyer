@@ -4,6 +4,7 @@ class QuestionManager{
 /**
   @Description insert a question into the db
    If the id of the question is already set we update the db.
+   Parameters : the question to save, the connection to the db, the authorization header
   **/
     public function saveQuestion(Question $question,$con,$authorization){
         $paramUpdate = array();
@@ -43,7 +44,6 @@ class QuestionManager{
                
                INSERT INTO equation(relationsPopulation, relationsTraitement, relationsResultat, terme_id)
                 VALUES (:relationsPopulation,:relationsTraitement,:relationsResultat,@last_id_in_table);";
-                
           }
         try{
             $insert = $con->prepare($sql);
@@ -67,7 +67,7 @@ class QuestionManager{
             'synonymesResultat' => json_encode($question->getRésultats_Synonyme(),JSON_UNESCAPED_UNICODE),
             'synonymesTraitement' => json_encode($question->getIntervention_Synonyme(),JSON_UNESCAPED_UNICODE),
 
-            'relationsPopulation' => json_encode($question->getEquations_PatientPopPath()) ,
+            'relationsPopulation' => json_encode($question->getEquations_PatientPopPath(),JSON_UNESCAPED_UNICODE) ,
             'relationsTraitement' => json_encode($question->getEquations_Intervention(),JSON_UNESCAPED_UNICODE),
             'relationsResultat' => json_encode($question->getEquations_Resultats(),JSON_UNESCAPED_UNICODE),
             );
@@ -155,5 +155,57 @@ class QuestionManager{
         $statement->closeCursor();
     }
 }
-    
+/** 
+@Description Fetch a question based on its id
+Parameters : the id of the question to fetch, the connection to the db, the authorization header
+return the question
+**/
+function getQuestion($id,$con, $authorization){
+    $credsObj = new Credentials();
+    $question = new Question();
+    try {
+        $sqlQuery = "SELECT r.recherche_id, r.public_rech,r.commentaire_rech,r.user_id,r.question_rech,r.population_rech,
+        r.traitement_rech,r.resultat_rech,t.termesFrancaisPopulation,t.termesFrancaisResultat,t.termesFrancaisTraitement,
+        t.termesMeshPopulation,t.termesMeshResultat,t.termesMeshTraitement,t.synonymesPopulation,t.synonymesResultat,
+        t.synonymesTraitement,e.relationsPopulation,e.relationsTraitement,e.relationsResultat
+        FROM recherches r 
+        INNER JOIN termes t ON r.recherche_id = t.recherche_id
+        INNER JOIN equation e ON e.terme_id = t.terme_id 
+        WHERE r.recherche_id=:recherche_id;";
+
+        $statement = $con->prepare($sqlQuery);
+
+        $statement->bindValue('recherche_id', $id);
+        $statement->execute();
+
+        $res = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $question->setId(json_decode($res["recherche_id"]))
+    ->setAcces(json_decode($res["public_rech"]))
+    ->setCommentaires(json_decode($res["commentaire_rech"]))
+    ->setCoWorkers(json_decode($res["user_id"]))
+    ->setQuestion(json_decode($res["question_rech"]))
+    ->setPatient_Pop_Path(json_decode($res["population_rech"]))
+    ->setIntervention_Traitement(json_decode($res["traitement_rech"]))
+    ->setRésultats(json_decode($res["resultat_rech"]))
+    ->setPatient_Language_Naturel(json_decode($res["termesFrancaisPopulation"]))
+    ->setPatient_Terme_Mesh(json_decode($res["termesMeshPopulation"]))
+    ->setPatient_Synonyme(json_decode($res["synonymesPopulation"]))
+    ->setIntervention_Language_Naturel(json_decode($res["termesFrancaisTraitement"]))//restart here
+    ->setIntervention_Terme_Mesh(json_decode($res["termesMeshTraitement"]))
+    ->setIntervention_Synonyme(json_decode($res["synonymesTraitement"]))
+    ->setRésultats_Language_Naturel(json_decode($res["termesFrancaisResultat"]))
+    ->setRésultats_Terme_Mesh(json_decode($res["termesMeshResultat"]))
+    ->setRésultats_Synonyme(json_decode($res["synonymesResultat"]))
+    ->setEquations_PatientPopPath(json_decode($res["relationsPopulation"]))
+    ->setEquations_Intervention(json_decode($res["relationsTraitement"]))
+    ->setEquations_Resultats(json_decode($res["relationsResultat"]));
+
+        return $question;
+    }catch(PDOException $e){
+        die($e);
+    } finally{
+        $statement->closeCursor();
+    }
+ }
 }

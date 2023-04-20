@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
 
-} else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+} else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"])){
   $recherches = $questionManager->getUserSearches($con,$headers/*['Authorization']*/);
 
     //Error, bad request
@@ -58,5 +58,24 @@ $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
   http_response_code(200);
   echo json_encode($recherches);
   exit();
+  
+} else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
+  $question = $questionManager->getQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
+
+//Error, bad request
+if (gettype($question) == "boolean") {
+  http_response_code(400);
+  exit();
+}
+
+//HTTP RESPONSE no content
+if (gettype($question) == "array" && !$question) {
+  http_response_code(204);
+}
+
+//Success
+http_response_code(200);
+echo json_encode($question);
+exit();
 }
 ?>
