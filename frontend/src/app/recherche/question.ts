@@ -1,3 +1,4 @@
+import { Equation } from "./equation";
 import { Operateurs } from "./operateurs";
 
 export interface Question {
@@ -26,4 +27,6 @@ export interface Question {
   Equations_PatientPopPath : Operateurs;
   Equations_Intervention : Operateurs;
   Equations_Resultats : Operateurs;
+
+  //Equation_Recherche : Equation;
 }

@@ -129,7 +129,10 @@ export class ExporterComponent {
               break;
             }
         break;
-
+        case "Equation_Recherche":
+         let equation = obj[prop];
+          str += "Equation finale :\n\n\t" + equation.text + "\n\n\n";
+        break;
         default:
         break;
       }
