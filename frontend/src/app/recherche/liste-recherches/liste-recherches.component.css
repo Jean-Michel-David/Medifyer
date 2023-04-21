@@ -5,6 +5,7 @@
 
 .questionDiv:hover{
   background-color: rgb(240, 240, 240);
+  cursor: pointer;
 }
 
 .libelQ{
