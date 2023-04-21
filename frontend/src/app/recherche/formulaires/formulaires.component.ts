@@ -134,7 +134,7 @@ export class FormulairesComponent{
       Equation_Recherche : ""
     }
 
-    question.Equation_Recherche = this.op.generateEquation(question).text;
+    //question.Equation_Recherche = this.op.generateEquation(question).text;
 
     return question;
   }
