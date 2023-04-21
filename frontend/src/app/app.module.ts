@@ -29,6 +29,7 @@ import { DragDropModule } from 'primeng/dragdrop';
 import { RippleModule  } from 'primeng/ripple';
 
 import { AuthHeaderInterceptor } from './auth-header.interceptor';
+import { FindSearchComponent } from './admin/find-search/find-search.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AuthHeaderInterceptor } from './auth-header.interceptor';
     SauvegarderComponent,
     Form2Component,
     Form3Component,
+    FindSearchComponent,
   ],
   imports: [
     BrowserModule,

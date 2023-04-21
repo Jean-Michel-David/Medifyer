@@ -6,6 +6,7 @@ import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.com
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
+import { FindSearchComponent } from './admin/find-search/find-search.component';
 
 const routes: Routes = [
   { path : 'index', component: IndexComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path : 'admin', component: PanneauAdminComponent},
   { path : 'inscription', component: InscriptionComponent},
   { path : 'connexion', component: ConnexionComponent},
+  { path : 'admin-find-user-search', component : FindSearchComponent}
 ];
 
 @NgModule({
