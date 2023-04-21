@@ -28,5 +28,5 @@ export interface Question {
   Equations_Intervention : Operateurs;
   Equations_Resultats : Operateurs;
 
-  //Equation_Recherche : Equation;
+  Equation_Recherche : string;
 }

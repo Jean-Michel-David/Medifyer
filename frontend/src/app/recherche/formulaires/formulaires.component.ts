@@ -104,6 +104,7 @@ export class FormulairesComponent{
   }
 
   toQuestion():Question{
+
     var question:Question = {
       id :0,
       acces:1,
@@ -128,8 +129,12 @@ export class FormulairesComponent{
   
       Equations_PatientPopPath : this.toOperateurs(this.form.controls['thirdPart'].controls['patient']),
       Equations_Intervention : this.toOperateurs(this.form.controls['thirdPart'].controls['intervention']),
-      Equations_Resultats : this.toOperateurs(this.form.controls['thirdPart'].controls['resultats'])
+      Equations_Resultats : this.toOperateurs(this.form.controls['thirdPart'].controls['resultats']),
+
+      Equation_Recherche : ""
     }
+
+    question.Equation_Recherche = this.op.generateEquation(question).text;
 
     return question;
   }
