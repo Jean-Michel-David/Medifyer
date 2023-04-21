@@ -1,5 +1,8 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+require_once(dirname(__FILE__) . '/../env.php');
+
+global $authorizedURL;
+header('Access-Control-Allow-Origin: ' . $authorizedURL);
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 // If this is a preflight request, respond with the appropriate headers and exit
@@ -10,9 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once("./Admin.class.php");
+require_once(dirname(__FILE__) . '/Admin.class.php');
 $headers = getallheaders();
-
 
 if (empty($headers['Authorization'])) {
    http_response_code(401);

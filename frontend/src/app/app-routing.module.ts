@@ -7,6 +7,7 @@ import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.compon
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
+import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
 
 const routes: Routes = [
   { path : 'index', component: IndexComponent},
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path : 'admin', component: PanneauAdminComponent},
   { path : 'inscription', component: InscriptionComponent},
   { path : 'connexion', component: ConnexionComponent},
-  { path : 'admin-find-user-search', component : FindSearchComponent}
+  { path : 'admin-find-user-search', component : FindSearchComponent},
+  { path : 'admin-edit-infobulles', component : EditInfobullesComponent}
 ];
 
 @NgModule({

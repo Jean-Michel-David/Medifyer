@@ -85,8 +85,8 @@ class AdminManager {
     public static function setInfobulles($creds, string $label, string $text) {
         //Verify credentials
         $credentials = new Credentials();
-        //if (!$credentials->hasAdminCredentials($creds))
-        //    return false;
+        if (!$credentials->hasAdminCredentials($creds))
+            return false;
 
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');

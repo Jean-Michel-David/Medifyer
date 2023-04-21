@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-panneau-admin',
@@ -7,9 +6,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./panneau-admin.component.css']
 })
 export class PanneauAdminComponent{
-  constructor(private rooter : Router) {}
-  
-  onSearchUser() : void {
-    this.rooter.navigate(['admin-find-user-search']);
-  }
+  constructor() {}
+
 }

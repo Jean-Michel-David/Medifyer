@@ -22,8 +22,9 @@ export class FindSearchComponent {
     this.showGetMore = true;
 
     //Initial user list to display
-    this.service.getUserList(0).subscribe((users) => {
+    let sub = this.service.getUserList(0).subscribe((users) => {
       this.userList = users;
+      sub.unsubscribe();
     });
     this.searchString = "";
   }
@@ -37,8 +38,9 @@ export class FindSearchComponent {
     this.userCount = 0;
     this.searchString = search;
 
-    this.service.getUserList(this.userCount, this.searchString).subscribe((users) => {
+    let sub = this.service.getUserList(this.userCount, this.searchString).subscribe((users) => {
       this.userList = users;
+      sub.unsubscribe();
     });
   }
 
@@ -61,10 +63,12 @@ export class FindSearchComponent {
   getMoreUsers($event : number) : void {
     let oldCount = $event;
 
-    this.service.getUserList($event, this.searchString).subscribe((users) => {
+    let sub = this.service.getUserList($event, this.searchString).subscribe((users) => {
       this.userList = [...this.userList, ...users];
       if (oldCount == this.userList.length)
         this.showGetMore = false;
+      
+      sub.unsubscribe();
     });    
   }
 
