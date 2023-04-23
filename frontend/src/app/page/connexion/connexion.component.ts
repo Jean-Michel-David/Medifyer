@@ -47,11 +47,16 @@ export class ConnexionComponent {
   }
 
   login(){
-
+    this.submitted=false;
+    this.loggedUser.email = this.loginForm.controls['email'].value;
+    this.loggedUser.pwd = this.loginForm.controls['pwd'].value;
+    const sub = this.api.login(this.loggedUser).subscribe(() => {
+      // this.router.navigate(['index']);
+      sub.unsubscribe();
+    })
   }
 
   onSubmit(){
     this.submitted = true;
-
   }
 }
