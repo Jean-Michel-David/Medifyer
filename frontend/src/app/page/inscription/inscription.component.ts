@@ -67,7 +67,7 @@ export class InscriptionComponent implements OnInit{
   addNewUser() {
       this.submitted = false;
       this.register();
-      const sub = this.api.addUser(this.newUser).subscribe((user) => {
+      const sub = this.api.addUser(this.newUser).subscribe(() => {
         this.router.navigate(['index']);
         sub.unsubscribe();
       })

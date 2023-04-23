@@ -20,11 +20,6 @@ $options = [
   'cost' => 12,
 ];
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-  $json_obj = json_decode(file_get_contents('php://input'), true);
-  $userManager->getUser($json_obj['email']);
-  return json_encode($user);
-}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $user->setId($json_obj['id']);
@@ -55,6 +50,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setPwd($pwdhashed);
   $user->setPhoto($json_obj['photo']);
   $userManager->saveUser($user);
-  echo json_encode($user);
-  return $credentials->createToken($user);
+  echo $credentials->createToken($user);
 }
