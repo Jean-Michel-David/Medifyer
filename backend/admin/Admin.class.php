@@ -72,6 +72,10 @@ class AdminManager {
         $recherches = $statement->fetchAll();
         $db->disconnect();
 
+        foreach($recherches as &$rech) {
+            $rech['question'] = json_decode($rech['question']);
+        }
+
         return $recherches;
     }
 

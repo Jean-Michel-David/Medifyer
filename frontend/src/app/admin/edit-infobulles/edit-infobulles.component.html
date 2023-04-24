@@ -1,6 +1,27 @@
-<div>
-    <h1>Vous pourrez éditer les infobulles ici</h1>
-    <div *ngFor="let infobulle of infobulles">
-        {{ infobulle?.label }} : {{ infobulle?.text }}
+<div class="bigDiv container py-4 px-4 rounded">
+    <div  class="infoDiv list-group-item my-2 rounded-2"
+    *ngFor="let infobulle of infobulles">
+        <div class="row">
+            <div class="col-sm-11 point"
+            (click)="onSelectForEdit(infobulle.label)">
+                <p class="infobulle my-auto h5">{{ infobulle.label }}</p>
+                <p class="my-auto" *ngIf="infobulle.label !== selectedForEdit">
+                {{ infobulle.text }}
+                </p>
+            </div>
+        </div>
+      
+        <div class="row"
+        *ngIf="selectedForEdit === infobulle.label">
+            <div class="col-sm-11">
+                <label class="my-auto h5" for="newText">Nouveau texte : </label>
+                <textarea class="form-control" id="exampleFormControlTextarea4" rows="3"
+                (keyup.escape)="onSelectForEdit(infobulle.label)" #newText
+                (input)="onTextChanged()">{{ infobulle.text }}</textarea>
+                <button class="point" (click)="onSave(infobulle.label, newText.value)"
+                *ngIf="editStatus == 'toSave'">Sauvegarder</button>
+            </div>
+        </div>
     </div>
+
 </div>

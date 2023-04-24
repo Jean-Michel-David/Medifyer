@@ -20,6 +20,16 @@ if (empty($headers['Authorization'])) {
    http_response_code(401);
    exit();
 }
+else {
+    require_once(dirname(__FILE__) . '/../credentials.php');
+    $creds = new Credentials();
+    if (! $creds->hasAdminCredentials($headers['Authorization'])) {
+        http_response_code(401);
+        exit();
+    }
+}
+
+
 if($_SERVER['REQUEST_METHOD'] == "GET") {
     /**
      * Getting the list of users
@@ -66,7 +76,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
     /**
      * Setting an info
      */
-    if (!empty($_POST['infoLabel']) && !empty($_POST['infoText'])) {
-
+    $json_obj = json_decode(file_get_contents('php://input'), true);
+    if (!empty($json_obj['label']) && !empty($json_obj['text'])) {
+        $success = AdminManager::setInfobulles($headers['Authorization'], $json_obj['label'], $json_obj['text']);
+        echo $success;
     }
 }
