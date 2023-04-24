@@ -17,15 +17,10 @@ export class InfosService {
    * @param label The label of the requested infobulle
    * @returns the Info infobulle
    */
-  getInfo(label : string) : Info {
+  getInfo(label : string) : Observable<Info> {
     let info! : Info;
     
-    let sub = this.http.get<Info>(this.backendUrl + "?getInfo=" + label).subscribe((inf) => {
-      info = inf;
-      sub.unsubscribe();
-    });
-    
-    return info;
+    return this.http.get<Info>(this.backendUrl + "?getInfo=" + label);
   }
 
   getAllInfobulles() : Observable<Info[]> {
