@@ -132,9 +132,11 @@ class QuestionManager{
   function getUserSearches($con, $authorization) {
     $credsObj = new Credentials();
     try {
+    //récupère les recherches du user connecté
         $sqlQuery = "SELECT recherche_id as id, question_rech as question 
                 FROM `recherches` 
-                WHERE user_id = :userId";
+                WHERE user_id = :userId
+                GROUP BY lastUpdate DESC";
 
         $statement = $con->prepare($sqlQuery);
 
@@ -142,11 +144,29 @@ class QuestionManager{
         $statement->execute();
 
         $recherches = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //récupère les recherches partagées avec le user connecté
+        /*$sqlQuery = "SELECT recherche_id as id
+                    FROM aaccesa 
+                    WHERE user_id = :userId";
 
-        // décoder les données JSON
-        foreach ($recherches as &$recherche) {
+        $statement = $con->prepare($sqlQuery);
+        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization));
+        $statement->execute();
+        $recherchesPartagees = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach($recherchesPartagees as $rech){
+            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+                FROM recherches 
+                WHERE recherche_id = :recherche_id";
+
+        $statement = $con->prepare($sqlQuery);
+        $statement->bindValue('recherche_id', $rech['id']);
+        $statement->execute();
+        $recherches += $statement->fetchAll(PDO::FETCH_ASSOC);*/
+
+    // décode les données JSON
+        foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
-        }
+        
 
         return $recherches;
     } catch(PDOException $e){
@@ -191,7 +211,7 @@ function getQuestion($id,$con, $authorization){
     ->setPatient_Language_Naturel(json_decode($res["termesFrancaisPopulation"]))
     ->setPatient_Terme_Mesh(json_decode($res["termesMeshPopulation"]))
     ->setPatient_Synonyme(json_decode($res["synonymesPopulation"]))
-    ->setIntervention_Language_Naturel(json_decode($res["termesFrancaisTraitement"]))//restart here
+    ->setIntervention_Language_Naturel(json_decode($res["termesFrancaisTraitement"]))
     ->setIntervention_Terme_Mesh(json_decode($res["termesMeshTraitement"]))
     ->setIntervention_Synonyme(json_decode($res["synonymesTraitement"]))
     ->setRésultats_Language_Naturel(json_decode($res["termesFrancaisResultat"]))
@@ -207,5 +227,35 @@ function getQuestion($id,$con, $authorization){
     } finally{
         $statement->closeCursor();
     }
+ }
+
+ function deleteQuestion($id,$con, $authorization){
+    $credsObj = new Credentials();
+
+    try{
+        $sqlQuery="DELETE FROM equation
+        WHERE terme_id IN (
+          SELECT terme_id
+          FROM termes
+          WHERE recherche_id = :recherche_id
+        );
+        
+        DELETE FROM termes WHERE recherche_id = :recherche_id;
+        DELETE from aaccesa where recherche_id = :recherche_id;
+        DELETE FROM recherches WHERE recherche_id = :recherche_id;";
+
+        $statement = $con->prepare($sqlQuery);
+
+        $statement->bindValue('recherche_id', $id);
+        if($statement->execute())
+            return true;
+        return false;
+
+    }catch(PDOException $e){
+        die($e);
+    } finally{
+        $statement->closeCursor();
+    }
+
  }
 }

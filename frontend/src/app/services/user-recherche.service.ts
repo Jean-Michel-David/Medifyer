@@ -34,4 +34,13 @@ export class UserRechercheService {
   developper(id : Number):Observable<Question>{
     return this.http.get<Question>(this.backendUrl + "?id=" + id);
   }
+
+/**
+   * This function delete a question
+   * @param id the id of the question to delete
+   * @returns The question selected for developpement
+   */
+  supprimer(id : number): Observable<Boolean>{
+    return this.http.delete<Boolean>(this.backendUrl + "?id=" + id);
+  }
 }
