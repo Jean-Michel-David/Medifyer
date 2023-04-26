@@ -27,6 +27,13 @@ export class UserRechercheService {
     return this.http.get<QuestionShort[]>(this.backendUrl)
   }
 /**
+   * This function fetches the question that are shared with the current user
+   * @returns The list of short questions (only ID and question) - all the questions of the current user
+   */
+  afficherPartage():Observable<QuestionShort[]>{
+    return this.http.get<QuestionShort[]>(this.backendUrl +"?shared=true");
+  }
+/**
    * This function fetches the searches of selected user
    * @param id the id of the question selected
    * @returns The question selected for developpement
