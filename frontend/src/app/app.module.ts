@@ -12,7 +12,6 @@ import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.com
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
-import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
 import { SearchFormComponent } from './admin/search-form/search-form.component';
@@ -44,7 +43,6 @@ import { ModalComponent } from './recherche/modal/modal.component';
     PanneauAdminComponent,
     InscriptionComponent,
     ConnexionComponent,
-    ExporterComponent,
     FormulairesComponent,
     Form1Component,
     SearchFormComponent,
