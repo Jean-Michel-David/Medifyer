@@ -22,3 +22,9 @@ svg{
   height: auto;
   fill: #989898;
 }
+.questionDiv .select:hover{
+  fill :#029791;
+}
+.questionDiv .delete:hover{
+  fill: #d61212;
+}

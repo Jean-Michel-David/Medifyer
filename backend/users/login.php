@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 
 $user = new User();
+$credentials = new Credentials();
 $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
@@ -17,7 +18,22 @@ $res = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json_obj = json_decode(file_get_contents('php://input'), true);
+    if ($json_obj['email'] == null ||strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
+        http_response_code(400);
+        echo "Email invalide !";
+        exit;
+    }
+    if ($json_obj['pwd'] == null) {
+        http_response_code(400);
+        echo "Mot de passe Invalide !";
+        exit;
+    }
     $res = $userManager->getUser($json_obj['email']);
+    if (!password_verify($json_obj['pwd'], $res['psw_user'])) {
+        http_response_code(400);
+        echo "Les mots de passe ne correspondent pas";
+        exit;
+    }
     $user->setId($res['user_id']);
     $user->setLastname($res['nom_user']);
     $user->setFirstname($res['prenom_user']);
@@ -25,5 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user->setPhoto($res['pfp_user']);
     $user->setAdminStatus(($res['admin_user']));
     $user->setEmail($res['email_user']);
-    echo json_encode($user);
+
+    echo $credentials->createToken($user);
 }

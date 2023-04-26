@@ -1,7 +1,9 @@
 <?php
-header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
+require_once(dirname(__FILE__) . '/../env.php');
+global $authorizedURL;
+header('Access-Control-Allow-Origin: ' . $authorizedURL);
 
 require_once('../database/dbConnection.php');
 require_once('Question.class.php');
@@ -40,7 +42,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
 
-} else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"])){
+} 
+
+
+
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"])){
   $recherches = $questionManager->getUserSearches($con,$headers/*['Authorization']*/);
 
     //Error, bad request
@@ -59,11 +65,36 @@ $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
   echo json_encode($recherches);
   exit();
   
-} else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
+} 
+
+
+
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
   $question = $questionManager->getQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
 
 //Error, bad request
 if (gettype($question) == "boolean") {
+  http_response_code(400);
+  exit();
+}
+
+//HTTP RESPONSE no content
+if (gettype($question) == "array" && !$question) {
+  http_response_code(204);
+}
+
+//Success
+http_response_code(200);
+echo json_encode($question);
+exit();
+
+
+
+} else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){
+$question = $questionManager->deleteQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
+
+//Error, bad request
+if ($question == false) {
   http_response_code(400);
   exit();
 }
