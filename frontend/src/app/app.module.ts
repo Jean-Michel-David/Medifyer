@@ -31,6 +31,7 @@ import { RippleModule  } from 'primeng/ripple';
 import { AuthHeaderInterceptor } from './auth-header.interceptor';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
 import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
+import { ModalComponent } from './recherche/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles
     Form3Component,
     FindSearchComponent,
     EditInfobullesComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
