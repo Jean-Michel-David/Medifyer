@@ -23,6 +23,7 @@ export class UserService {
         }
         console.log("received token : " + res);
         localStorage.setItem('authenticationToken', res);
+        localStorage.setItem('isConnected', 'true');
         return true;
     }))
 
@@ -37,6 +38,7 @@ export class UserService {
       }
       console.log("received token: " + res);
       localStorage.setItem('authenticationToken', res);
+      localStorage.setItem('isConnected', 'true');
       return true;
     }))
   }
