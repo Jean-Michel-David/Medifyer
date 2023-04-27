@@ -113,4 +113,7 @@ class AdminManager {
         return $count;
     }
 
+    public static function setAdminStatus($creds, User $user) {
+
+    }
 }

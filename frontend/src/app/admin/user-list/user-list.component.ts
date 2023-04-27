@@ -11,7 +11,7 @@ export class UserListComponent implements OnInit{
   @Input() userList! : User[];
   @Input() showGetMore! : boolean;
 
-  @Output() fetchUserQuestions : EventEmitter<number> = new EventEmitter();
+  @Output() selectUser : EventEmitter<number> = new EventEmitter();
   @Output() getMoreUsers : EventEmitter<number> = new EventEmitter();
 
   ngOnInit() : void {}
@@ -22,7 +22,7 @@ export class UserListComponent implements OnInit{
    * @param user the user from which to extract the searches
    */
   onGetUserSearches(event : any, user : number | undefined) : void{
-    this.fetchUserQuestions.emit(user);
+    this.selectUser.emit(user);
   }
 
   /**

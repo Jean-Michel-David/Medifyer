@@ -8,7 +8,7 @@
         [userList]="userList" 
         [showGetMore]="showGetMore"
         (getMoreUsers)="getMoreUsers($event)" 
-        (fetchUserQuestions)="fetchQuestions($event)">
+        (selectUser)="fetchQuestions($event)">
     </app-user-list>
     <app-liste-recherches *ngIf="!showUserList" [userSearches]="userSearches"></app-liste-recherches>
 </div>

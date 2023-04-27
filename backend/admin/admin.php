@@ -73,12 +73,19 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 
 elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
 
+    $json_obj = json_decode(file_get_contents('php://input'), true);
+
     /**
      * Setting an info
      */
-    $json_obj = json_decode(file_get_contents('php://input'), true);
     if (!empty($json_obj['label']) && !empty($json_obj['text'])) {
         $success = AdminManager::setInfobulles($headers['Authorization'], $json_obj['label'], $json_obj['text']);
         echo $success;
+        exit();
+    }
+
+    if (!empty($json_obj['id']) && !empty($json_obj['isAdmin'])) {
+        print_r($json_obj);
+
     }
 }

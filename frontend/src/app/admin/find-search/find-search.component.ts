@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../user';
 import { Observable } from 'rxjs';
 import { QuestionShort } from 'src/app/recherche/question-short';
-import { AdminGetRechercheService } from 'src/app/services/admin-get-recherche.service';
+import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
 
 @Component({
   selector: 'app-find-search',
@@ -17,7 +17,7 @@ export class FindSearchComponent {
   searchString! : string;
   showGetMore! : boolean;
 
-  constructor(private service : AdminGetRechercheService) {}
+  constructor(private service : AdminManageUserAndRechercheService) {}
   ngOnInit(): void {
     this.showGetMore = true;
 
