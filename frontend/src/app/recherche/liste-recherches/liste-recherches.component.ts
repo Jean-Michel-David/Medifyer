@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
+import { ModalComponent } from '../modal/modal.component';
 import { Question } from '../question';
 import { QuestionShort } from '../question-short';
 
@@ -17,6 +18,7 @@ export class ListeRecherchesComponent implements OnInit{
   userSearches! : Observable<QuestionShort[]>;
 
   recherches! : Observable<QuestionShort[]>;
+  mySearches = true;
 
   constructor(
     protected api : UserRechercheService,
@@ -36,7 +38,25 @@ export class ListeRecherchesComponent implements OnInit{
     });
   }
 
+  onDeleteQuestion(e : any, id : number) : void {
+    if(confirm("Etes vous certain de vouloir supprimer cette question?")){
+      const sub = this.api.supprimer(id).subscribe((resultat) => {
+      /*if(resultat)
+        showPopUp();*/
+        this.getQuestions();
+      sub.unsubscribe();
+    });
+    }
+  }
   getQuestions() {
     this.recherches = this.api.afficher();
+  }
+
+  getQuestionsPartagees(){
+    this.recherches = this.api.afficherPartage();
+  }
+
+  switchView(mySearches : boolean){
+    this.mySearches = mySearches
   }
 }

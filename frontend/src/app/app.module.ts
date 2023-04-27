@@ -12,7 +12,6 @@ import { MesRecherchesComponent } from './page/mes-recherches/mes-recherches.com
 import { PanneauAdminComponent } from './page/panneau-admin/panneau-admin.component';
 import { InscriptionComponent } from './page/inscription/inscription.component';
 import { ConnexionComponent } from './page/connexion/connexion.component';
-import { ExporterComponent } from './recherche/exporter/exporter.component';
 import { FormulairesComponent } from './recherche/formulaires/formulaires.component';
 import { Form1Component } from './recherche/form1/form1.component';
 import { SearchFormComponent } from './admin/search-form/search-form.component';
@@ -32,6 +31,7 @@ import { AuthHeaderInterceptor } from './auth-header.interceptor';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
 import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
+import { ModalComponent } from './recherche/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.compo
     PanneauAdminComponent,
     InscriptionComponent,
     ConnexionComponent,
-    ExporterComponent,
     FormulairesComponent,
     Form1Component,
     SearchFormComponent,
@@ -56,6 +55,7 @@ import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.compo
     FindSearchComponent,
     EditInfobullesComponent,
     ManageAdminsComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { Operateurs } from '../operateurs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { Question } from '../question';
+import { ExporterService } from 'src/app/services/exporter.service';
 
 @Component({
   selector: 'app-formulaires',
@@ -13,7 +14,7 @@ import { Question } from '../question';
 })
 export class FormulairesComponent{
 
-  constructor(private fb: FormBuilder, private op:EquationGeneratorService) {}
+  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService) {}
   form2Visible = false;
   form3Visible = false;
 
@@ -144,7 +145,8 @@ export class FormulairesComponent{
     console.log(this.op.generateEquation(this.toQuestion()));
   }
 
-  exporter(){
+  export(){
+    this.ex.exportData(this.toQuestion());
     
   }
 }

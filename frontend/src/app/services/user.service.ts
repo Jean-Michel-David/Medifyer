@@ -23,13 +23,24 @@ export class UserService {
         }
         console.log("received token : " + res);
         localStorage.setItem('authenticationToken', res);
+        localStorage.setItem('isConnected', 'true');
         return true;
     }))
 
   }
 
   login(user: User){
-    return this.http.post(this.loginUrl, JSON.stringify(user));
+    return this.http.post(this.loginUrl, JSON.stringify(user), {responseType : 'text'})
+    .pipe(map((res : any) => {
+      if (res.status < 200 && res.status > 299) {
+        console.log("problem : " + res);
+        return false;
+      }
+      console.log("received token: " + res);
+      localStorage.setItem('authenticationToken', res);
+      localStorage.setItem('isConnected', 'true');
+      return true;
+    }))
   }
 
 }

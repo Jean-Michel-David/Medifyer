@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Nom Invalide ! ";
     exit;
   }
-  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
+  if ($json_obj['email'] == null || strlen($json_obj['e| mail'])>50 || !preg_match($regex, $json_obj['email'])) {
     http_response_code(400);
     echo "Email Invalide !";
     exit;
