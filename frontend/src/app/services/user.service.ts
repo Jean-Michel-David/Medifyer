@@ -23,13 +23,12 @@ export class UserService {
         }
         console.log("received token : " + res);
         localStorage.setItem('authenticationToken', res);
-        localStorage.setItem('isConnected', 'true');
         return true;
     }))
 
   }
 
-  login(user: User){
+  login(user: User): Observable<boolean>{
     return this.http.post(this.loginUrl, JSON.stringify(user), {responseType : 'text'})
     .pipe(map((res : any) => {
       if (res.status < 200 && res.status > 299) {
@@ -38,7 +37,6 @@ export class UserService {
       }
       console.log("received token: " + res);
       localStorage.setItem('authenticationToken', res);
-      localStorage.setItem('isConnected', 'true');
       return true;
     }))
   }

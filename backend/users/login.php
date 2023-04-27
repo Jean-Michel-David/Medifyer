@@ -15,6 +15,7 @@ $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
 $res = array();
+$regex = '/^la[0-9]{6}@student\.helha\.be$/i';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json_obj = json_decode(file_get_contents('php://input'), true);
