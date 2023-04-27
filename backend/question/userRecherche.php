@@ -14,6 +14,7 @@ $con = $dbConnection->connect();
 $questionManager = new QuestionManager();
 $headers = getallheaders();
 
+//quand on sauvegarde une question
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $question = new Question();
@@ -45,8 +46,9 @@ $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
 } 
 
 
+// Quand on récupère les recherches d'un user
 
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"])){
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && !isset($_GET["shared"])){
   $recherches = $questionManager->getUserSearches($con,$headers/*['Authorization']*/);
 
     //Error, bad request
@@ -67,27 +69,51 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"])){
   
 } 
 
+//Quand on récupère les questions partagées d'un user
 
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && isset($_GET["shared"])){
+  $question = $questionManager->getSharedSearches($con,$headers/*['Authorization']*/);
+
+  //Error, bad request
+  if (gettype($question) == "boolean") {
+    http_response_code(400);
+    exit();
+  }
+
+  //HTTP RESPONSE no content
+  if (gettype($question) == "array" && !$question) {
+    http_response_code(204);
+  }
+
+  //Success
+  http_response_code(200);
+  echo json_encode($question);
+  exit();
+}
+
+//Quand on récupère les données d'une question
 
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
   $question = $questionManager->getQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
 
-//Error, bad request
-if (gettype($question) == "boolean") {
+  //Error, bad request
+  if (gettype($question) == "boolean") {
   http_response_code(400);
   exit();
-}
+  }
 
-//HTTP RESPONSE no content
-if (gettype($question) == "array" && !$question) {
+  //HTTP RESPONSE no content
+  if (gettype($question) == "array" && !$question) {
   http_response_code(204);
-}
+  }
 
-//Success
-http_response_code(200);
-echo json_encode($question);
-exit();
+  //Success
+  http_response_code(200);
+  echo json_encode($question);
+  exit();
 
+
+  // Quand on delete une question
 
 
 } else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){

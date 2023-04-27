@@ -1,0 +1,16 @@
+<div class="col-md-10 mx-auto d-flex flex-column">
+    <app-search-form class="p-2" (searchUser)="searchUser($event)" *ngIf="showUserList">
+    </app-search-form>
+    <app-user-list class="p-2 bigDiv" 
+    *ngIf="showUserList"
+    [userList]="userList"
+    [showGetMore]="showGetMore"
+    (getMoreUsers)="getMoreUsers($event)"
+    (selectUser)="manageUser($event)"
+    ></app-user-list>
+
+    
+    <div *ngIf="! showUserList" class="p-2 bigDiv">
+        {{ selectedUser?.nom }}
+    </div>
+</div>

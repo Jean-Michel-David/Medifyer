@@ -18,6 +18,7 @@ export class ListeRecherchesComponent implements OnInit{
   userSearches! : Observable<QuestionShort[]>;
 
   recherches! : Observable<QuestionShort[]>;
+  mySearches = true;
 
   constructor(
     protected api : UserRechercheService,
@@ -49,5 +50,13 @@ export class ListeRecherchesComponent implements OnInit{
   }
   getQuestions() {
     this.recherches = this.api.afficher();
+  }
+
+  getQuestionsPartagees(){
+    this.recherches = this.api.afficherPartage();
+  }
+
+  switchView(mySearches : boolean){
+    this.mySearches = mySearches
   }
 }

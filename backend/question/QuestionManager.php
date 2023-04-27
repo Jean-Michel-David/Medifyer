@@ -144,31 +144,52 @@ class QuestionManager{
         $statement->execute();
 
         $recherches = $statement->fetchAll(PDO::FETCH_ASSOC);
-    //récupère les recherches partagées avec le user connecté
-        /*$sqlQuery = "SELECT recherche_id as id
-                    FROM aaccesa 
-                    WHERE user_id = :userId";
-
-        $statement = $con->prepare($sqlQuery);
-        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization));
-        $statement->execute();
-        $recherchesPartagees = $statement->fetchAll(PDO::FETCH_ASSOC);
-        foreach($recherchesPartagees as $rech){
-            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
-                FROM recherches 
-                WHERE recherche_id = :recherche_id";
-
-        $statement = $con->prepare($sqlQuery);
-        $statement->bindValue('recherche_id', $rech['id']);
-        $statement->execute();
-        $recherches += $statement->fetchAll(PDO::FETCH_ASSOC);*/
-
+    
     // décode les données JSON
         foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
         
 
         return $recherches;
+    } catch(PDOException $e){
+        die($e);
+    } finally{
+        $statement->closeCursor();
+    }
+}
+
+/**
+  @Description return the questions shared with the connected user for modification
+  **/
+function getSharedSearches($con, $authorization){
+    try{
+    //récupère les recherches partagées avec le user connecté
+        $sqlQuery = "SELECT recherche_id as id
+        FROM aaccesa 
+        WHERE user_id = :userId";
+
+        $statement = $con->prepare($sqlQuery);
+        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization)*/);
+        $statement->execute();
+        $recherchesPartagees = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $recherches = [];
+
+        foreach($recherchesPartagees as $rech){
+            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+            FROM recherches 
+            WHERE recherche_id = :recherche_id";
+
+            $statement = $con->prepare($sqlQuery);
+            $statement->bindValue('recherche_id', $rech['id']);
+            $statement->execute();
+            $recherches += $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        foreach ($recherches as &$recherche) 
+            $recherche['question'] = json_decode($recherche['question']);
+
+        return $recherches;
+    
     } catch(PDOException $e){
         die($e);
     } finally{
@@ -228,7 +249,11 @@ function getQuestion($id,$con, $authorization){
         $statement->closeCursor();
     }
  }
-
+/** 
+@Description Delete a question based on its id
+Parameters : the id of the question to fetch, the connection to the db, the authorization header
+return the question
+**/
  function deleteQuestion($id,$con, $authorization){
     $credsObj = new Credentials();
 

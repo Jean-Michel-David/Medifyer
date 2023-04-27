@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGetRechercheService {
+export class AdminManageUserAndRechercheService {
   private backendUrl = environment.backendUrl + "/admin/admin.php";
 
   constructor(private http : HttpClient) {}
@@ -39,5 +39,9 @@ export class AdminGetRechercheService {
    */
   getUserSearches(user : number) : Observable<QuestionShort[]>{
     return this.http.get<QuestionShort[]>(this.backendUrl + '?getUserSearches=' + user);
+  }
+
+  setAdminStatus(user : User) {
+    return this.http.post(this.backendUrl, user);
   }
 }

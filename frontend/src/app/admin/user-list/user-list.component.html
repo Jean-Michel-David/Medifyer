@@ -1,7 +1,10 @@
 <button class="list-group-item list-group-item-action" 
 *ngFor="let user of userList"
-(click)="onGetUserSearches($event, user.id)">
+(click)="onGetUserSearches($event, user.id)"
+[class.isAdmin]="user.isAdmin"
+>
     {{user.email}} : {{ user.nom }} {{ user.prenom }}
+    <span *ngIf="user.isAdmin" class="green-box">ADMIN</span>
 </button>
 
 

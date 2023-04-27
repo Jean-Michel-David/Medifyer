@@ -80,6 +80,42 @@ class AdminManager {
     }
 
     /**
+     * This function will fetch the searches of the desired user
+     * @param $creds the string containing the credentials
+     * @param string $userId the id of the user from which to select the researches
+     * @return array|false array if there is no problem, false if something went wrong
+     */
+    public static function getSharedUserSearches($creds, string $userId) {
+        //Verify credentials
+        $credentials = new Credentials();
+        if (!$credentials->hasAdminCredentials($creds))
+            return false;
+
+        //include class dbConnection (PDO connection to the database)
+        require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+        $db = new DBConnection();
+
+        //Actual query
+        $sqlQuery = "   SELECT recherche_id as id, question_rech as question 
+                        FROM `recherches` 
+                        WHERE user_id = :userId";
+
+        $statement = $db->connect()->prepare($sqlQuery);
+
+        $statement->bindValue('userId', $userId);
+        $statement->execute();
+
+        $recherches = $statement->fetchAll();
+        $db->disconnect();
+
+        foreach($recherches as &$rech) {
+            $rech['question'] = json_decode($rech['question']);
+        }
+
+        return $recherches;
+    }
+
+    /**
      * This function will update an info
      * @param $creds The credentials of the admin
      * @param string $label The label of the info to change
@@ -113,4 +149,7 @@ class AdminManager {
         return $count;
     }
 
+    public static function setAdminStatus($creds, User $user) {
+
+    }
 }

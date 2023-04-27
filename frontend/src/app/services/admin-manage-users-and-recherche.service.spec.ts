@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminGetRechercheService } from './admin-get-recherche.service';
+import { AdminGetRechercheService } from './admin-manage-users-and-recherche.service';
 
 describe('AdminGetRechercheService', () => {
   let service: AdminGetRechercheService;
