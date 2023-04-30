@@ -57,6 +57,10 @@ export class ManageAdminsComponent implements OnInit{
     });    
   }
 
+  /**
+   * This function selects a user for managing
+   * @param userID The id of the selected user
+   */
   manageUser(userID : number) {
     this.selectedUser =  this.userList.find((user) => user.id == userID);
     
@@ -65,6 +69,10 @@ export class ManageAdminsComponent implements OnInit{
     }
   }
   
+  /**
+   * This function sets the admin status of a user
+   * @param status the new status of the user
+   */
   setAdminStatus(status : boolean) {
     if (typeof this.selectedUser != 'undefined') {
       this.selectedUser.isAdmin = status;
@@ -74,4 +82,11 @@ export class ManageAdminsComponent implements OnInit{
       });
     }
   }
+
+    /**
+   * This function returns to the selection of the user
+   */
+    retour() : void {
+      this.showUserList = true;
+    }
 }
