@@ -32,6 +32,8 @@ import { FindSearchComponent } from './admin/find-search/find-search.component';
 import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
 import { ModalComponent } from './recherche/modal/modal.component';
+import { EquationDisplayComponent } from './recherche/equation-display/equation-display.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { ModalComponent } from './recherche/modal/modal.component';
     EditInfobullesComponent,
     ManageAdminsComponent,
     ModalComponent,
+    EquationDisplayComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

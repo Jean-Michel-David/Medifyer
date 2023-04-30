@@ -6,6 +6,7 @@ import { Operateurs } from '../operateurs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { Question } from '../question';
 import { ExporterService } from 'src/app/services/exporter.service';
+import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
 
 @Component({
   selector: 'app-formulaires',
@@ -14,9 +15,10 @@ import { ExporterService } from 'src/app/services/exporter.service';
 })
 export class FormulairesComponent{
 
-  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService) {}
+  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService) {}
   form2Visible = false;
   form3Visible = false;
+  equationVisible = false;
 
   firstPart = this.fb.group({
     question: [''],
@@ -91,62 +93,11 @@ export class FormulairesComponent{
   displayForm3(){
     this.form3Visible = true;
   }
-
-  toOperateurs(group:FormGroup):Operateurs{
-
-    let operateurs:Operateurs = {
-      inclureTous:(group.controls['includeAll'] as FormArray).controls.map( element => element.value as string),
-      auMoins1:(group.controls['includeOnce'] as FormArray).controls.filter(element => (element as FormArray).length > 0).map( element => element.value as string[]),
-      exclure:(group.controls['includeNone'] as FormArray).controls.map( element => element.value as string)
-    };
-
-    return operateurs;
-
-  }
-
-  toQuestion():Question{
-
-    var question:Question = {
-      id :0,
-      acces:1,
-      commentaires:"",
-      coWorker : [],
-      Question : this.form.controls["firstPart"].controls["question"].value ?? "" ,
-      Patient_Pop_Path : this.form.controls["firstPart"].controls["patient"].value ?? "",
-      Intervention_Traitement : this.form.controls["firstPart"].controls["intervention"].value ?? "",
-      Résultats : this.form.controls["firstPart"].controls["resultats"].value ?? "",
-  
-      Patient_Language_Naturel : this.form.controls["secondPart"].controls["patient"].controls["natural"].controls.map(control => control.value as string),
-      Patient_Terme_Mesh :  this.form.controls["secondPart"].controls["patient"].controls["mesh"].controls.map(control => control.value as string),
-      Patient_Synonyme :  this.form.controls["secondPart"].controls["patient"].controls["synonym"].controls.map(control => control.value as string),
-  
-      Intervention_Language_Naturel :  this.form.controls["secondPart"].controls["intervention"].controls["natural"].controls.map(control => control.value as string),
-      Intervention_Terme_Mesh : this.form.controls["secondPart"].controls["intervention"].controls["mesh"].controls.map(control => control.value as string),
-      Intervention_Synonyme : this.form.controls["secondPart"].controls["intervention"].controls["synonym"].controls.map(control => control.value as string),
-  
-      Résultats_Language_Naturel : this.form.controls["secondPart"].controls["resultats"].controls["natural"].controls.map(control => control.value as string),
-      Résultats_Terme_Mesh : this.form.controls["secondPart"].controls["resultats"].controls["mesh"].controls.map(control => control.value as string),
-      Résultats_Synonyme : this.form.controls["secondPart"].controls["resultats"].controls["synonym"].controls.map(control => control.value as string),
-  
-      Equations_PatientPopPath : this.toOperateurs(this.form.controls['thirdPart'].controls['patient']),
-      Equations_Intervention : this.toOperateurs(this.form.controls['thirdPart'].controls['intervention']),
-      Equations_Resultats : this.toOperateurs(this.form.controls['thirdPart'].controls['resultats']),
-
-      Equation_Recherche : ""
-    }
-
-    //question.Equation_Recherche = this.op.generateEquation(question).text;
-
-    return question;
-  }
-
-  toEquation(){
-    console.log(this.toOperateurs(this.form.controls['thirdPart'].controls['patient']));
-    console.log(this.op.generateEquation(this.toQuestion()));
+  displayEquation(){
+    this.equationVisible = true;
   }
 
   export(){
-    this.ex.exportData(this.toQuestion());
-    
+    this.ex.exportData(this.qu.toQuestion(this.form));
   }
 }

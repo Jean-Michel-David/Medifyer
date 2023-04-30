@@ -1,13 +1,19 @@
 .parallax {
-    /* The image used */
-    background-image: url("/assets/img/library.jpg");
+  /* The image used */
+  background-image: url("/assets/img/library.jpg");
 
-    /* Set a specific height */
-    min-height: 100vh;
+  /* Set a specific height */
+  min-height: 100vh;
 
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+  text-align:center;
+  display:grid;
+  grid-template-rows: auto 0px 1fr auto;
+  min-height:100vh;
+}

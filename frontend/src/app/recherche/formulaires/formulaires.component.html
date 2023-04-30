@@ -1,10 +1,12 @@
 <form class="forms" [formGroup]="form">
-    <button (click)="export()"></button>
+    <button (click)="export()">Exporter</button>
     <app-form1 [firstPart]="form.controls['firstPart']"></app-form1>
     <button class="btn mt-4" (click)="displayForm2()" *ngIf="!form2Visible">Continuer</button>
     <app-form2 [secondPart]="form.controls['secondPart']" [formGroups]="formGroups"  [groups]="groups" *ngIf="form2Visible"></app-form2>
     <button class="btn mt-4" (click)="displayForm3()"  *ngIf="form2Visible && !form3Visible">Continuer</button>
-    <app-form3 [formGlobal]="form" [formGroups]="formGroups"  [groups]="groups" *ngIf="form2Visible && form3Visible"></app-form3>
-    <button class="btn mt-4" (click)="toEquation()" *ngIf="form2Visible && form3Visible">Générer</button>
+    <app-form3 [formGlobal]="form" [formGroups]="formGroups"  [groups]="groups" *ngIf=" form3Visible"></app-form3>
+    <button class="btn mt-4" (click)="displayEquation()" *ngIf="form3Visible && !equationVisible">Générer</button>
+    <app-equation-display [form]="form" *ngIf="equationVisible"></app-equation-display>
+
 </form>
 
