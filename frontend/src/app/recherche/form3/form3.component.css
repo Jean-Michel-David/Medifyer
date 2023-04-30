@@ -107,3 +107,11 @@ label svg{
 .btn-menu{
   margin-bottom: 5px;
 }
+
+.btn{
+  transition: all ease-in-out 100ms;
+}
+.btn:hover{
+  transform: scale(1.05);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}

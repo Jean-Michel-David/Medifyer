@@ -118,16 +118,6 @@ input{
   width: 100%;
   transition: all 200ms ease-in-out;
 }
-.bubble{
-  position: absolute;
-  height: 12px;
-  width: 12px;
-  background-color: white;
-  transform: rotate(45deg) skew(10deg, 10deg);
-  right: 10px;
-  top: 6px;
-  z-index: -1;
-}
 
 .mesh button:hover .card{
   opacity: 1;
@@ -186,4 +176,53 @@ input{
     flex-direction: column;
     align-items: center;
   }
+}
+
+.btn{
+  transition: all ease-in-out 100ms;
+}
+.btn:hover{
+  transform: scale(1.05);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}
+
+.card-hover{
+  position: absolute;
+  bottom: 0px;
+  opacity: 0;
+  transform: scaleY(0);
+  transition: opacity 300ms ease-in-out;
+  text-shadow: none;
+  border-radius: 2px;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
+  font-weight: bold;
+  color: #1dd3cd;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  z-index: 10;
+}
+
+button:hover .card-hover{
+  opacity: 1;
+  transition: all 200ms;
+  height: 100%;
+  top: -30px;
+}
+
+.bubble{
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  background-color: white;
+  transform: rotate(45deg) skew(10deg, 10deg);
+  right: 10px;
+  top: 6px;
+  z-index: -1;
+}
+
+.card .bubble{
+  top: -2px;
+  right: auto;
 }
