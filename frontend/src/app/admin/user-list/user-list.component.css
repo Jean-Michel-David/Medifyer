@@ -9,7 +9,7 @@ button {
 
 .green-box {
     height: max-content;
-    width: 50px;
+    width: min-content;
     background-color: green;
     color: white;
     float: right;

@@ -4,7 +4,7 @@
 [class.isAdmin]="user.isAdmin"
 >
     {{user.email}} : {{ user.nom }} {{ user.prenom }}
-    <span *ngIf="user.isAdmin" class="green-box">ADMIN</span>
+    <div *ngIf="user.isAdmin" class="green-box">ADMIN</div>
 </button>
 
 
