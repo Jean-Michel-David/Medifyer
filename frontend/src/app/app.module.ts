@@ -27,6 +27,8 @@ import { AnimateModule } from 'primeng/animate';
 import { DragDropModule } from 'primeng/dragdrop';
 import { RippleModule  } from 'primeng/ripple';
 import { ClipboardModule } from 'ngx-clipboard';
+import { SidebarModule } from 'primeng/sidebar';
+
 
 import { AuthHeaderInterceptor } from './auth-header.interceptor';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
@@ -73,7 +75,8 @@ import { FooterComponent } from './footer/footer.component';
     AnimateModule,
     DragDropModule,
     RippleModule,
-    ClipboardModule
+    ClipboardModule,
+    SidebarModule
   ],
   providers: [
     {provide : HTTP_INTERCEPTORS, useClass : AuthHeaderInterceptor, multi : true}

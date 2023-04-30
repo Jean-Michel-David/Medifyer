@@ -2,12 +2,21 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TimeInterval } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-form2',
   templateUrl: './form2.component.html',
-  styleUrls: ['./form2.component.css']
+  styleUrls: ['./form2.component.css'],
+  animations: [
+    trigger('insertTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 1 })),
+      ])
+    ])
+  ]
 })
 export class Form2Component implements OnInit{
   @Input()

@@ -24,3 +24,54 @@ input[type='checkbox']:checked + .formPart{
 #showForm2:checked #showForm2Label{
   display: none;
 }
+
+.sidebar-shelf{
+  position: fixed;
+  left: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-btn{
+  width: 40px;
+  height: 40px;
+  padding : 8px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  fill: white;
+  border-radius: 10px;
+  transition: all ease-in-out 100ms;
+}
+.sidebar-btn:hover{
+  transform: scale(1.1);
+  box-shadow: rgba(0, 0, 0, 0.247) 0 3px 5px;
+}
+
+.btn-helha{
+  background-color: #009790;
+}
+
+.next-btn{
+  font-weight: 600;
+  color: white;
+  background-color: #009790;
+  transition: all ease-in-out 100ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.next-btn svg{
+  width: 20px;
+  height: 20px;
+  fill: white;
+  margin-left: 5px;
+}
+
+.next-btn:hover{
+  transform: scale(1.08);
+  background-color: #00645f;
+  box-shadow: rgba(0, 0, 0, 0.247) 0 3px 5px;
+}

@@ -20,6 +20,7 @@ export class FormulairesComponent{
   form2Visible = false;
   form3Visible = false;
   equationVisible = false;
+  sidebarVisible = false;
 
   firstPart = this.fb.group({
     question: [''],
