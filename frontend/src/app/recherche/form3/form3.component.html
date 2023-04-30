@@ -1,16 +1,31 @@
 <div  @insertTrigger class="form-part bg-light p-4 rounded" [formGroup]="thirdPart">
-  <button type="button" class="btn btn-dark" (click)="generate()">Generer liste mot</button>
+  <div class="d-flex flex-row align-items-center btn-menu">
+    <button class="btn btn-helha btn-help" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+    </button>
+    <button type="button" class="btn btn-dark btn-generate" (click)="generate()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+      Actualiser la liste de mots
+    </button>
+  </div>
 
+  <div class="collapse" id="collapse">
+    <div class="card card-body bg-dark text-white">
+      Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+    </div>
+  </div>
   <div class="form-group d-flex flex-column align-items-center " *ngFor="let group of formGroups; index as g">
+    <hr class="hr w-100" *ngIf="g != 0"/>
     <label>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" *ngIf="group == 'patient'"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M48 48h88c13.3 0 24-10.7 24-24s-10.7-24-24-24H32C14.3 0 0 14.3 0 32V136c0 13.3 10.7 24 24 24s24-10.7 24-24V48zM175.8 224a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-26.5 32C119.9 256 96 279.9 96 309.3c0 14.7 11.9 26.7 26.7 26.7h56.1c8-34.1 32.8-61.7 65.2-73.6c-7.5-4.1-16.2-6.4-25.3-6.4H149.3zm368 80c14.7 0 26.7-11.9 26.7-26.7c0-29.5-23.9-53.3-53.3-53.3H421.3c-9.2 0-17.8 2.3-25.3 6.4c32.4 11.9 57.2 39.5 65.2 73.6h56.1zm-89.4 0c-8.6-24.3-29.9-42.6-55.9-47c-3.9-.7-7.9-1-12-1H280c-4.1 0-8.1 .3-12 1c-26 4.4-47.3 22.7-55.9 47c-2.7 7.5-4.1 15.6-4.1 24c0 13.3 10.7 24 24 24H408c13.3 0 24-10.7 24-24c0-8.4-1.4-16.5-4.1-24zM464 224a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm-80-32a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM504 48h88v88c0 13.3 10.7 24 24 24s24-10.7 24-24V32c0-17.7-14.3-32-32-32H504c-13.3 0-24 10.7-24 24s10.7 24 24 24zM48 464V376c0-13.3-10.7-24-24-24s-24 10.7-24 24V480c0 17.7 14.3 32 32 32H136c13.3 0 24-10.7 24-24s-10.7-24-24-24H48zm456 0c-13.3 0-24 10.7-24 24s10.7 24 24 24H608c17.7 0 32-14.3 32-32V376c0-13.3-10.7-24-24-24s-24 10.7-24 24v88H504z"/></svg>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" *ngIf="group == 'intervention'"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M112 96c-26.5 0-48 21.5-48 48V256h96V144c0-26.5-21.5-48-48-48zM0 144C0 82.1 50.1 32 112 32s112 50.1 112 112V368c0 61.9-50.1 112-112 112S0 429.9 0 368V144zM554.9 399.4c-7.1 12.3-23.7 13.1-33.8 3.1L333.5 214.9c-10-10-9.3-26.7 3.1-33.8C360 167.7 387.1 160 416 160c88.4 0 160 71.6 160 160c0 28.9-7.7 56-21.1 79.4zm-59.5 59.5C472 472.3 444.9 480 416 480c-88.4 0-160-71.6-160-160c0-28.9 7.7-56 21.1-79.4c7.1-12.3 23.7-13.1 33.8-3.1L498.5 425.1c10 10 9.3 26.7-3.1 33.8z"/></svg>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" *ngIf="group == 'resultats'"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z"/></svg>
-      {{groups[g]}}
+      <h5>{{groups[g]}}</h5>
     </label>
     <div class="d-flex flex-row align-items-start justify-content-center w-100 flex-wrap">
       <div class="column" pDroppable (onDrop)="drop(group,'includeAll')">
-        <p class="text-center">Include All</p>
+        <h6 class="text-center fw-bold coltitle">Inclure tous</h6>
+        <p *ngIf="($any(thirdPart.controls[group]).controls['includeAll']).length == 0" class="text-center">Vide</p>
           <ul class="list-group">
               <li *ngFor="let control of ($any(thirdPart.controls[group]).controls['includeAll']).controls; index as i" class="list-group-item " pDraggable (onDragStart)="dragStart(control,group,'includeAll',i)" (onDragEnd)="dragEnd()">
                   {{control.value}}
@@ -18,7 +33,8 @@
           </ul>
       </div>
       <div class="column" pDroppable (onDrop)="drop(group,'includeNone')">
-          <p class="text-center">Include None</p>
+          <h6 class="text-center fw-bold coltitle">Exclure</h6>
+          <p *ngIf="($any(thirdPart.controls[group]).controls['includeNone']).length == 0" class="text-center">Vide</p>
           <ul class="list-group">
               <li *ngFor="let control of ($any(thirdPart.controls[group]).controls['includeNone']).controls; index as i" class="list-group-item " pDraggable (onDragStart)="dragStart(control,group,'includeNone',i)" (onDragEnd)="dragEnd()">
                   {{control.value}}
@@ -26,8 +42,14 @@
           </ul>
       </div>
       <div class="column" pDroppable (onDrop)="dropIncludeOnce(group,j)" *ngFor="let array of ($any(thirdPart.controls[group]).controls['includeOnce']).controls; let j=index">
-        <p class="text-center">Include Once - {{j + 1}}</p>
-        <button type="button" class="btn bg-danger text-white" (click)="removeIncludeOnce(group,j) " *ngIf="j > 0">Supprimer colonne</button>
+        <div class="d-flex flex-row align-items-center justify-content-center ">
+          <h6 class="text-center fw-bold mb-0 coltitle">Inclure au moins un</h6>
+          <button type="button" class="btn bg-danger text-white btn-delete" (click)="removeIncludeOnce(group,j) " *ngIf="j > 0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+          </button>
+        </div>
+
+        <p *ngIf="(($any(thirdPart.controls[group]).controls['includeOnce']).at(j)).length == 0" class="text-center">Vide</p>
         <ul class="list-group">
             <li *ngFor="let control of (($any(thirdPart.controls[group]).controls['includeOnce']).at(j)).controls; index as i" class="list-group-item " pDraggable (onDragStart)="dragStartIncludeOnce(control,group,j,i)" (onDragEnd)="dragEnd()">
                 {{control.value}}
@@ -36,6 +58,6 @@
       </div>
     </div>
 
-    <button type="button" class="btn btn-dark" (click)="addIncludeOnce(group)">Ajouter un groupe Include Once</button>
+    <button type="button" class="btn btn-dark" (click)="addIncludeOnce(group)">+ Ajouter un groupe 'Inclure au moins un'</button>
   </div>
 </div>

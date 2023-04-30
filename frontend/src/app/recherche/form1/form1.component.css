@@ -4,9 +4,16 @@
 }
 
 label{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+label h5{
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
 }
 
 label svg{
@@ -38,4 +45,20 @@ textarea:focus + .card{
 
 .card-title{
     color: #1dd3cd;
+}
+.form-group{
+  margin-top: 10px;
+}
+
+.btn-help svg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  fill: white;
+}
+.btn-help{
+  border-radius: 5px;
+  margin-bottom: 5px;
 }

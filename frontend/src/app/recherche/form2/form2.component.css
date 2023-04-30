@@ -4,24 +4,24 @@
   margin-top: 20px;
 }
 
-label,h5{
+label{
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+label h5{
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
 }
 
 label svg{
-  height: 32px;
-  width: 32px;
-  margin-right: 10px;
-  opacity: 60%;
-}
-
-h5 svg{
-  height: 35px;
-  width: 35px;
-  margin-right: 10px;
-  opacity: 60%;
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    opacity: 60%;
 }
 
 .mesh svg, .mesh button svg{
@@ -42,15 +42,6 @@ textarea:focus + .card{
   transition: all 200ms;
   height: 100%;
   top: 0px;
-}
-
-.card{
-  margin-top: 10px;
-  opacity: 0;
-  transition: all 200ms;
-  height: 0;
-  top: -50px;
-  overflow: hidden;
 }
 
 .card-title{
@@ -138,29 +129,47 @@ input{
   z-index: -1;
 }
 
-.card{
-  position: absolute;
-  opacity: 0;
-  transform: scaleY(0);
-  transition: opacity 300ms ease-in-out;
-  text-shadow: none;
-  border-radius: 2px;
-  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
-  font-weight: bold;
-  color: #1dd3cd;
-  height: 35px;
-  justify-content: center;
-  align-items: center;
-  width: 190px;
-}
-.card .bubble{
-  transform: translateY(-2px);
-  right: auto;
-}
 .mesh button:hover .card{
   opacity: 1;
   transform: scaleY(1) translateY(80px);
   transition: opacity 200ms ease-in-out, bottom 200ms;
+}
+
+.btn-help svg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  fill: white;
+}
+.btn-help{
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.form-group{
+  margin-top: 20px;
+}
+
+.btn-helha{
+  background-color: #009790;
+}
+
+.btn-hetop{
+  display: flex;
+  flex-direction: row;
+  font-size: small;
+  font-weight: bold;
+  margin-left: 5px;
+  background-color: #5bce6b;
+}
+
+.btn-hetop svg{
+  height: 20px;
+  width: 20px;
+  fill: rgb(20, 20, 20);
+  margin-left: 5px;
 }
 
 @media (max-width: 991px){

@@ -8,21 +8,28 @@ li{
   cursor:grab;
 }
 
-label,h5{
+label{
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 5px;
+}
+
+label h5{
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
 }
 
 label svg{
-  height: 32px;
-  width: 32px;
-  margin-right: 10px;
-  opacity: 60%;
+    height: 32px;
+    width: 32px;
+    margin-right: 10px;
+    opacity: 60%;
 }
 
 .column{
-  width: 150px;
+  width: 200px;
   margin: 5px;
   min-height: 100px;
 }
@@ -30,4 +37,72 @@ label svg{
 .list-group-item{
   text-align: center;
   overflow-wrap: break-word;
+}
+
+.btn-helha{
+  background-color: #009790;
+}
+
+.btn-help svg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  fill: white;
+}
+.btn-help{
+  border-radius: 5px;
+}
+.btn-generate{
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.btn-generate svg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  width: 20px;
+  fill: white;
+  margin-right: 5px;
+}
+.form-group{
+  margin-top: 10px;
+}
+.btn-delete svg{
+  height: 20px;
+  width: 20px;
+  fill: white;
+}
+
+.btn-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  background-color: rgb(184, 69, 69);
+  margin-left: 5px;
+  transition: all ease-in-out 100ms;
+}
+
+.btn-delete:hover{
+  transform: scale(1.1);
+}
+
+.coltitle{
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-menu{
+  margin-bottom: 5px;
 }
