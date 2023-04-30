@@ -11,8 +11,6 @@
   background-repeat: no-repeat;
   background-size: cover;
 
-
-  text-align:center;
   display:grid;
   grid-template-rows: auto 0px 1fr auto;
   min-height:100vh;

@@ -7,6 +7,7 @@ import { EquationGeneratorService } from 'src/app/services/equation-generator.se
 import { Question } from '../question';
 import { ExporterService } from 'src/app/services/exporter.service';
 import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
+import { SauvegarderService } from 'src/app/services/sauvegarder.service';
 
 @Component({
   selector: 'app-formulaires',
@@ -15,7 +16,7 @@ import { QuestionGeneratorService } from 'src/app/services/question-generator.se
 })
 export class FormulairesComponent{
 
-  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService) {}
+  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService,private sa:SauvegarderService) {}
   form2Visible = false;
   form3Visible = false;
   equationVisible = false;
@@ -99,5 +100,9 @@ export class FormulairesComponent{
 
   export(){
     this.ex.exportData(this.qu.toQuestion(this.form));
+  }
+
+  save(){
+    this.sa.sauvegarder(this.qu.toQuestion(this.form));
   }
 }

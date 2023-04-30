@@ -1,7 +1,9 @@
 <div  @insertTrigger class="form-part bg-light p-4 rounded">
-  <button (click)="displayEquation()">Generer</button>
-  <button [ngxClipboard]="equationInput">Copier</button>
-  <a href="https://pubmed.ncbi.nlm.nih.gov/?term={{equationInput.value}}" target="_blank">PubMed</a>
+  <div class="mb-5px">
+    <button (click)="displayEquation()" class="btn btn-dark mr-5px">Generer</button>
+    <button [ngxClipboard]="equationInput" class="btn btn-dark mr-5px">Copier</button>
+    <a href="https://pubmed.ncbi.nlm.nih.gov/?term={{equationInput.value}}" target="_blank" class="btn btn-dark">PubMed</a>
+  </div>
   <textarea name="" id="" cols="30" rows="3" #equationInput></textarea>
   <p>Nombre d'articles : {{counter}}</p>
 </div>
