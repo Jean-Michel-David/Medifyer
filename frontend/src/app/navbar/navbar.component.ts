@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  
+
   background = "";
   router = new Router();
   location = location.pathname;
@@ -17,7 +17,6 @@ export class NavbarComponent implements OnInit {
   onScroll() {
     if(window.scrollY > 50){
       this.background ="bg-dark";
-      console.log("scrolled");
     } else {
       this.background = "";
     }
@@ -25,5 +24,5 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.router.events.subscribe(() => this.location = location.pathname)
   }
-  
+
 }
