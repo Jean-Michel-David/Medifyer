@@ -16,11 +16,14 @@ export class ListeRecherchesComponent implements OnInit{
 
   @Input()
   userSearches! : Observable<QuestionShort[]>;
+  @Input()
+  sharedSearches! : Observable<QuestionShort[]>;
 
   @Output()
   sharedUserSearches : EventEmitter<Question> = new EventEmitter();
 
   recherches! : Observable<QuestionShort[]>;
+
   mySearches = true;
 
   constructor(
@@ -57,7 +60,6 @@ export class ListeRecherchesComponent implements OnInit{
 
   getQuestionsPartagees(){
     this.recherches = this.api.afficherPartage();
-    //this.sharedUserSearches.emit();
   }
 
   switchView(mySearches : boolean){
