@@ -7,7 +7,8 @@ import { EquationGeneratorService } from 'src/app/services/equation-generator.se
 import { Question } from '../question';
 import { ExporterService } from 'src/app/services/exporter.service';
 import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
-import { SauvegarderService } from 'src/app/services/sauvegarder.service';
+import { UserService } from 'src/app/services/user.service';
+import { UserRechercheService } from 'src/app/services/user-recherche.service';
 
 @Component({
   selector: 'app-formulaires',
@@ -16,7 +17,7 @@ import { SauvegarderService } from 'src/app/services/sauvegarder.service';
 })
 export class FormulairesComponent{
 
-  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService,private sa:SauvegarderService) {}
+  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService,private sa:UserRechercheService) {}
   form2Visible = false;
   form3Visible = false;
   equationVisible = false;
@@ -104,6 +105,9 @@ export class FormulairesComponent{
   }
 
   save(){
-    this.sa.sauvegarder(this.qu.toQuestion(this.form));
+    const sub = this.sa.sauvegarder(this.qu.toQuestion(this.form)).subscribe((newQuestion: Question) => {
+      console.log(newQuestion.id);
+      sub.unsubscribe();
+    });
   }
 }
