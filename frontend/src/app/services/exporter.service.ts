@@ -65,7 +65,7 @@ exportData(question : Question){
       break;
 
       case "Résultats_Language_Naturel":
-        str += " Language naturel (FR) utilisé pour les Résultats :\n\n\t" + this.formatTable(obj[prop]) + "\n\n\n";
+        str += "Language naturel (FR) utilisé pour les Résultats :\n\n\t" + this.formatTable(obj[prop]) + "\n\n\n";
       break;
 
       case "Résultats_Terme_Mesh":
@@ -128,8 +128,7 @@ exportData(question : Question){
           }
       break;
       case "Equation_Recherche":
-       let equation = obj[prop];
-        str += "Equation finale :\n\n\t" + equation.text + "\n\n\n";
+        str += "Equation finale :\n\n\t" + obj[prop] + "\n\n\n";
       break;
       default:
       break;
