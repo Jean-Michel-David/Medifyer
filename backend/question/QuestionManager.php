@@ -55,7 +55,7 @@ class QuestionManager{
             'resultat_rech' => json_encode($question->getRésultats(),JSON_UNESCAPED_UNICODE),
             'public_rech' => json_encode($question->getAcces(),JSON_UNESCAPED_UNICODE),
             'commentaire_rech' => json_encode($question->getCommentaires(),JSON_UNESCAPED_UNICODE),
-            'user_id' => 1/*$credsObj->extractUserId($authorization)*/,
+            'user_id' => $credsObj->extractUserId($authorization),
 
             'termesFrancaisPopulation' => json_encode($question->getPatient_Language_Naturel(),JSON_UNESCAPED_UNICODE),
             'termesFrancaisResultat' => json_encode($question->getRésultats_Language_Naturel(),JSON_UNESCAPED_UNICODE),
@@ -75,7 +75,7 @@ class QuestionManager{
             $params = array_merge($paramUpdate,$paramsInsert);
             $insert->execute($params); //return true si le query a bien été exécuté
             $insert->closeCursor();
-            $this->insertCoWorkers($con,$question,$authorization);
+            $this->insertCoWorkers($con,$question,$authorization,$credsObj);
             
             echo json_encode($question);
             
@@ -90,12 +90,12 @@ class QuestionManager{
 /**
   @Description set the new question's id. And set the coworkers for the question
   **/
-    function insertCoWorkers($con, $question,$authorization) {
-        if($question->getId() < 0){
+    function insertCoWorkers($con, $question,$authorization,$credsObj) {
+        if($question->getId() <= 0){
             //si c'était une nouvelle question alors on récupère son id et on le met dans l'obj question
             $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
             $insert = $con->prepare($sql);
-        $params = array ('user_id' => 1/*$credsObj->extractUserId($authorization)*/); 
+        $params = array ('user_id' => $credsObj->extractUserId($authorization)); 
             $insert->execute($params);
             $result = $insert->fetch(PDO::FETCH_ASSOC);
             $question ->setId($result["recherche_id"]);
@@ -140,7 +140,7 @@ class QuestionManager{
 
         $statement = $con->prepare($sqlQuery);
 
-        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization)*/);
+        $statement->bindValue('userId', $credsObj->extractUserId($authorization));
         $statement->execute();
 
         $recherches = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -162,6 +162,7 @@ class QuestionManager{
   @Description return the questions shared with the connected user for modification
   **/
 function getSharedSearches($con, $authorization){
+    $credsObj = new Credentials();
     try{
     //récupère les recherches partagées avec le user connecté
         $sqlQuery = "SELECT recherche_id as id
@@ -169,7 +170,7 @@ function getSharedSearches($con, $authorization){
         WHERE user_id = :userId";
 
         $statement = $con->prepare($sqlQuery);
-        $statement->bindValue('userId', 1 /*$credsObj->extractUserId($authorization)*/);
+        $statement->bindValue('userId', $credsObj->extractUserId($authorization));
         $statement->execute();
         $recherchesPartagees = $statement->fetchAll(PDO::FETCH_ASSOC);
 

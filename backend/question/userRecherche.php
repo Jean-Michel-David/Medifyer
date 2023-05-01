@@ -1,10 +1,17 @@
 <?php
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 require_once(dirname(__FILE__) . '/../env.php');
+
 global $authorizedURL;
 header('Access-Control-Allow-Origin: ' . $authorizedURL);
-
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
+// If this is a preflight request, respond with the appropriate headers and exit
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    exit;
+}
 require_once('../database/dbConnection.php');
 require_once('Question.class.php');
 require_once('QuestionManager.php');
@@ -13,6 +20,11 @@ $dbConnection = new DBConnection();
 $con = $dbConnection->connect();
 $questionManager = new QuestionManager();
 $headers = getallheaders();
+
+if (empty($headers['Authorization'])) {
+  http_response_code(401);
+  exit();
+}
 
 //quand on sauvegarde une question
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -41,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     ->setEquations_Resultats($json_obj["Equations_Resultats"]);
 
 
-$questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
+$questionManager->saveQuestion($question,$con,$headers['Authorization']);
 
 } 
 
@@ -49,7 +61,7 @@ $questionManager->saveQuestion($question,$con,$headers/*['Authorization']*/);
 // Quand on récupère les recherches d'un user
 
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && !isset($_GET["shared"])){
-  $recherches = $questionManager->getUserSearches($con,$headers/*['Authorization']*/);
+  $recherches = $questionManager->getUserSearches($con,$headers['Authorization']);
 
     //Error, bad request
     if (gettype($recherches) == "boolean") {
@@ -72,7 +84,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && !isset($_
 //Quand on récupère les questions partagées d'un user
 
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && isset($_GET["shared"])){
-  $question = $questionManager->getSharedSearches($con,$headers/*['Authorization']*/);
+  $question = $questionManager->getSharedSearches($con,$headers['Authorization']);
 
   //Error, bad request
   if (gettype($question) == "boolean") {
@@ -94,7 +106,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && isset($_G
 //Quand on récupère les données d'une question
 
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
-  $question = $questionManager->getQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
+  $question = $questionManager->getQuestion($_GET["id"],$con,$headers['Authorization']);
 
   //Error, bad request
   if (gettype($question) == "boolean") {
@@ -117,7 +129,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
 
 
 } else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){
-$question = $questionManager->deleteQuestion($_GET["id"],$con,$headers/*['Authorization']*/);
+$question = $questionManager->deleteQuestion($_GET["id"],$con,$headers['Authorization']);
 
 //Error, bad request
 if ($question == false) {
