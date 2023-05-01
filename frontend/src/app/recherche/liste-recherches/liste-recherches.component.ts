@@ -17,6 +17,9 @@ export class ListeRecherchesComponent implements OnInit{
   @Input()
   userSearches! : Observable<QuestionShort[]>;
 
+  @Output()
+  sharedUserSearches : EventEmitter<Question> = new EventEmitter();
+
   recherches! : Observable<QuestionShort[]>;
   mySearches = true;
 
@@ -33,7 +36,7 @@ export class ListeRecherchesComponent implements OnInit{
   onDevelopQuestion(e : any, id : number) : void {
     const sub = this.api.developper(id).subscribe((question) => {
       question.Equation_Recherche = this.api2.generateEquation(question).text;
-      this.router.navigate(['recherche'],{queryParams:question});
+      this.router.navigate(['recherche'],{queryParams:{id : question.id}});
       sub.unsubscribe();
     });
   }
@@ -54,6 +57,7 @@ export class ListeRecherchesComponent implements OnInit{
 
   getQuestionsPartagees(){
     this.recherches = this.api.afficherPartage();
+    //this.sharedUserSearches.emit();
   }
 
   switchView(mySearches : boolean){

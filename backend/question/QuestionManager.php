@@ -149,7 +149,6 @@ class QuestionManager{
         foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
         
-
         return $recherches;
     } catch(PDOException $e){
         die($e);
@@ -184,7 +183,7 @@ function getSharedSearches($con, $authorization){
             $statement = $con->prepare($sqlQuery);
             $statement->bindValue('recherche_id', $rech['id']);
             $statement->execute();
-            $recherches += $statement->fetchAll(PDO::FETCH_ASSOC);
+            array_push($recherches,...$statement->fetchAll(PDO::FETCH_ASSOC));
         }
         foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
