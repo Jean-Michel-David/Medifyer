@@ -10,8 +10,9 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-
-  display:grid;
-  grid-template-rows: auto 0px 1fr auto;
-  min-height:100vh;
 }
+ .parallax-container{
+  display:grid;
+  grid-template-rows: 0px 1fr auto;
+  min-height: calc(100vh - 92px);
+ }

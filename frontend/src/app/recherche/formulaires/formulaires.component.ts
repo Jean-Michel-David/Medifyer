@@ -9,11 +9,38 @@ import { ExporterService } from 'src/app/services/exporter.service';
 import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
 import { UserService } from 'src/app/services/user.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-formulaires',
   templateUrl: './formulaires.component.html',
-  styleUrls: ['./formulaires.component.css']
+  styleUrls: ['./formulaires.component.css'],
+  animations: [
+    trigger('insertTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 1 })),
+      ])
+    ]),
+    trigger('insertTrigger1', [
+      transition(':enter', [
+        style({ opacity: 0 , transform: 'translateX(-100%)'}),
+        animate('100ms 150ms', style({ opacity: 1 , transform: 'translateX(0%)'})),
+      ])
+    ]),
+    trigger('insertTrigger2', [
+      transition(':enter', [
+        style({ opacity: 0 , transform: 'translateX(-100%)'}),
+        animate('100ms 300ms', style({ opacity: 1 , transform: 'translateX(0%)'})),
+      ])
+    ]),
+    trigger('insertTrigger3', [
+      transition(':enter', [
+        style({ opacity: 0 , transform: 'translateX(-100%)'}),
+        animate('100ms 450ms', style({ opacity: 1 , transform: 'translateX(0%)'})),
+      ])
+    ]),
+  ]
 })
 export class FormulairesComponent{
 
