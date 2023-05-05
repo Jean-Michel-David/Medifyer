@@ -17,7 +17,7 @@ export class UserService {
   addUser(user: User): Observable<boolean> {
     return this.http.post(this.addUserUrl, JSON.stringify(user), { responseType : 'text'})
     .pipe(map((res : any) => {
-        if (res.status < 200 && res.status > 299) {
+        if (res.status < 200 ||res.status > 299) {
           console.log("problem : " + res);
           return false;
         }
@@ -31,7 +31,7 @@ export class UserService {
   login(user: User): Observable<boolean>{
     return this.http.post(this.loginUrl, JSON.stringify(user), {responseType : 'text'})
     .pipe(map((res : any) => {
-      if (res.status < 200 && res.status > 299) {
+      if (res.status < 200 || res.status > 299) {
         console.log("problem : " + res);
         return false;
       }
