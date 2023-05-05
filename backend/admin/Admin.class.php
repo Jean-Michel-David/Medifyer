@@ -10,12 +10,7 @@ class AdminManager {
      * @param int $usersByPage optionnal parameter : number of users to display
      * @return array|false array if there is no problem, false if something went wrong
      */
-    public static function getUserList($creds, string $parameters, int $userCount, int $usersByPage = 10) {
-        //Verify credentials
-        $credentials = new Credentials();
-        if (!$credentials->hasAdminCredentials($creds))
-            return false;
-
+    public static function getUserList(string $parameters, int $userCount, int $usersByPage = 10) {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
@@ -49,12 +44,7 @@ class AdminManager {
      * @param string $userId the id of the user from which to select the researches
      * @return array|false array if there is no problem, false if something went wrong
      */
-    public static function getUserSearches($creds, string $userId) {
-        //Verify credentials
-        $credentials = new Credentials();
-        if (!$credentials->hasAdminCredentials($creds))
-            return false;
-
+    public static function getUserSearches(string $userId) {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
@@ -85,12 +75,7 @@ class AdminManager {
      * @param string $userId the id of the user from which to select the researches
      * @return array|false array if there is no problem, false if something went wrong
      */
-    public static function getSharedUserSearches($creds, string $userId) {
-        //Verify credentials
-        $credentials = new Credentials();
-        if (!$credentials->hasAdminCredentials($creds))
-            return false;
-
+    public static function getSharedUserSearches(string $userId) {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
@@ -122,12 +107,7 @@ class AdminManager {
      * @param string $text The new text for the info
      * @return int The number of affected rows (1 if it worked, 0 if it didn't) -Can be treated as boolean-
      */
-    public static function setInfobulles($creds, string $label, string $text) {
-        //Verify credentials
-        $credentials = new Credentials();
-        if (!$credentials->hasAdminCredentials($creds))
-            return false;
-
+    public static function setInfobulles(string $label, string $text) {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
@@ -149,7 +129,40 @@ class AdminManager {
         return $count;
     }
 
-    public static function setAdminStatus($creds, User $user) {
+    public static function setAdminStatus(int $id, int $user, bool $status) : string{
+        //Check if admin can modify admin status of the second admin
+        if ($id == $user)
+            return "Vous ne pouvez pas modifier votre propre status";
 
+        //include class dbConnection (PDO connection to the database)
+        require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+        $db = new DBConnection();
+
+        //Check for the count of admins in case we remove one :
+        if (!$status) {
+            $sqlQuery = "SELECT COUNT(*) as adminsCount FROM users WHERE admin_user = 1";
+
+            $statement = $db->connect()->prepare($sqlQuery);
+            $statement->execute();
+
+            $count = $statement->fetch()['adminsCount'];
+            $db->disconnect();
+            if ($count <= 2)
+                return "Vous ne pouvez pas rétrograder cet utilisateur, sinon le nombre d'administrateurs sera insuffisant";
+        }
+
+        //Update in the DB if all the requirements are met
+        $sqlQuery = "UPDATE users SET admin_user = :status WHERE user_id = :user";
+        $statement = $db->connect()->prepare($sqlQuery);
+
+        $statement->bindValue(":status", $status, PDO::PARAM_INT);
+        $statement->bindValue(":user", $user, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        $result = $statement->rowCount();
+        if ($result != 1)
+            return "Something went wrong...";
+        return "";
     }
 }

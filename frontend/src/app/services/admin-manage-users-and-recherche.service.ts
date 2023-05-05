@@ -42,6 +42,9 @@ export class AdminManageUserAndRechercheService {
   }
 
   setAdminStatus(user : User) {
-    return this.http.post(this.backendUrl, user);
+    return this.http.post<{success : boolean, message : string}>(this.backendUrl,JSON.stringify({
+      user : user.id,
+      setAdminStatus : user.isAdmin
+    }));
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-admins',
@@ -14,6 +15,8 @@ export class ManageAdminsComponent implements OnInit{
   searchString! : string;
   showUserList! : boolean;
   selectedUser! : User | undefined;
+  charging = false;
+  errorMessage = "";
 
   constructor(private adminService : AdminManageUserAndRechercheService) {}
 
@@ -75,9 +78,15 @@ export class ManageAdminsComponent implements OnInit{
    */
   setAdminStatus(status : boolean) {
     if (typeof this.selectedUser != 'undefined') {
+      this.charging = true;
       this.selectedUser.isAdmin = status;
+      
       let sub = this.adminService.setAdminStatus(this.selectedUser).subscribe((response) => {
-        
+        if(! response.success)
+          this.selectedUser!.isAdmin = ! status;
+
+        this.errorMessage = response.message;
+        this.charging = false;
         sub.unsubscribe();
       });
     }
@@ -87,6 +96,8 @@ export class ManageAdminsComponent implements OnInit{
    * This function returns to the selection of the user
    */
     retour() : void {
+      this.errorMessage = "";
+      this.charging = false;
       this.showUserList = true;
     }
 }

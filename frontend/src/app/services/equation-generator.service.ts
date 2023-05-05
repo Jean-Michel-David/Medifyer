@@ -37,19 +37,6 @@ export class EquationGeneratorService {
       equation.text += this.getEquationBit(question.Equations_Resultats);
     }
 
-    let req = this.http.get('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term='
-        + equation.text,
-        {responseType: 'text'}).subscribe(
-          response => {
-            let parser = new DOMParser();
-            let xml = parser.parseFromString(response, 'text/xml');
-            let count:number = parseInt(xml.getElementsByTagName('eSearchResult')[0].getElementsByTagName('Count')[0].innerHTML);
-            
-            equation.numberOfArticles = count;
-            req.unsubscribe();
-        });
-
-    console.log(equation.text);
     return equation;
   }
 

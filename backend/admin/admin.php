@@ -16,18 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once(dirname(__FILE__) . '/Admin.class.php');
 $headers = getallheaders();
 
-if (empty($headers['Authorization'])) {
-   http_response_code(401);
-   exit();
+if (!empty($headers['Authorization'])) {
+   $creds = new Credentials();
+   if (! $creds->hasAdminCredentials($headers['Authorization'])) {
+       http_response_code(401);
+       exit();
+   }
 }
 else {
-    require_once(dirname(__FILE__) . '/../credentials.php');
-    $creds = new Credentials();
-    if (! $creds->hasAdminCredentials($headers['Authorization'])) {
-        http_response_code(401);
-        exit();
-    }
+    http_response_code(401);
+    exit();
 }
+
+$adminId = $creds->extractUserId($headers['Authorization']);
 
 
 if($_SERVER['REQUEST_METHOD'] == "GET") {
@@ -35,13 +36,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
      * Getting the list of users
      */
     if (isset($_GET['getUserList']) && isset($_GET['userCount'])) {
-        $userList = AdminManager::getUserList($headers['Authorization'], $_GET['getUserList'], $_GET['userCount']);
-
-        //Error, bad request
-        if (gettype($userList) == "boolean") {
-            http_response_code(400);
-            exit();
-        }
+        $userList = AdminManager::getUserList($_GET['getUserList'], $_GET['userCount']);
 
         //HTTP RESPONSE no content
         if (gettype($userList) == "array" && !$userList) {
@@ -61,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
         $searches = AdminManager::getUserSearches($headers['Authorization'], $_GET['getUserSearches']);
 
         if (!$searches) {
-            http_response_code(400);
+            http_response_code(204);
             exit();
         }
 
@@ -84,8 +79,12 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         exit();
     }
 
-    if (!empty($json_obj['id']) && !empty($json_obj['isAdmin'])) {
-        print_r($json_obj);
-
+    if (!empty($json_obj['user']) && isset($json_obj['setAdminStatus'])) {
+        $msg = AdminManager::setAdminStatus($adminId, $json_obj['user'], $json_obj['setAdminStatus']);
+        $success = (strlen($msg) == 0);
+        echo json_encode([
+            "success" => $success,
+            "message" => $msg
+        ]);
     }
 }
