@@ -9,7 +9,7 @@ import {
   HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, map, tap } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
 @Injectable()
 export class AuthHeaderInterceptor implements HttpInterceptor {
@@ -35,20 +35,14 @@ export class AuthHeaderInterceptor implements HttpInterceptor {
       }
     });
     
+    of(next.handle(newRequest))
+
     return next.handle(newRequest).pipe(
-      tap(
-        event => { 
-          if (event instanceof HttpResponse)
-            console.log('request succeeded');
-        },
-        error => {
-          if (error instanceof HttpErrorResponse) {
-            //Déconnecter utilisateur si unauthorized
-            if (error.status === 401) {
-              localStorage.removeItem('authenticationToken');
-            }
-          }
-        }
-      ));    
+      catchError(error => {
+        if (error instanceof HttpErrorResponse && error.status === 401)
+          localStorage.removeItem('authenticationToken');
+
+        return of(error);
+      }));
   }
 }
