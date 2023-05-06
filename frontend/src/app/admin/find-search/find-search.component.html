@@ -10,5 +10,5 @@
         (getMoreUsers)="getMoreUsers($event)" 
         (selectUser)="fetchQuestions($event)">
     </app-user-list>
-    <app-liste-recherches *ngIf="!showUserList" [userSearches]="userSearches"></app-liste-recherches>
+    <app-liste-recherches *ngIf="!showUserList" [userSearches]="userSearches" [sharedSearches]="userSharedSearches"></app-liste-recherches>
 </div>

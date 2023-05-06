@@ -15,9 +15,9 @@ import { QuestionShort } from '../question-short';
 export class ListeRecherchesComponent implements OnInit{
 
   @Input()
-  userSearches! : Observable<QuestionShort[]>;
+  userSearches! : QuestionShort[];
   @Input()
-  sharedSearches! : Observable<QuestionShort[]>;
+  sharedSearches! : QuestionShort[];
 
   @Output()
   sharedUserSearches : EventEmitter<Question> = new EventEmitter();

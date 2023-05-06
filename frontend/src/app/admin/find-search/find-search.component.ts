@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { User } from '../user';
-import { Observable } from 'rxjs';
 import { QuestionShort } from 'src/app/recherche/question-short';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
 
@@ -11,9 +10,12 @@ import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manag
 })
 export class FindSearchComponent {
   userList! : User[];
-  userSearches! : Observable<QuestionShort[]>;
+  userSearches! : QuestionShort[];
+  userSharedSearches! : QuestionShort[];
+
   showUserList : boolean = true;
   userCount = 0;
+  
   searchString! : string;
   showGetMore! : boolean;
 
@@ -49,10 +51,15 @@ export class FindSearchComponent {
    * @param user Selected user
    */
   fetchQuestions(user : number) : void{
-    console.log('fetching things');
     this.showUserList = false;
-    console.log('fetching questions for user with ID : ' + user);    
-    this.userSearches = this.service.getUserSearches(user);
+    console.log('fetching questions for user with ID : ' + user);
+    this.service.getUserSearches(user).subscribe((questions) => {
+      this.userSearches = questions;
+    });
+
+    this.service.getUserSharedSearches(user).subscribe((questions) => {
+      this.userSharedSearches = questions;
+    });
   }
 
   /**

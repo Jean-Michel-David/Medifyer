@@ -53,7 +53,20 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
      *  Getting the list of search equations of a particular user
      */
     if (!empty($_GET['getUserSearches'])) {
-        $searches = AdminManager::getUserSearches($headers['Authorization'], $_GET['getUserSearches']);
+        $searches = AdminManager::getUserSearches($_GET['getUserSearches']);
+
+        if (!$searches) {
+            http_response_code(204);
+            exit();
+        }
+
+        http_response_code(200);
+        echo json_encode($searches);
+        exit();
+    }
+
+    if (!empty($_GET['getUserSharedSearches'])) {
+        $searches = AdminManager::getSharedUserSearches($_GET['getUserSharedSearches']);
 
         if (!$searches) {
             http_response_code(204);

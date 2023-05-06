@@ -41,6 +41,10 @@ export class AdminManageUserAndRechercheService {
     return this.http.get<QuestionShort[]>(this.backendUrl + '?getUserSearches=' + user);
   }
 
+  getUserSharedSearches(user : number) : Observable<QuestionShort[]> {
+    return this.http.get<QuestionShort[]>(this.backendUrl + '?getUserSharedSearches=' + user);
+  }
+
   setAdminStatus(user : User) {
     return this.http.post<{success : boolean, message : string}>(this.backendUrl,JSON.stringify({
       user : user.id,

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-admins',

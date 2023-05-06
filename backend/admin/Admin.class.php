@@ -79,25 +79,34 @@ class AdminManager {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
+        $conn = $db->connect();
 
         //Actual query
-        $sqlQuery = "   SELECT recherche_id as id, question_rech as question 
-                        FROM `recherches` 
-                        WHERE user_id = :userId";
+        $sqlQuery = "SELECT recherche_id as id
+        FROM aaccesa 
+        WHERE user_id = :userId";
 
-        $statement = $db->connect()->prepare($sqlQuery);
-
+        $statement = $conn->prepare($sqlQuery);
         $statement->bindValue('userId', $userId);
         $statement->execute();
+        $sharedSearches = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $recherches = $statement->fetchAll();
-        $db->disconnect();
+        $searches = [];
 
-        foreach($recherches as &$rech) {
-            $rech['question'] = json_decode($rech['question']);
+        foreach($sharedSearches as $search){
+            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+            FROM recherches 
+            WHERE recherche_id = :recherche_id";
+
+            $statement = $conn->prepare($sqlQuery);
+            $statement->bindValue('recherche_id', $search['id']);
+            $statement->execute();
+            array_push($searches,...$statement->fetchAll(PDO::FETCH_ASSOC));
         }
+        foreach ($searches as &$search)
+            $search['question'] = json_decode($search['question']);
 
-        return $recherches;
+        return $searches;
     }
 
     /**
