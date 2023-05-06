@@ -7,7 +7,7 @@
     <ng-container *ngIf="userSearches; then userSearche; else recherchePerso"></ng-container>
     <ng-template #userSearche>
       <div class="questionDiv list-group-item my-2 rounded-2"
-      *ngFor='let recherche of userSearches'
+      *ngFor='let recherche of (userSearches | async)'
       (click)="onDevelopQuestion($event, recherche!.id)">
         <div class="row">
           <div class="col-sm-11">
@@ -47,7 +47,7 @@
   <ng-container *ngIf="sharedSearches; then sharedSearche; else recherchePersoPartagee"></ng-container>
   <ng-template #sharedSearche>
     <div class="questionDiv list-group-item my-2 rounded-2"
-    *ngFor='let recherche of sharedSearches'>
+    *ngFor='let recherche of (sharedSearches | async)'>
       <div class="row">
         <div (click)="onDevelopQuestion($event, recherche!.id)" class="col-sm-11">
           <p class="libelQ my-auto h4">Question de recherche</p>

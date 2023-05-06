@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../user';
 import { QuestionShort } from 'src/app/recherche/question-short';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-find-search',
@@ -10,12 +11,12 @@ import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manag
 })
 export class FindSearchComponent {
   userList! : User[];
-  userSearches! : QuestionShort[];
-  userSharedSearches! : QuestionShort[];
+  userSearches! : Observable<QuestionShort[]>;
+  userSharedSearches! : Observable<QuestionShort[]>;
 
   showUserList : boolean = true;
   userCount = 0;
-  
+
   searchString! : string;
   showGetMore! : boolean;
 
@@ -53,13 +54,8 @@ export class FindSearchComponent {
   fetchQuestions(user : number) : void{
     this.showUserList = false;
     console.log('fetching questions for user with ID : ' + user);
-    this.service.getUserSearches(user).subscribe((questions) => {
-      this.userSearches = questions;
-    });
-
-    this.service.getUserSharedSearches(user).subscribe((questions) => {
-      this.userSharedSearches = questions;
-    });
+    this.userSearches = this.service.getUserSearches(user);
+    this.userSharedSearches = this.service.getUserSharedSearches(user);
   }
 
   /**
@@ -74,9 +70,9 @@ export class FindSearchComponent {
       this.userList = [...this.userList, ...users];
       if (oldCount == this.userList.length)
         this.showGetMore = false;
-      
+
       sub.unsubscribe();
-    });    
+    });
   }
 
   /**
