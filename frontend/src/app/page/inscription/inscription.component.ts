@@ -4,11 +4,20 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CustomValidators } from './CustomValidators';
 import { User } from './userInscription';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-inscription-form',
   templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.css']
+  styleUrls: ['./inscription.component.css'],
+  animations: [
+    trigger('insertTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-in-out', style({ opacity: 1})),
+      ])
+    ])
+  ]
 })
 
 export class InscriptionComponent implements OnInit{

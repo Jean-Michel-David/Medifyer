@@ -14,5 +14,5 @@
  .parallax-container{
   display:grid;
   grid-template-rows: 0px 1fr auto;
-  min-height: calc(100vh - 92px);
+  min-height: calc(100vh - 96px);
  }

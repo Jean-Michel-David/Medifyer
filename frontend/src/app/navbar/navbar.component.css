@@ -7,7 +7,6 @@
 .navbar{
   text-shadow: 0 2px 4px rgb(0, 0, 0);
   transition: all 200ms ease-in-out;
-  height: 42px;
   margin-bottom: 50px;
   padding: 0%;
 }
@@ -23,9 +22,6 @@
 }
 .nav-link{
   width: 100%;
-}
-.navbar-nav{
-  height: 42px;
 }
 
 nav a {
@@ -58,6 +54,10 @@ nav a {
 }
 .dropdown-item{
   background-color: #212529;
+  transition: all ease-in-out 100ms;
+}
+.dropdown-item:hover{
+  background-color: #343a3f;
 }
 
 li{

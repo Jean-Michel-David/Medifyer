@@ -1,0 +1,117 @@
+
+.groupContainer{
+  display: flex;
+  flex-direction: row;
+}
+.leftGroup{
+  width: 60%;
+  display: flex;
+  justify-content: center;
+}
+.rightGroup{
+  width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-left: white solid 2px;
+}
+
+@media (max-width: 991px) {
+  .groupContainer{
+    flex-direction: column;
+  }
+  .leftGroup{
+    width: 100%;
+  }
+  .rightGroup{
+    margin-top: 20px;
+    width: 100%;
+    border-left: none;
+  }
+
+  form{
+    padding-bottom: 20px;
+    border-bottom: white solid 2px;
+  }
+}
+
+
+/*Left Group ----------------------- */
+input{
+  border: none;
+  padding: 10px;
+  width: 100%;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+.inputGroup{
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  align-items: center;
+  padding: 10px;
+}
+.inputGroup svg{
+  fill: #515151;
+  height: 30px;
+  margin-right: 20px;
+}
+.inputContainer{
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0,0.30) 0 3px 3px;
+}
+form button{
+  background-color: #029791;
+  color: white;
+  font-weight: 600;
+  font-size: large;
+  padding: 10px;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.30) 0 3px 3px;
+  transition: all ease-in-out 100ms;
+}
+
+form button:hover{
+  background-color: #00645f;
+  transform: scale(1.05);
+}
+
+/*Right Group ----------------------- */
+h2{
+  color: white;
+  text-shadow: rgba(0, 0, 0, 0.50) 0 3px 3px;
+}
+
+.color-helha{
+  color: #00c0ba;
+  font-weight: 600;
+  font-family: 'Nunito',sans-serif;
+}
+
+.rightGroup a{
+  background-color: #029791;
+  color: white;
+  font-weight: 600;
+  font-size: larger;
+  padding: 10px;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.30) 0 3px 3px;
+  width: 300px;
+  text-align: center;
+  transition: all ease-in-out 100ms;
+}
+
+.rightGroup a:hover{
+  background-color: #00645f;
+  transform: scale(1.05);
+}
+

@@ -3,11 +3,20 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../inscription/userInscription';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-connexion',
   templateUrl: './connexion.component.html',
-  styleUrls: ['./connexion.component.css']
+  styleUrls: ['./connexion.component.css'],
+  animations: [
+    trigger('insertTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-in-out', style({ opacity: 1})),
+      ])
+    ])
+  ]
 })
 export class ConnexionComponent {
 
