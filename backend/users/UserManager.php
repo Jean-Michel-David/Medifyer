@@ -10,6 +10,24 @@ class UserManager
   }
 
   /**
+  @Description Function that get users data from the database.
+   */
+  public function getUser($email)
+  {
+    $sql="SELECT user_id, nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user from users WHERE email_user=:email";
+    $result = array();
+    try {
+      $select = $this->db->prepare($sql);
+      $select->execute(array('email'=>$email));
+      $result = $select->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      die($e);
+    } finally {
+      $select->closeCursor();
+    }
+    return $result;
+  }
+  /**
     @Description Function that insert an user in the database using data encoded in the registration form.
   */
   public function saveUser(User $user)
