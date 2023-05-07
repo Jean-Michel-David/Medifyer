@@ -1,13 +1,20 @@
 <?php
 
-require(dirname(__FILE__) . '/./User.class.php');
-require(dirname(__FILE__) . '/../database/dbConnection.php');
-require(dirname(__FILE__) . '/./UserManager.php');
-require (dirname(__FILE__) . '/../credentials.php');
+require_once(dirname(__FILE__) . '/./User.class.php');
+require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+require_once(dirname(__FILE__) . '/./UserManager.php');
+require_once(dirname(__FILE__) . '/../credentials.php');
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization");
-header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
+global $authorizedURL;
+header('Access-Control-Allow-Origin: '. $authorizedURL);
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
+header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+  header('Access-Control-Allow-Headers: Content-Type, Authorization');
+  exit;
+}
 
 $user = new User();
 $credentials = new Credentials();
@@ -64,4 +71,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
   }
 }
-
