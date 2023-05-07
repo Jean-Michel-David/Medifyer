@@ -53,7 +53,9 @@ class UserManager
       $insert->closeCursor();
     }
   }
-
+  /**
+   @Desctription Function that delete a User 
+   */
   public function deleteUser($authorization)
   {
     $userCreds = new Credentials();
