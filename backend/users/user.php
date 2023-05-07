@@ -11,6 +11,7 @@ header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 
 $user = new User();
 $credentials = new Credentials();
+$headers = getallheaders();
 $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
@@ -20,6 +21,7 @@ $options = [
   'cost' => 12,
 ];
 
+// Inscription de l'utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $user->setId($json_obj['id']);
@@ -51,4 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setPhoto($json_obj['photo']);
   $userManager->saveUser($user);
   echo $credentials->createToken($user);
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+  $succes = $userManager->deleteUser($headers['Authorization']);
+  if ($succes == false) {
+    http_response_code(400);
+    exit();
+  } else {
+    http_response_code(200);
+    echo "User deleted with Succes";
+    exit();
+  }
 }
+
