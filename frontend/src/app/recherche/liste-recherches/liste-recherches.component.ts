@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { isEmpty, Observable } from 'rxjs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { ModalComponent } from '../modal/modal.component';
@@ -26,6 +26,8 @@ export class ListeRecherchesComponent implements OnInit{
 
   mySearches = true;
 
+  @ViewChild('divDeBase', {static: false}) divDeBase!: ElementRef;
+  @ViewChild('divDeBase2', {static: false}) divDeBase2!: ElementRef;
   constructor(
     protected api : UserRechercheService,
     protected api2 : EquationGeneratorService,
@@ -56,10 +58,28 @@ export class ListeRecherchesComponent implements OnInit{
   }
   getQuestions() {
     this.recherches = this.api.afficher();
+    this.recherches.subscribe(reponse =>{
+      if(reponse.length == 0 && this.userSearches == undefined)
+        this.divDeBase.nativeElement.textContent = "Aucune question de recherche pour le moment";
+    });
+    if(this.userSearches)
+      this.userSearches.subscribe(reponse=>{
+        if(reponse == null)
+          this.divDeBase.nativeElement.textContent = "Aucune question de recherche pour le moment";
+      });
   }
 
   getQuestionsPartagees(){
     this.recherches = this.api.afficherPartage();
+    this.recherches.subscribe(reponse =>{
+      if(reponse.length == 0 && this.userSearches == undefined)
+        this.divDeBase2.nativeElement.textContent = "Aucune question de recherche n'a été partagée avec vous pour le moment";
+    });
+    if(this.sharedSearches)
+      this.sharedSearches.subscribe(reponse=>{
+        if(reponse == null)
+          this.divDeBase2.nativeElement.textContent = "Aucune question de recherche n'a été partagée avec vous pour le moment";
+      });
   }
 
   switchView(mySearches : boolean){

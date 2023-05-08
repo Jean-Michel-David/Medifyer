@@ -3,7 +3,7 @@
   <button class="mx-auto" (click)="switchView(true)" (click)="this.getQuestions()">Mes recherches</button>
   <button class="mx-auto" (click)="switchView(false)"(click)="this.getQuestionsPartagees()" >Recherches partagées</button>
 </div>
-  <div *ngIf="mySearches" class="bigDiv container py-4 px-4 rounded">
+  <div *ngIf="mySearches" class="bigDiv container py-4 px-4 rounded h5" #divDeBase>
     <ng-container *ngIf="userSearches; then userSearche; else recherchePerso"></ng-container>
     <ng-template #userSearche>
       <div class="questionDiv list-group-item my-2 rounded-2"
@@ -43,7 +43,7 @@
     </ng-template>
   </div>
 
-<div *ngIf="!mySearches" class="bigDiv container py-4 px-4 rounded">
+<div *ngIf="!mySearches" class="bigDiv container py-4 px-4 rounded h5" #divDeBase2>
   <ng-container *ngIf="sharedSearches; then sharedSearche; else recherchePersoPartagee"></ng-container>
   <ng-template #sharedSearche>
     <div class="questionDiv list-group-item my-2 rounded-2"
