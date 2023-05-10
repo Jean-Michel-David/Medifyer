@@ -75,3 +75,10 @@ input[type='checkbox']:checked + .formPart{
   background-color: #00645f;
   box-shadow: rgba(0, 0, 0, 0.247) 0 3px 5px;
 }
+.custom-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-formulaires',
@@ -52,7 +53,8 @@ export class FormulairesComponent implements OnInit{
     private qu:QuestionGeneratorService,
     private userRecherche:UserRechercheService,
     private route:ActivatedRoute,
-    private router:Router
+    private router:Router,
+    private message : MessageService
     ){}
 
   form2Visible = false;
@@ -171,6 +173,13 @@ export class FormulairesComponent implements OnInit{
         }
 
         const sub = this.userRecherche.sauvegarder(question).subscribe((newQuestion: Question) => {
+          if(question != null){
+            this.message.add({ severity: 'success', summary: 'Succes', detail: 'Sauvegarde réussie' });
+            const messageTimer = setTimeout(() => {
+              this.message.clear();
+              clearTimeout(messageTimer);
+            }, 2000);
+          }
           this.router.navigate(
             [],
             {
@@ -179,6 +188,7 @@ export class FormulairesComponent implements OnInit{
               queryParamsHandling: 'merge',
               replaceUrl: true
             });
+
           sub.unsubscribe();
         });
       });

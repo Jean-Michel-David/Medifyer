@@ -8,6 +8,7 @@ import {DialogModule} from 'primeng/dialog'
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
@@ -66,6 +67,7 @@ import { FooterComponent } from './footer/footer.component';
     ManageAdminsComponent,
     EquationDisplayComponent,
     FooterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -82,7 +84,8 @@ import { FooterComponent } from './footer/footer.component';
     SidebarModule,
     ConfirmDialogModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    MessagesModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
