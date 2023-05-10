@@ -52,26 +52,26 @@ export class Form1Component{
 
       //Initializing Question Infobulle
       let infoReqQuestion = this.infoBulle.getInfo('infobulle_questionDeRecherche').subscribe(response => {
-        this.infoQuestionText = response.text.replace('\r','<br>');
+        if(response) this.infoQuestionText = response.text.replace('\r','<br>');
         infoReqQuestion.unsubscribe();
       });
 
 
       //Initializing Population Infobulle
       let infoReqPopulation = this.infoBulle.getInfo('infobulle_PatientPopPath').subscribe(response => {
-        this.infoPopulationText = response.text.replace('\r','<br>');
+        if(response) this.infoPopulationText = response.text.replace('\r','<br>');
         infoReqPopulation.unsubscribe();
       });
 
       //Initializing Traitement Infobulle
       let infoReqTraitement = this.infoBulle.getInfo('infobulle_interventionTraitement').subscribe(response => {
-        this.infoTraitementText = response.text.replace('\r','<br>');
+        if(response) this.infoTraitementText = response.text.replace('\r','<br>');
         infoReqTraitement.unsubscribe();
       });
 
       //Initializing Resultat Infobulle
       let infoReqResultat = this.infoBulle.getInfo('infobulle_resultat').subscribe(response => {
-        this.infoResultatText = response.text.replace('\r','<br>');
+        if(response) this.infoResultatText = response.text.replace('\r','<br>');
         infoReqResultat.unsubscribe();
       });
     }
