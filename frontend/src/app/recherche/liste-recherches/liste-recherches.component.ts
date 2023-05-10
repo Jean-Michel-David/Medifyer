@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { isEmpty, Observable } from 'rxjs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
-import { ModalComponent } from '../modal/modal.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Question } from '../question';
 import { QuestionShort } from '../question-short';
+import { ConfirmationService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-liste-recherches',
@@ -26,10 +27,14 @@ export class ListeRecherchesComponent implements OnInit{
 
   mySearches = true;
 
+  @ViewChild('divDeBase', {static: false}) divDeBase!: ElementRef;
+  @ViewChild('divDeBase2', {static: false}) divDeBase2!: ElementRef;
   constructor(
     protected api : UserRechercheService,
     protected api2 : EquationGeneratorService,
-    protected router: Router
+    protected router: Router,
+    private confirmation: ConfirmationService,
+    private primengConfig: PrimeNGConfig
     ){}
 
   ngOnInit(): void {
@@ -45,21 +50,42 @@ export class ListeRecherchesComponent implements OnInit{
   }
 
   onDeleteQuestion(e : any, id : number) : void {
-    if(confirm("Etes vous certain de vouloir supprimer cette question?")){
-      const sub = this.api.supprimer(id).subscribe((resultat) => {
-      /*if(resultat)
-        showPopUp();*/
-        this.getQuestions();
-      sub.unsubscribe();
-    });
-    }
+    this.confirmation.confirm({
+      message: 'Etes-vous certain de vouloir supprimer cette question?',
+      header: 'Confirmation',
+      accept:()=>{
+        const sub = this.api.supprimer(id).subscribe(() => {
+          this.getQuestions();
+        sub.unsubscribe();
+      });},
+      reject:()=>{}
+  });
+
   }
   getQuestions() {
     this.recherches = this.api.afficher();
+    this.recherches.subscribe(reponse =>{
+      if(reponse.length == 0 && this.userSearches == undefined)
+        this.divDeBase.nativeElement.textContent = "Aucune question de recherche pour le moment";
+    });
+    if(this.userSearches)
+      this.userSearches.subscribe(reponse=>{
+        if(reponse == null)
+          this.divDeBase.nativeElement.textContent = "Aucune question de recherche pour le moment";
+      });
   }
 
   getQuestionsPartagees(){
     this.recherches = this.api.afficherPartage();
+    this.recherches.subscribe(reponse =>{
+      if(reponse.length == 0 && this.userSearches == undefined)
+        this.divDeBase2.nativeElement.textContent = "Aucune question de recherche n'a été partagée avec vous pour le moment";
+    });
+    if(this.sharedSearches)
+      this.sharedSearches.subscribe(reponse=>{
+        if(reponse == null)
+          this.divDeBase2.nativeElement.textContent = "Aucune question de recherche n'a été partagée avec vous pour le moment";
+      });
   }
 
   switchView(mySearches : boolean){

@@ -1,8 +1,13 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {DialogModule} from 'primeng/dialog'
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { IndexComponent } from './page/index/index.component';
@@ -34,7 +39,6 @@ import { AuthHeaderInterceptor } from './auth-header.interceptor';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
 import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
-import { ModalComponent } from './recherche/modal/modal.component';
 import { EquationDisplayComponent } from './recherche/equation-display/equation-display.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -60,7 +64,6 @@ import { FooterComponent } from './footer/footer.component';
     FindSearchComponent,
     EditInfobullesComponent,
     ManageAdminsComponent,
-    ModalComponent,
     EquationDisplayComponent,
     FooterComponent,
   ],
@@ -76,10 +79,18 @@ import { FooterComponent } from './footer/footer.component';
     DragDropModule,
     RippleModule,
     ClipboardModule,
-    SidebarModule
+    SidebarModule,
+    ConfirmDialogModule,
+    DialogModule,
+    ToastModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-    {provide : HTTP_INTERCEPTORS, useClass : AuthHeaderInterceptor, multi : true}
+    {provide : HTTP_INTERCEPTORS, useClass : AuthHeaderInterceptor, multi : true},
+    [MessageService],
+    [ConfirmationService]
   ],
   bootstrap: [AppComponent]
 })
