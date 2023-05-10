@@ -19,3 +19,7 @@ p{
 .connexion{
   flex-wrap: wrap;
 }
+ .brand{
+  color: #01bdb6;
+  font-weight: 600;
+ }

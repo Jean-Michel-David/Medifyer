@@ -1,6 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Info } from 'src/app/info';
+import { InfosService } from 'src/app/services/infos.service';
 
 @Component({
   selector: 'app-form1',
@@ -15,15 +18,50 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
     ])
   ]
 })
-export class Form1Component implements OnInit{
-
-  constructor(private fb: FormBuilder) {}
+export class Form1Component{
 
   admin = false;
+
+  infoQuestionLabel= 'Question de recherche';
+  infoQuestionText = '';
+  infoPopulationLabel = 'Patient / Population / Pathologie';
+  infoPopulationText = '';
+  infoTraitementLabel = 'Intervention / Traitement';
+  infoTraitementText = '';
+  infoResultatLabel = 'Résultats';
+  infoResultatText = '';
 
   @Input()
   firstPart!:FormGroup;
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private infoBulle:InfosService
+    ) {
+
+      //Initializing Question Infobulle
+      let infoReqQuestion = this.infoBulle.getInfo('infobulle_questionDeRecherche').subscribe(response => {
+        this.infoQuestionText = response.text.replace('\r','<br>');
+        infoReqQuestion.unsubscribe();
+      });
+
+
+      //Initializing Population Infobulle
+      let infoReqPopulation = this.infoBulle.getInfo('infobulle_PatientPopPath').subscribe(response => {
+        this.infoPopulationText = response.text.replace('\r','<br>');
+        infoReqPopulation.unsubscribe();
+      });
+
+      //Initializing Traitement Infobulle
+      let infoReqTraitement = this.infoBulle.getInfo('infobulle_interventionTraitement').subscribe(response => {
+        this.infoTraitementText = response.text.replace('\r','<br>');
+        infoReqTraitement.unsubscribe();
+      });
+
+      //Initializing Resultat Infobulle
+      let infoReqResultat = this.infoBulle.getInfo('infobulle_resultat').subscribe(response => {
+        this.infoResultatText = response.text.replace('\r','<br>');
+        infoReqResultat.unsubscribe();
+      });
+    }
 }

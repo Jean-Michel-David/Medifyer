@@ -7,11 +7,8 @@
         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="question" placeholder="Quel est la question de recherche?"></textarea>
         <div class="card text-white bg-dark">
             <div class="card-body">
-              <h5 class="card-title">Question de recherche</h5>
-              <p class="card-text">
-                Quel est la question de recherche?<br>
-                Exemple :
-            </p>
+              <h5 class="card-title" [innerHTML]="infoQuestionLabel"></h5>
+              <p class="card-text" [innerHTML]="infoQuestionText"></p>
             </div>
             <div class="card-body" *ngIf="admin">
               <button class="btn btn-light">éditer</button>
@@ -26,11 +23,8 @@
         <textarea class="form-control" id="exampleFormControlTextarea2" rows="3" formControlName="patient" placeholder="Qui est concerné? Quelle pathologie? Quelle population?"></textarea>
         <div class="card text-white bg-dark">
             <div class="card-body">
-              <h5 class="card-title">Patient / Population / Pathologie</h5>
-              <p class="card-text">
-                Qui est concerné? Quelle pathologie? Quelle population?<br>
-                Exemple :
-            </p>
+              <h5 class="card-title" [innerHTML]="infoPopulationLabel"></h5>
+              <p class="card-text" [innerHTML]="infoPopulationText"></p>
             </div>
             <div class="card-body" *ngIf="admin">
               <button class="btn btn-light">éditer</button>
@@ -45,11 +39,8 @@
         <textarea class="form-control" id="exampleFormControlTextarea3" rows="3" formControlName="intervention" placeholder="Quel est le traitement appliqué?"></textarea>
         <div class="card text-white bg-dark">
             <div class="card-body">
-              <h5 class="card-title">Intervention / Traitement</h5>
-              <p class="card-text">
-                Quel est le traitement appliqué?<br>
-                Exemple :
-            </p>
+              <h5 class="card-title" [innerHTML]="infoTraitementLabel"></h5>
+              <p class="card-text" [innerHTML]="infoTraitementText"></p>
             </div>
             <div class="card-body" *ngIf="admin">
               <button class="btn btn-light">éditer</button>
@@ -64,11 +55,8 @@
         <textarea class="form-control" id="exampleFormControlTextarea4" rows="3" formControlName="resultats" placeholder="Que va-t-on mesurer?"></textarea>
         <div class="card text-white bg-dark">
             <div class="card-body">
-              <h5 class="card-title">Résultats</h5>
-              <p class="card-text">
-                Que va-t-on mesurer? (Douleur? Périmètre de marche? Qualité de vie?)<br>
-                Exemple :
-            </p>
+              <h5 class="card-title" [innerHTML]="infoResultatLabel"></h5>
+              <p class="card-text" [innerHTML]="infoResultatText"></p>
             </div>
             <div class="card-body" *ngIf="admin">
               <button class="btn btn-light">éditer</button>

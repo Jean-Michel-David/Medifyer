@@ -111,7 +111,6 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
   //Error, bad request
   if (gettype($question) == "boolean") {
   http_response_code(400);
-  exit();
   }
 
   //HTTP RESPONSE no content
@@ -123,12 +122,11 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
   http_response_code(200);
   echo json_encode($question);
   exit();
+} 
 
+// Quand on delete une question
 
-  // Quand on delete une question
-
-
-} else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){
+else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){
 $question = $questionManager->deleteQuestion($_GET["id"],$con,$headers['Authorization']);
 
 //Error, bad request

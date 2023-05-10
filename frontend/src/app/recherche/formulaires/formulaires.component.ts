@@ -10,6 +10,7 @@ import { QuestionGeneratorService } from 'src/app/services/question-generator.se
 import { UserService } from 'src/app/services/user.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-formulaires',
@@ -42,9 +43,17 @@ import { animate, style, transition, trigger } from '@angular/animations';
     ]),
   ]
 })
-export class FormulairesComponent{
+export class FormulairesComponent implements OnInit{
 
-  constructor(private fb: FormBuilder, private op:EquationGeneratorService, private ex:ExporterService, private qu:QuestionGeneratorService,private sa:UserRechercheService) {}
+  constructor(
+    private fb: FormBuilder,
+    private op:EquationGeneratorService,
+    private ex:ExporterService,
+    private qu:QuestionGeneratorService,
+    private userRecherche:UserRechercheService,
+    private route:ActivatedRoute
+    ){}
+
   form2Visible = false;
   form3Visible = false;
   equationVisible = false;
@@ -117,6 +126,22 @@ export class FormulairesComponent{
     "resultats"
   ]
 
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(
+      params => {
+        if(params['id']){
+          let questionRequest = this.userRecherche.developper(params['id']).subscribe(
+            question => {
+              this.fillForm(question)
+              questionRequest.unsubscribe();
+            });
+        } else {
+          console.log("No id");
+        }
+      }
+    )
+  }
+
   displayForm2(){
     this.form2Visible = true;
   }
@@ -127,6 +152,10 @@ export class FormulairesComponent{
     this.equationVisible = true;
   }
 
+  fillForm(question:Question){
+    this.form.controls.firstPart.controls.question.setValue(question.Question);
+  }
+
   export(){
     let question = this.qu.toQuestion(this.form);
     question.Equation_Recherche = this.op.generateEquation(question).text;
@@ -134,7 +163,7 @@ export class FormulairesComponent{
   }
 
   save(){
-    const sub = this.sa.sauvegarder(this.qu.toQuestion(this.form)).subscribe((newQuestion: Question) => {
+    const sub = this.userRecherche.sauvegarder(this.qu.toQuestion(this.form)).subscribe((newQuestion: Question) => {
       console.log(newQuestion.id);
       sub.unsubscribe();
     });
