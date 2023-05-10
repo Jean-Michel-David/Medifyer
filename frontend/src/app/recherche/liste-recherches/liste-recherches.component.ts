@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { isEmpty, Observable } from 'rxjs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
-import { ModalComponent } from '../modal/modal.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Question } from '../question';
 import { QuestionShort } from '../question-short';
+import { ConfirmationService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-liste-recherches',
@@ -31,7 +32,9 @@ export class ListeRecherchesComponent implements OnInit{
   constructor(
     protected api : UserRechercheService,
     protected api2 : EquationGeneratorService,
-    protected router: Router
+    protected router: Router,
+    private confirmation: ConfirmationService,
+    private primengConfig: PrimeNGConfig
     ){}
 
   ngOnInit(): void {
@@ -47,14 +50,17 @@ export class ListeRecherchesComponent implements OnInit{
   }
 
   onDeleteQuestion(e : any, id : number) : void {
-    if(confirm("Etes vous certain de vouloir supprimer cette question?")){
-      const sub = this.api.supprimer(id).subscribe((resultat) => {
-      /*if(resultat)
-        showPopUp();*/
-        this.getQuestions();
-      sub.unsubscribe();
-    });
-    }
+    this.confirmation.confirm({
+      message: 'Etes-vous certain de vouloir supprimer cette question?',
+      header: 'Confirmation',
+      accept:()=>{
+        const sub = this.api.supprimer(id).subscribe(() => {
+          this.getQuestions();
+        sub.unsubscribe();
+      });},
+      reject:()=>{}
+  });
+
   }
   getQuestions() {
     this.recherches = this.api.afficher();

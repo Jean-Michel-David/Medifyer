@@ -51,3 +51,7 @@ button:hover{
   background-color: #029791;
   color: white;
 }
+
+.dialog{
+  width: '60vw';
+}
