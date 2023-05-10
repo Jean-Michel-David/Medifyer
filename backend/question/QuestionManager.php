@@ -136,7 +136,7 @@ class QuestionManager{
         $sqlQuery = "SELECT recherche_id as id, question_rech as question 
                 FROM `recherches` 
                 WHERE user_id = :userId
-                GROUP BY lastUpdate DESC";
+                ORDER BY lastUpdate DESC";
 
         $statement = $con->prepare($sqlQuery);
 
