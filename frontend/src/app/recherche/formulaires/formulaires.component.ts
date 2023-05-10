@@ -62,60 +62,8 @@ export class FormulairesComponent implements OnInit{
   equationVisible = false;
   sidebarVisible = false;
   isMessageVisible = false;
-  firstPart = this.fb.group({
-    question: [''],
-    patient: [''],
-    intervention: [''],
-    resultats: ['']
-  });
 
-  secondPart = this.fb.group({
-    patient: this.fb.group({
-      natural: this.fb.array([]),
-      mesh: this.fb.array([]),
-      synonym: this.fb.array([]),
-    }),
-    intervention: this.fb.group({
-      natural: this.fb.array([]),
-      mesh: this.fb.array([]),
-      synonym: this.fb.array([]),
-    }),
-    resultats: this.fb.group({
-      natural: this.fb.array([]),
-      mesh: this.fb.array([]),
-      synonym: this.fb.array([]),
-    })
-  });
-
-  thirdPart = this.fb.group({
-    patient: this.fb.group({
-      includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([
-        this.fb.array([])
-      ]),
-      includeNone: this.fb.array([])
-    }),
-    intervention: this.fb.group({
-      includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([
-        this.fb.array([])
-      ]),
-      includeNone: this.fb.array([])
-    }),
-    resultats: this.fb.group({
-      includeAll: this.fb.array([]),
-      includeOnce: this.fb.array([
-        this.fb.array([])
-      ]),
-      includeNone: this.fb.array([])
-    })
-  });
-
-  form = this.fb.group({
-    firstPart: this.firstPart,
-    secondPart: this.secondPart,
-    thirdPart: this.thirdPart
-  });
+  form = this.emptyForm();
 
   groups:string[] = [
     "Patient / Population / Pathologie",
@@ -138,6 +86,8 @@ export class FormulairesComponent implements OnInit{
               this.fillForm(question)
               questionRequest.unsubscribe();
             });
+        } else {
+            this.form = this.emptyForm();
         }
       }
     );
@@ -154,7 +104,66 @@ export class FormulairesComponent implements OnInit{
   }
 
   fillForm(question:Question){
-    this.form.controls.firstPart.controls.question.setValue(question.Question);
+    (this.form.controls['firstPart'] as FormGroup).controls['question'].setValue(question.Question);
+  }
+
+  emptyForm():FormGroup{
+    let firstPart = this.fb.group({
+      question: [''],
+      patient: [''],
+      intervention: [''],
+      resultats: ['']
+    });
+
+    let secondPart = this.fb.group({
+      patient: this.fb.group({
+        natural: this.fb.array([]),
+        mesh: this.fb.array([]),
+        synonym: this.fb.array([]),
+      }),
+      intervention: this.fb.group({
+        natural: this.fb.array([]),
+        mesh: this.fb.array([]),
+        synonym: this.fb.array([]),
+      }),
+      resultats: this.fb.group({
+        natural: this.fb.array([]),
+        mesh: this.fb.array([]),
+        synonym: this.fb.array([]),
+      })
+    });
+
+    let thirdPart = this.fb.group({
+      patient: this.fb.group({
+        includeAll: this.fb.array([]),
+        includeOnce: this.fb.array([
+          this.fb.array([])
+        ]),
+        includeNone: this.fb.array([])
+      }),
+      intervention: this.fb.group({
+        includeAll: this.fb.array([]),
+        includeOnce: this.fb.array([
+          this.fb.array([])
+        ]),
+        includeNone: this.fb.array([])
+      }),
+      resultats: this.fb.group({
+        includeAll: this.fb.array([]),
+        includeOnce: this.fb.array([
+          this.fb.array([])
+        ]),
+        includeNone: this.fb.array([])
+      })
+    });
+
+    let form = this.fb.group({
+      firstPart: firstPart,
+      secondPart: secondPart,
+      thirdPart: thirdPart
+    });
+
+    return form;
   }
 
   export(){
@@ -164,7 +173,7 @@ export class FormulairesComponent implements OnInit{
   }
 
   save(){
-    this.route.queryParams.subscribe(
+    const req = this.route.queryParams.subscribe(
       params => {
         let question = this.qu.toQuestion(this.form);
 
@@ -194,5 +203,6 @@ export class FormulairesComponent implements OnInit{
           sub.unsubscribe();
         });
       });
+      req.unsubscribe();
   }
 }

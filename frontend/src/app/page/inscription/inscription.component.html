@@ -2,6 +2,92 @@
   <div class="leftGroup">
     <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmit()">
       <div class="inputContainer">
+        <div *ngIf="submitted && f['lastname'].invalid && (f['lastname'].dirty || f['lastname'].touched)" class="">
+          <div
+            *ngIf="f['lastname'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+          >
+            Veuillez entrer votre nom
+          </div>
+          <div
+            *ngIf="f['lastname'].errors?.['minLength']"
+            class="card text-white bg-danger p-1"
+          >
+            Votre nom doit faire plus de 2 caractères
+          </div>
+          <div
+            *ngIf="f['lastname'].errors?.['maxLength']"
+            class="card text-white bg-danger p-1"
+          >
+            Votre nom ne peut pas dépasser 50 caractères
+          </div>
+          </div>
+          <div *ngIf="submitted && f['email'].invalid && (f['email'].dirty ||f['email'].touched)">
+          <div
+            *ngIf="f['email'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+          >
+          Veuillez entrer votre adresse mail
+          </div>
+          <div
+            *ngIf="f['email'].errors?.['pattern']"
+            class="card text-white bg-danger p-1"
+          >
+          Veuillez entrer une adresse mail de la Helha
+          </div>
+          </div>
+          <div *ngIf="submitted && f['pwd'].invalid && (f['pwd'].dirty || f['pwd'].touched)">
+          <div
+            *ngIf="f['pwd'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+          >
+            Veuillez entrer votre mot de passe
+          </div>
+          <div
+            *ngIf="f['pwd'].errors?.['minLength']"
+            class="card text-white bg-danger p-1"
+          >
+            Votre mot de passe est trop court (minimum 9 caractères)
+          </div>
+          </div>
+          <div *ngIf="submitted && f['firstname'].invalid && (f['firstname'].dirty || f['firstname'].touched)">
+          <div
+            *ngIf="f['firstname'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+          >
+            Veuillez entrer votre prénom
+          </div>
+          <div
+            *ngIf="f['firstname'].errors?.['minLength']"
+            class="card text-white bg-danger p-1"
+          >
+            Votre prénom doit faire plus de 2 caractères
+          </div>
+          <div
+            *ngIf="f['firstname'].errors?.['maxLength']"
+            class="card text-white bg-danger p-1"
+          >
+            Votre prénom ne peut pas dépasser 50 caractères
+          </div>
+          </div>
+          <div *ngIf="submitted && f['cpwd'].invalid && (f['cpwd'].dirty || f['cpwd'].touched)">
+          <div
+            *ngIf="f['cpwd'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+          >
+            Veuillez entrer votre confirmation de mot de passe
+          </div>
+          <div *ngIf="f['cpwd'].errors?.['minLength']">
+            La confirmation de mot de passe est trop courte (minimum 9 caractères)
+          </div>
+          <div *ngIf="f['cpwd'].errors?.['matching']">
+            Les mots de passes ne correspondent pas
+          </div>
+        </div>
+      </div>
+      <div class="inputContainer">
+
+
         <div class="inputGroup">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="primary-svg"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
           <input
@@ -9,6 +95,7 @@
           id="lastname"
           placeholder="Nom"
           formControlName="lastname"
+          required
           >
         </div>
         <div class="inputGroup">
@@ -18,6 +105,7 @@
           id="firstname"
           placeholder="Prénom"
           formControlName="firstname"
+          required
           >
         </div>
       </div>
@@ -29,7 +117,7 @@
           id="email"
           placeholder="Adresse Mail"
           formControlName="email"
-
+          required
           >
         </div>
       </div>
@@ -41,6 +129,7 @@
           id="pwd"
           placeholder="Mot de passe"
           formControlName="pwd"
+          required
           >
         </div>
         <div class="inputGroup">
@@ -50,6 +139,7 @@
           id ="cpwd"
           placeholder="Confirmer mot de passe"
           formControlName="cpwd"
+          required
           >
         </div>
       </div>
@@ -61,102 +151,7 @@
       S'incrire
       </button>
     </form>
-    <div
-    *ngIf="submitted && f['lastname'].invalid && (f['lastname'].dirty || f['lastname'].touched)"
-    >
-      <div
-        *ngIf="f['lastname'].errors?.['required']"
-        class="input_error"
-      >
-        Veuillez entrer votre nom
-      </div>
-      <div
-        *ngIf="f['lastname'].errors?.['minLength']"
-        class="input_error"
-      >
-        Votre nom doit faire plus de 2 caractères
-      </div>
-      <div
-        *ngIf="f['lastname'].errors?.['maxLength']"
-        class="input_error"
-      >
-        Votre nom ne peut pas dépasser 50 caractères
-      </div>
-      </div>
-      <div
-      *ngIf="submitted && f['email'].invalid && (f['email'].dirty ||f['email'].touched)"
-      >
-      <div
-      *ngIf="f['email'].errors?.['required']"
-      class="input_error"
-      >
-      Veuillez entrer votre adresse mail
-      </div>
-      <div
-      *ngIf="f['email'].errors?.['pattern']"
-      class="input_error"
-      >
-      Veuillez entrer une adresse mail de la Helha
-      </div>
-      </div>
-      <div
-      *ngIf="submitted && f['pwd'].invalid && (f['pwd'].dirty || f['pwd'].touched)"
-      >
-      <div
-        *ngIf="f['pwd'].errors?.['required']"
-        class="input_error"
-      >
-        Veuillez entrer votre mot de passe
-      </div>
-      <div
-        *ngIf="f['pwd'].errors?.['minLength']"
-        class="input_error"
-      >
-        Votre mot de passe est trop court (minimum 9 caractères)
-      </div>
-      </div>
-      <div
-      *ngIf="submitted && f['firstname'].invalid && (f['firstname'].dirty || f['firstname'].touched)"
-      >
-      <div
-        *ngIf="f['firstname'].errors?.['required']"
-        class="input_error"
-      >
-        Veuillez entrer votre prénom
-      </div>
-      <div
-        *ngIf="f['firstname'].errors?.['minLength']"
-        class="input_error"
-      >
-        Votre prénom doit faire plus de 2 caractères
-      </div>
-      <div
-        *ngIf="f['firstname'].errors?.['maxLength']"
-        class="input_error"
-      >
-        Votre prénom ne peut pas dépasser 50 caractères
-      </div>
-      </div>
-      <div
-      *ngIf="submitted && f['cpwd'].invalid && (f['cpwd'].dirty || f['cpwd'].touched)"
-      >
-      <div
-        *ngIf="f['cpwd'].errors?.['required']"
-        class="input_error"
-      >
-        Veuillez entrer votre confirmation de mot de passe
-      </div>
-      <div
-        *ngIf="f['cpwd'].errors?.['minLength']"
-      >
-        La confirmation de mot de passe est trop courte (minimum 9 caractères)
-      </div>
-      <div
-        *ngIf="f['cpwd'].errors?.['matching']"
-      >
-        Les mots de passes ne correspondent pas
-      </div>
-    </div>
+
   </div>
   <div class="rightGroup">
     <h2>Déjà<span class="color-helha"> Inscrit </span>?</h2>

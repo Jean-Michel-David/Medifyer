@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { CustomValidators } from './CustomValidators';
 import { User } from './userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-inscription-form',
@@ -30,7 +31,9 @@ export class InscriptionComponent implements OnInit{
     pwd: '',
     cpwd: '',
     photo: ''
-}
+  };
+
+
 
   @Input()
   inscriptionForm: FormGroup = new FormGroup({
@@ -85,5 +88,6 @@ export class InscriptionComponent implements OnInit{
   onSubmit() {
     this.submitted = true;
   }
+
 }
 
