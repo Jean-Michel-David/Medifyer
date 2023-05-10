@@ -10,6 +10,9 @@
   width: 70%;
   min-width: 300px;
 }
+.questionDiv{
+  width: 100%;
+}
 .questionDiv, .select, .delete{
   transition: all ease-in-out 150ms;
 }
@@ -17,7 +20,6 @@
 .questionDiv:hover{
   background-color: rgb(240, 240, 240);
   cursor: pointer;
-  transform: scale(1.02);
 }
 
 .libelQ{
