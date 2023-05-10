@@ -10,7 +10,7 @@ import { QuestionGeneratorService } from 'src/app/services/question-generator.se
 import { UserService } from 'src/app/services/user.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute,Router} from '@angular/router';
 
 @Component({
   selector: 'app-formulaires',
@@ -51,7 +51,8 @@ export class FormulairesComponent implements OnInit{
     private ex:ExporterService,
     private qu:QuestionGeneratorService,
     private userRecherche:UserRechercheService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private router:Router
     ){}
 
   form2Visible = false;
@@ -135,11 +136,9 @@ export class FormulairesComponent implements OnInit{
               this.fillForm(question)
               questionRequest.unsubscribe();
             });
-        } else {
-          console.log("No id");
         }
       }
-    )
+    );
   }
 
   displayForm2(){
@@ -163,9 +162,25 @@ export class FormulairesComponent implements OnInit{
   }
 
   save(){
-    const sub = this.userRecherche.sauvegarder(this.qu.toQuestion(this.form)).subscribe((newQuestion: Question) => {
-      console.log(newQuestion.id);
-      sub.unsubscribe();
-    });
+    this.route.queryParams.subscribe(
+      params => {
+        let question = this.qu.toQuestion(this.form);
+
+        if(params['id']){
+          question.id = params['id'];
+        }
+
+        const sub = this.userRecherche.sauvegarder(question).subscribe((newQuestion: Question) => {
+          this.router.navigate(
+            [],
+            {
+              relativeTo: this.route,
+              queryParams: {'id': newQuestion['id']},
+              queryParamsHandling: 'merge',
+              replaceUrl: true
+            });
+          sub.unsubscribe();
+        });
+      });
   }
 }

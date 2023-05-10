@@ -34,7 +34,7 @@ textarea:focus + .card{
     top: 0px;
 }
 
-.card{
+.form-group .card{
     margin-top: 10px;
     opacity: 0;
     transition: all 200ms;
@@ -43,7 +43,7 @@ textarea:focus + .card{
     overflow: hidden;
 }
 
-.card-title{
+.form-group .card-title{
     color: #1dd3cd;
 }
 .form-group{
@@ -61,4 +61,16 @@ textarea:focus + .card{
 .btn-help{
   border-radius: 5px;
   margin-bottom: 5px;
+}
+
+.btn-helha{
+  background-color: #009790;
+}
+
+.card{
+  display: block;
+}
+
+.btn-close{
+  float: right;
 }

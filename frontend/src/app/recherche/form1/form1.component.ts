@@ -4,6 +4,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
 import { Observable } from 'rxjs';
 import { Info } from 'src/app/info';
 import { InfosService } from 'src/app/services/infos.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-form1',
@@ -34,10 +35,20 @@ export class Form1Component{
   @Input()
   firstPart!:FormGroup;
 
+  isNew!:boolean;
+
   constructor(
     private fb: FormBuilder,
-    private infoBulle:InfosService
+    private infoBulle:InfosService,
+    private route:ActivatedRoute
     ) {
+      this.route.queryParams.subscribe(params =>{
+        if(params['id']){
+         this.isNew=false;
+        } else {
+          this.isNew=true;
+        }
+      });
 
       //Initializing Question Infobulle
       let infoReqQuestion = this.infoBulle.getInfo('infobulle_questionDeRecherche').subscribe(response => {

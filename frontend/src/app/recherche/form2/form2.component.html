@@ -1,10 +1,27 @@
 <div @insertTrigger class="form-part bg-light p-4 rounded" [formGroup]="secondPart">
-  <button class="btn btn-helha btn-help" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="false" aria-controls="collapse">
+  <button class="btn btn-helha btn-help" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm2" aria-expanded="false" aria-controls="collapse">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
   </button>
-  <div class="collapse" id="collapse">
-    <div class="card card-body bg-dark text-white">
-      Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+  <div class="collapse" id="collapseForm2">
+    <div class="card card-body bg-dark text-white d-block">
+      <button class="btn-close btn-close-white float-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm2" aria-expanded="false" aria-controls="collapse"></button>
+      Nous allons maintenant nous servir des reponses aux precedentes question afin de determiner quels mots cles nous devrons utiliser afin de trouver des articles correspondants a notre question de recherche. <br>
+      <br>
+      Commencons par ajouter un nouveau mot en francais dans "Langage Naturel" de la partie Patient / Population / Pathologie. <br>
+      <br>
+      Une fois le mot entre, appuyez sur le bouton "HeTop" afin de chercher la traduction en terme Mesh de ce mot. <br>
+      <br>
+      Ajoutez un nouveau mot a "Termes Mesh" de la partie Patient / Population / Pathologie. <br>
+      <br>
+      Apres avoir cliquer en dehors du champ texte, si le mot est bien un terme Mesh, une icone vous confirmera sa validite. <br>
+      <br>
+      Si un symbole rouge apparait, le mot ne fait pas partie des termes Mesh de PubMed. <br>
+      <br>
+      Vous pouvez corriger cette erreur ou alors, si vous voulez garder ce mot, vous pouvez appuyer sur la fleche afin de l'ajouter aux Synonymes. <br>
+      <br>
+      Repetez l'operation pour les autres parties.<br>
+      <br>
+      Apres avoir rempli tous vos termes, passez a la partie suivante.<br>
     </div>
   </div>
   <div class="form-group" *ngFor="let group of groups; let j=index;">
