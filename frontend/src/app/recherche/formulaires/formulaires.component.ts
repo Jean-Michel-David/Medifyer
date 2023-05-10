@@ -173,8 +173,8 @@ export class FormulairesComponent implements OnInit{
         }
 
         const sub = this.userRecherche.sauvegarder(question).subscribe((newQuestion: Question) => {
-          if(question != null){
-            this.message.add({ severity: 'success', summary: 'Succes', detail: 'Sauvegarde réussie' });
+          if(newQuestion != null){
+            this.message.add({ severity: 'success', summary: 'Succès', detail: 'Sauvegarde réussie' });
             const messageTimer = setTimeout(() => {
               this.message.clear();
               clearTimeout(messageTimer);
