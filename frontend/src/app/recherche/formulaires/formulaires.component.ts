@@ -128,7 +128,9 @@ export class FormulairesComponent{
   }
 
   export(){
-    this.ex.exportData(this.qu.toQuestion(this.form));
+    let question = this.qu.toQuestion(this.form);
+    question.Equation_Recherche = this.op.generateEquation(question).text;
+    this.ex.exportData(question);
   }
 
   save(){
