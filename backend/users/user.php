@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setPhoto($json_obj['photo']);
   $userManager->saveUser($user);
   echo $credentials->createToken($user);
+  // Deleting a User
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
   $succes = $userManager->deleteUser($headers['Authorization']);
   if ($succes == false) {
