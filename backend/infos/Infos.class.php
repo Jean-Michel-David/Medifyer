@@ -32,7 +32,7 @@ class Infos {
         $statement->bindValue('libelle', $_GET['getInfo']);
         $statement->execute();
 
-        $infobulles = $statement->fetchAll();
+        $infobulles = $statement->fetch();
         $db->disconnect();
 
         return $infobulles;
