@@ -61,7 +61,7 @@ export class FormulairesComponent implements OnInit{
   form3Visible = false;
   equationVisible = false;
   sidebarVisible = false;
-
+  isMessageVisible = false;
   firstPart = this.fb.group({
     question: [''],
     patient: [''],
@@ -173,10 +173,12 @@ export class FormulairesComponent implements OnInit{
         }
 
         const sub = this.userRecherche.sauvegarder(question).subscribe((newQuestion: Question) => {
-          if(newQuestion != null){
+          if(newQuestion != null && this.isMessageVisible == false){
             this.message.add({ severity: 'success', summary: 'Succès', detail: 'Sauvegarde réussie' });
+            this.isMessageVisible = true;
             const messageTimer = setTimeout(() => {
               this.message.clear();
+              this.isMessageVisible = false;
               clearTimeout(messageTimer);
             }, 2000);
           }
