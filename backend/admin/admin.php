@@ -87,7 +87,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
      * Setting an info
      */
     if (!empty($json_obj['label']) && !empty($json_obj['text'])) {
-        $success = AdminManager::setInfobulles($headers['Authorization'], $json_obj['label'], $json_obj['text']);
+        $success = AdminManager::setInfobulles($json_obj['label'], $json_obj['text']);
         echo $success;
         exit();
     }
