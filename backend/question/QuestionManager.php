@@ -133,7 +133,7 @@ class QuestionManager{
     $credsObj = new Credentials();
     try {
     //récupère les recherches du user connecté
-        $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+        $sqlQuery = "SELECT recherche_id as id, question_rech as question, lastUpdate as laDate 
                 FROM `recherches` 
                 WHERE user_id = :userId
                 ORDER BY lastUpdate DESC";
@@ -176,7 +176,7 @@ function getSharedSearches($con, $authorization){
         $recherches = [];
 
         foreach($recherchesPartagees as $rech){
-            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+            $sqlQuery = "SELECT recherche_id as id, question_rech as question, lastUpdate as laDate
             FROM recherches 
             WHERE recherche_id = :recherche_id";
 

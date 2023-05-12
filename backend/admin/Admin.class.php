@@ -50,7 +50,7 @@ class AdminManager {
         $db = new DBConnection();
 
         //Actual query
-        $sqlQuery = "   SELECT recherche_id as id, question_rech as question 
+        $sqlQuery = "   SELECT recherche_id as id, question_rech as question, lastUpdate as laDate
                         FROM `recherches` 
                         WHERE user_id = :userId";
 
@@ -94,7 +94,7 @@ class AdminManager {
         $searches = [];
 
         foreach($sharedSearches as $search){
-            $sqlQuery = "SELECT recherche_id as id, question_rech as question 
+            $sqlQuery = "SELECT recherche_id as id, question_rech as question, lastUpdate as laDate 
             FROM recherches 
             WHERE recherche_id = :recherche_id";
 
