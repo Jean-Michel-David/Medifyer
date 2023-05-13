@@ -89,4 +89,3 @@ export class EquationGeneratorService {
     return str.concat(")");
   }
 }
-/*(test[Mesh]) AND (undefined) AND (testicles[Mesh])…D (undefined) AND (vertigo[Mesh]) AND (undefined)*/

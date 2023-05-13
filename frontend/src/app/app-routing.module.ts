@@ -9,6 +9,7 @@ import { ConnexionComponent } from './page/connexion/connexion.component';
 import { FindSearchComponent } from './admin/find-search/find-search.component';
 import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles.component';
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
+import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
 
 const routes: Routes = [
   { path : 'index', component: IndexComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path : 'connexion', component: ConnexionComponent},
   { path : 'admin/find-user-search', component : FindSearchComponent},
   { path : 'admin/edit-infobulles', component : EditInfobullesComponent},
-  { path : 'admin/manage-admins', component : ManageAdminsComponent }
+  { path : 'admin/manage-admins', component : ManageAdminsComponent },
+  { path : 'admin/edit-infos', component : EditInfosComponent }
 ];
 
 @NgModule({
