@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UserInfosService {
 
-  UserUrl = environment.backendUrl + "/users.user.php";
+  UserUrl = environment.backendUrl + "/users/user.php";
 
   constructor(private http: HttpClient) {}
 

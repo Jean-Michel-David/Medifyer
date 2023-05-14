@@ -7,14 +7,15 @@ require_once(dirname(__FILE__) . '/../credentials.php');
 require_once(dirname(__FILE__) . '/./UserInfos.php');
 
 global $authorizedURL;
-header('Access-Control-Allow-Origin: '. $authorizedURL);
+header('Access-Control-Allow-Origin: ' . $authorizedURL);
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
-header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE');
+// If this is a preflight request, respond with the appropriate headers and exit
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Authorization');
-  exit;
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    exit;
 }
 
 $user = new User();

@@ -16,7 +16,7 @@ class UserInfos {
      * This function checks if the jwt in the header has an existing user_id in the database, to see if the user is connected or not
      */
     public function getIsConnected($authorization, $credentials) {
-        $this->isConnected = ($credentials->extarctUserId($authorization) != null);
+        $this->isConnected = ($credentials->extractUserId($authorization) != null);
     }
 
     /**
