@@ -29,10 +29,10 @@ class UserInfos {
     /**
      * This function return the initials of a user
      */
-    public function getInitials($authorization, $credentials, $db) {
+    public function getInitials($authorization, $credentials, $cnx) {
         $id = $credentials->extractUserId($authorization);
         $sql = "SELECT nom_user ,prenom_user WHERE user_id=:user_id";
-        $stmnt = $db->prepare($sql);
+        $stmnt = $cnx->prepare($sql);
         $stmnt->bindValue('user_id', $id);
         $stmnt->execute();
         $res = $stmnt->fetchAll(PDO::FETCH_ASSOC);
