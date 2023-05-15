@@ -187,6 +187,17 @@ function getSharedSearches($con, $authorization){
         }
         foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
+            
+// Fonction de comparaison basée sur la clé 'laDate'
+        function compareByDate($a, $b) {
+            $dateA = strtotime($a['laDate']);
+            $dateB = strtotime($b['laDate']);
+            // b - a pour avoir le résultat en mode DESC
+            return $dateB - $dateA;
+        }
+
+        // Tri du tableau en utilisant la fonction de comparaison
+        usort($recherches, 'compareByDate');
 
         return $recherches;
     
