@@ -29,10 +29,12 @@ export class Form2Component implements OnInit{
   constructor(private fb : FormBuilder,private http:HttpClient){}
 
   ngOnInit(): void {
+    
   }
 
   addTerm(group:string,column:string){
     ((this.secondPart.controls[group] as FormGroup).controls[column] as FormArray).push(this.fb.control(''));
+    console.log(((this.secondPart.controls[group] as FormGroup).controls[column] as FormArray).controls);
   }
 
   checkEmptyWhenLeaving(event:Event,group:string,category:string,term:number):boolean{

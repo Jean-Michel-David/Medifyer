@@ -1,6 +1,7 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,8 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class Form3Component implements OnInit{
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,
+    private route:ActivatedRoute) {}
 
   @Input()
   formGlobal!:FormGroup;
@@ -38,7 +40,13 @@ export class Form3Component implements OnInit{
     this.secondPart = this.formGlobal.controls['secondPart'] as FormGroup;
     this.thirdPart = this.formGlobal.controls['thirdPart'] as FormGroup;
 
-    this.generate();
+    let req = this.route.queryParams.subscribe(
+      params => {
+        if(!params['id']){
+          this.generate();
+        }
+      }
+    );
   }
 
   addIncludeOnce(group:string){

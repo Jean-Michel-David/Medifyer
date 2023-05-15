@@ -12,6 +12,7 @@ import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-formulaires',
@@ -104,7 +105,68 @@ export class FormulairesComponent implements OnInit{
   }
 
   fillForm(question:Question){
-    (this.form.controls['firstPart'] as FormGroup).controls['question'].setValue(question.Question);
+    //Filling the first part
+    let firstPart = (this.form.controls['firstPart'] as FormGroup);
+    firstPart.controls['question'].setValue(question.Question);
+    firstPart.controls['patient'].setValue(question.Patient_Pop_Path);
+    firstPart.controls['intervention'].setValue(question.Intervention_Traitement);
+    firstPart.controls['resultats'].setValue(question.Résultats);
+
+    //Filling second part
+    let secondPart:FormGroup = (this.form.controls['secondPart'] as FormGroup);
+    let secondPartPatient:FormGroup = secondPart.controls['patient'] as FormGroup;
+    let secondPartTraitement:FormGroup = secondPart.controls['traitement'] as FormGroup;
+    let secondPartResultats:FormGroup = secondPart.controls['resultats'] as FormGroup;
+
+    question.Patient_Language_Naturel.forEach(element => {
+      (secondPartPatient.controls['natural'] as FormArray).push(this.fb.control(element));
+    });
+    question.Patient_Terme_Mesh.forEach(element => {
+      (secondPartPatient.controls['mesh'] as FormArray).push(this.fb.control(element));
+    });
+    question.Patient_Synonyme.forEach(element => {
+      (secondPartPatient.controls['synonym'] as FormArray).push(this.fb.control(element));
+    });
+    
+    question.Intervention_Language_Naturel.forEach(element => {
+      (secondPartTraitement.controls['natural'] as FormArray).push(this.fb.control(element));
+    });
+    question.Intervention_Terme_Mesh.forEach(element => {
+      (secondPartTraitement.controls['mesh'] as FormArray).push(this.fb.control(element));
+    });
+    question.Intervention_Synonyme.forEach(element => {
+      (secondPartTraitement.controls['synonym'] as FormArray).push(this.fb.control(element));
+    });
+
+    question.Résultats_Language_Naturel.forEach(element => {
+      (secondPartResultats.controls['natural'] as FormArray).push(this.fb.control(element));
+    });
+    question.Résultats_Terme_Mesh.forEach(element => {
+      (secondPartResultats.controls['mesh'] as FormArray).push(this.fb.control(element));
+    });
+    question.Résultats_Synonyme.forEach(element => {
+      (secondPartResultats.controls['synonym'] as FormArray).push(this.fb.control(element));
+    });
+
+
+      //Filling third part
+      let thirdPart:FormGroup = (this.form.controls['thirdPart'] as FormGroup);
+
+      let thirdPartPatient =thirdPart.controls['patient'] as FormGroup;
+      let thirdPartTraitement =  thirdPart.controls['traitement'] as FormGroup;
+      let thirdPartResultats = thirdPart.controls['resultats'] as FormGroup;
+
+      question.Equations_PatientPopPath.inclureTous.forEach( element =>{
+        (thirdPartPatient.controls['includeAll'] as FormArray).push(this.fb.control(element));
+      });
+
+      question.Equations_PatientPopPath.auMoins1.forEach( group =>{
+        let array = this.fb.array([]);
+        group.forEach( element => {
+          array.push(this.fb.control(element));
+        });
+        (thirdPartPatient.controls['includeOnce'] as FormArray).push(array);
+      });
   }
 
   emptyForm():FormGroup{
