@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { Question } from '../recherche/question';
 import { QuestionShort } from '../recherche/question-short';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,9 +39,9 @@ export class UserRechercheService {
    * @param id the id of the question selected
    * @returns The question selected for developpement
    */
-  developper(id : Number):Observable<Question>{
-    return this.http.get<Question>(this.backendUrl + "?id=" + id);
-  }
+developper(id: number): Observable<Question> {
+  return this.http.get<Question>(this.backendUrl + '?id=' + id);
+}
 
 /**
    * This function delete a question

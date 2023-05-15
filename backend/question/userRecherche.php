@@ -110,17 +110,15 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
 
   //Error, bad request
   if (gettype($question) == "boolean") {
-  http_response_code(400);
-  }
-
-  //HTTP RESPONSE no content
-  if (gettype($question) == "array" && !$question) {
-  http_response_code(204);
+    http_response_code(400);
   }
 
   //Success
-  http_response_code(200);
-  echo json_encode($question);
+  else {
+    http_response_code(200);
+    echo json_encode($question);
+  }
+
   exit();
 } 
 

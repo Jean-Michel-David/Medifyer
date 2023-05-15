@@ -32,6 +32,8 @@ export class Form1Component{
   infoResultatLabel = 'Résultats';
   infoResultatText = '';
 
+  stateOptions: any[] = [{label: 'Privée', value: 'private'}, {label: 'Publique', value: 'public'}];
+
   @Input()
   firstPart!:FormGroup;
 

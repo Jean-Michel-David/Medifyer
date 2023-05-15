@@ -12,7 +12,7 @@ import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { first } from 'rxjs';
+
 
 @Component({
   selector: 'app-formulaires',
@@ -84,9 +84,11 @@ export class FormulairesComponent implements OnInit{
         if(params['id']){
           let questionRequest = this.userRecherche.developper(params['id']).subscribe(
             question => {
-              this.fillForm(question);
+              if(question) this.fillForm(question);
+              else this.router.navigateByUrl("/recherche");
               questionRequest.unsubscribe();
-            });
+            }
+            );
         } else {
             this.form = this.emptyForm();
         }
@@ -107,6 +109,7 @@ export class FormulairesComponent implements OnInit{
   fillForm(question:Question){
     //Filling the first part
     let firstPart = (this.form.controls['firstPart'] as FormGroup);
+    firstPart.controls['privacy'].setValue(question.acces == 0?'private':'public');
     firstPart.controls['question'].setValue(question.Question);
     firstPart.controls['patient'].setValue(question.Patient_Pop_Path);
     firstPart.controls['intervention'].setValue(question.Intervention_Traitement);
@@ -217,6 +220,7 @@ export class FormulairesComponent implements OnInit{
 
   emptyForm():FormGroup{
     let firstPart = this.fb.group({
+      privacy: this.fb.control('private'),
       question: [''],
       patient: [''],
       intervention: [''],

@@ -61,6 +61,7 @@ textarea:focus + .card{
 .btn-help{
   border-radius: 5px;
   margin-bottom: 5px;
+  height: 34px;
 }
 
 .btn-helha{
@@ -73,4 +74,23 @@ textarea:focus + .card{
 
 .btn-close{
   float: right;
+}
+
+::ng-deep .p-selectbutton .p-button{
+  width: 100px;
+  height: 34px;
+  text-align: center;
+  padding: 0;
+  font-weight: 400;
+  font-family: 'Source Sans Pro',sans-serif;
+}
+
+::ng-deep .p-selectbutton .p-button.p-highlight{
+  background: #009790;
+  border-color: #009790;
+}
+
+::ng-deep .p-selectbutton .p-button.p-highlight:hover{
+  background: #00706b;
+  border-color: #00706b;
 }
