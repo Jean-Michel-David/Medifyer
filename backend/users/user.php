@@ -4,16 +4,18 @@ require_once(dirname(__FILE__) . '/./User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
 require_once(dirname(__FILE__) . '/./UserManager.php');
 require_once(dirname(__FILE__) . '/../credentials.php');
+require_once(dirname(__FILE__) . '/./UserInfos.php');
 
 global $authorizedURL;
-header('Access-Control-Allow-Origin: '. $authorizedURL);
+header('Access-Control-Allow-Origin: ' . $authorizedURL);
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
-header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE');
+// If this is a preflight request, respond with the appropriate headers and exit
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Authorization');
-  exit;
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    exit;
 }
 
 $user = new User();
@@ -28,8 +30,16 @@ $options = [
   'cost' => 12,
 ];
 
+// Récupération des informations de l'utilisateur
+if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+  $userInfos = new UserInfos();
+  $userInfos->getIsConnected($headers['Authorization'], $credentials);
+  $userInfos->getIsAdmin($headers['Authorization'], $credentials);
+  $userInfos->getInitials($headers['Authorization'], $credentials, $cnx);
+  echo json_encode($userInfos);
+}
 // Inscription de l'utilisateur
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $user->setId($json_obj['id']);
   if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {

@@ -26,5 +26,13 @@ if (!empty($_GET['getInfo'])) {
 if (isset($_GET['getAllInfobulles'])) {
     $infos = $infoObj->getAllInfobulles();
     echo json_encode($infos);
-    exit;
+    exit();
 }
+
+if (isset($_GET['getAllInfos'])) {
+    $infos = $infoObj->getAllInfos();
+    echo json_encode($infos);
+    exit();
+}
+
+http_response_code(404);

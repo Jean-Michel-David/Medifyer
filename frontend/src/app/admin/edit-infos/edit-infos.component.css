@@ -1,0 +1,16 @@
+.bigDiv{
+    background-color: #EDEDED;
+    border-radius: 1rem;
+}
+
+.infoDiv:hover{
+    background-color: rgb(240, 240, 240);
+}
+
+.point {
+    cursor: pointer;
+}
+
+.info{
+    color: #029791;
+}

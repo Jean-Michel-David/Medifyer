@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Info } from 'src/app/info';
 import { AdminInfosManagementService } from 'src/app/services/admin-infos-management.service';
 import { InfosService } from 'src/app/services/infos.service';
 
 @Component({
-  selector: 'app-edit-infobulles',
-  templateUrl: './edit-infobulles.component.html',
-  styleUrls: ['./edit-infobulles.component.css']
+  selector: 'app-edit-infos',
+  templateUrl: './edit-infos.component.html',
+  styleUrls: ['./edit-infos.component.css']
 })
-export class EditInfobullesComponent implements OnInit{
-  infobulles! : Info[];
+export class EditInfosComponent {
+  infos! : Info[];
   selectedForEdit! : string;
   editStatus! : string;
 
   constructor(private infoService : InfosService, private adminInfo : AdminInfosManagementService) {}
   
   ngOnInit(): void {
-    this.infoService.getAllInfobulles().subscribe((infos) => {
-      this.infobulles = infos;
+    this.infoService.getAllInfos().subscribe((infos) => {
+      this.infos = infos;
     });
     this.selectedForEdit = "";
     this.editStatus = "saved";
@@ -39,7 +39,7 @@ export class EditInfobullesComponent implements OnInit{
     console.log('Trying to put : ' + text +'\nInto ' + label);
     this.adminInfo.setInfo(label, text).subscribe((value) => {
       this.editStatus = "saved";
-      const infoToChange = this.infobulles.find(inf => inf.label == label);
+      const infoToChange = this.infos.find(inf => inf.label == label);
       if (infoToChange)
         infoToChange.text = text;
     })

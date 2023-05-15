@@ -42,6 +42,7 @@ import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
 import { EquationDisplayComponent } from './recherche/equation-display/equation-display.component';
 import { FooterComponent } from './footer/footer.component';
+import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { FooterComponent } from './footer/footer.component';
     ManageAdminsComponent,
     EquationDisplayComponent,
     FooterComponent,
+    EditInfosComponent,
 
   ],
   imports: [

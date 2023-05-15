@@ -1,0 +1,27 @@
+<div class="bigDiv container py-4 px-4 rounded">
+    <div  class="infoDiv list-group-item my-2 rounded-2"
+    *ngFor="let info of infos">
+        <div class="row">
+            <div class="col-sm-11 point"
+            (click)="onSelectForEdit(info.label)">
+                <p class="info my-auto h5">{{ info.label }}</p>
+                <p class="my-auto" *ngIf="info.label !== selectedForEdit">
+                {{ info.text }}
+                </p>
+            </div>
+        </div>
+      
+        <div class="row"
+        *ngIf="selectedForEdit === info.label">
+            <div class="col-sm-11">
+                <label class="my-auto h5" for="newText">Nouveau texte : </label>
+                <textarea class="form-control" id="exampleFormControlTextarea4" rows="3"
+                (keyup.escape)="onSelectForEdit(info.label)" #newText
+                (input)="onTextChanged()">{{ info.text }}</textarea>
+                <button class="point" (click)="onSave(info.label, newText.value)"
+                *ngIf="editStatus == 'toSave'">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+</div>

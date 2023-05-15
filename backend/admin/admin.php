@@ -80,7 +80,6 @@ if($_SERVER['REQUEST_METHOD'] == "GET") {
 }
 
 elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
-
     $json_obj = json_decode(file_get_contents('php://input'), true);
 
     /**
@@ -99,5 +98,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
             "success" => $success,
             "message" => $msg
         ]);
+
+        exit();
     }
 }
+
+http_response_code(404);
