@@ -84,7 +84,7 @@ export class FormulairesComponent implements OnInit{
         if(params['id']){
           let questionRequest = this.userRecherche.developper(params['id']).subscribe(
             question => {
-              this.fillForm(question)
+              this.fillForm(question);
               questionRequest.unsubscribe();
             });
         } else {
@@ -115,7 +115,7 @@ export class FormulairesComponent implements OnInit{
     //Filling second part
     let secondPart:FormGroup = (this.form.controls['secondPart'] as FormGroup);
     let secondPartPatient:FormGroup = secondPart.controls['patient'] as FormGroup;
-    let secondPartTraitement:FormGroup = secondPart.controls['traitement'] as FormGroup;
+    let secondPartTraitement:FormGroup = secondPart.controls['intervention'] as FormGroup;
     let secondPartResultats:FormGroup = secondPart.controls['resultats'] as FormGroup;
 
     question.Patient_Language_Naturel.forEach(element => {
@@ -127,7 +127,7 @@ export class FormulairesComponent implements OnInit{
     question.Patient_Synonyme.forEach(element => {
       (secondPartPatient.controls['synonym'] as FormArray).push(this.fb.control(element));
     });
-    
+
     question.Intervention_Language_Naturel.forEach(element => {
       (secondPartTraitement.controls['natural'] as FormArray).push(this.fb.control(element));
     });
@@ -153,20 +153,66 @@ export class FormulairesComponent implements OnInit{
       let thirdPart:FormGroup = (this.form.controls['thirdPart'] as FormGroup);
 
       let thirdPartPatient =thirdPart.controls['patient'] as FormGroup;
-      let thirdPartTraitement =  thirdPart.controls['traitement'] as FormGroup;
-      let thirdPartResultats = thirdPart.controls['resultats'] as FormGroup;
 
       question.Equations_PatientPopPath.inclureTous.forEach( element =>{
         (thirdPartPatient.controls['includeAll'] as FormArray).push(this.fb.control(element));
       });
 
+      let includeOnce = (thirdPartPatient.controls['includeOnce'] as FormArray);
+      if(question.Equations_PatientPopPath.auMoins1.length > 0) includeOnce.removeAt(0);
       question.Equations_PatientPopPath.auMoins1.forEach( group =>{
         let array = this.fb.array([]);
         group.forEach( element => {
           array.push(this.fb.control(element));
         });
-        (thirdPartPatient.controls['includeOnce'] as FormArray).push(array);
+        includeOnce.push(array);
       });
+
+      question.Equations_PatientPopPath.exclure.forEach( element =>{
+        (thirdPartPatient.controls['includeNone'] as FormArray).push(this.fb.control(element));
+      });
+
+      let thirdPartTraitement =  thirdPart.controls['intervention'] as FormGroup;
+
+      question.Equations_Intervention.inclureTous.forEach( element =>{
+        (thirdPartTraitement.controls['includeAll'] as FormArray).push(this.fb.control(element));
+      });
+
+      includeOnce = (thirdPartTraitement.controls['includeOnce'] as FormArray);
+      if(question.Equations_Intervention.auMoins1.length > 0) includeOnce.removeAt(0);
+      question.Equations_Intervention.auMoins1.forEach( group =>{
+        let array = this.fb.array([]);
+        group.forEach( element => {
+          array.push(this.fb.control(element));
+        });
+        includeOnce.push(array);
+      });
+
+      question.Equations_Intervention.exclure.forEach( element =>{
+        (thirdPartTraitement.controls['includeNone'] as FormArray).push(this.fb.control(element));
+      });
+
+      let thirdPartResultats = thirdPart.controls['resultats'] as FormGroup;
+
+      question.Equations_Resultats.inclureTous.forEach( element =>{
+        (thirdPartResultats.controls['includeAll'] as FormArray).push(this.fb.control(element));
+      });
+
+      includeOnce = (thirdPartResultats.controls['includeOnce'] as FormArray);
+      if(question.Equations_Resultats.auMoins1.length > 0) includeOnce.removeAt(0);
+      question.Equations_Resultats.auMoins1.forEach( group =>{
+        let array = this.fb.array([]);
+        group.forEach( element => {
+          array.push(this.fb.control(element));
+        });
+        includeOnce.push(array);
+      });
+
+      question.Equations_Resultats.exclure.forEach( element =>{
+        (thirdPartResultats.controls['includeNone'] as FormArray).push(this.fb.control(element));
+      });
+
+
   }
 
   emptyForm():FormGroup{
