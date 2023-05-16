@@ -4,7 +4,7 @@ require_once(dirname(__FILE__) . '/./User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
 require_once(dirname(__FILE__) . '/./UserManager.php');
 require_once(dirname(__FILE__) . '/../credentials.php');
-require_once(dirname(__FILE__) . '/./UserInfos.php');
+require_once(dirname(__FILE__) . '/./UserInfos.class.php');
 
 global $authorizedURL;
 header('Access-Control-Allow-Origin: ' . $authorizedURL);
@@ -29,13 +29,18 @@ $pwdhashed = '';
 $options = [
   'cost' => 12,
 ];
+$userInfos = new UserInfos();
+
+if (empty($headers['Authorization'])) {
+  http_response_code(401);
+  exit();
+}
 
 // Récupération des informations de l'utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
-  $userInfos = new UserInfos();
-  $userInfos->getIsConnected($headers['Authorization'], $credentials);
-  $userInfos->getIsAdmin($headers['Authorization'], $credentials);
-  $userInfos->getInitials($headers['Authorization'], $credentials, $cnx);
+  $userInfos->setIsConnected($headers['Authorization'], $credentials);
+  $userInfos->setIsAdmin($headers['Authorization'], $credentials);
+  $userInfos->setInitials($headers['Authorization'], $credentials, $cnx);
   echo json_encode($userInfos);
 }
 // Inscription de l'utilisateur
