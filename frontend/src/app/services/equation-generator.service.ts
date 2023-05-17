@@ -37,6 +37,8 @@ export class EquationGeneratorService {
       equation.text += this.getEquationBit(question.Equations_Resultats);
     }
 
+    equation.text = equation.text.replaceAll("AND NOT", "NOT");
+
     return equation;
   }
 
