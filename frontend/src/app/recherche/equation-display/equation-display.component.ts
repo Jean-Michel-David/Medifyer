@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 
@@ -21,7 +22,8 @@ import { QuestionGeneratorService } from 'src/app/services/question-generator.se
 })
 export class EquationDisplayComponent implements AfterViewInit{
 
-  constructor(private qu:QuestionGeneratorService,private http:HttpClient){}
+  constructor(private qu:QuestionGeneratorService,private http:HttpClient,private cdRef:ChangeDetectorRef){}
+
 
   @Input()
   form!:FormGroup;
@@ -32,6 +34,7 @@ export class EquationDisplayComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     this.displayEquation();
+    this.cdRef.detectChanges();
   }
 
   displayEquation(){

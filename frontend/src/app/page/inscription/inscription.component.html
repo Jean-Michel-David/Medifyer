@@ -10,13 +10,13 @@
             Veuillez entrer votre nom
           </div>
           <div
-            *ngIf="f['lastname'].errors?.['minLength']"
+            *ngIf="f['lastname'].errors?.['minlength']"
             class="card text-white bg-danger p-1"
           >
             Votre nom doit faire plus de 2 caractères
           </div>
           <div
-            *ngIf="f['lastname'].errors?.['maxLength']"
+            *ngIf="f['lastname'].errors?.['maxlength']"
             class="card text-white bg-danger p-1"
           >
             Votre nom ne peut pas dépasser 50 caractères
@@ -44,7 +44,7 @@
             Veuillez entrer votre mot de passe
           </div>
           <div
-            *ngIf="f['pwd'].errors?.['minLength']"
+            *ngIf="f['pwd'].errors?.['minlength']"
             class="card text-white bg-danger p-1"
           >
             Votre mot de passe est trop court (minimum 9 caractères)
@@ -58,13 +58,13 @@
             Veuillez entrer votre prénom
           </div>
           <div
-            *ngIf="f['firstname'].errors?.['minLength']"
+            *ngIf="f['firstname'].errors?.['minlength']"
             class="card text-white bg-danger p-1"
           >
             Votre prénom doit faire plus de 2 caractères
           </div>
           <div
-            *ngIf="f['firstname'].errors?.['maxLength']"
+            *ngIf="f['firstname'].errors?.['maxlength']"
             class="card text-white bg-danger p-1"
           >
             Votre prénom ne peut pas dépasser 50 caractères
@@ -77,7 +77,7 @@
           >
             Veuillez entrer votre confirmation de mot de passe
           </div>
-          <div *ngIf="f['cpwd'].errors?.['minLength']">
+          <div *ngIf="f['cpwd'].errors?.['miength']">
             La confirmation de mot de passe est trop courte (minimum 9 caractères)
           </div>
           <div *ngIf="f['cpwd'].errors?.['matching']">
@@ -148,7 +148,7 @@
       type="submit"
       (click)="addNewUser()"
       >
-      S'incrire
+      S'inscrire
       </button>
     </form>
 

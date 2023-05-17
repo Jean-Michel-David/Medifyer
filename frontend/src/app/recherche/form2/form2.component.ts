@@ -29,6 +29,7 @@ export class Form2Component implements OnInit{
   constructor(private fb : FormBuilder,private http:HttpClient){}
 
   ngOnInit(): void {
+
   }
 
   addTerm(group:string,column:string){

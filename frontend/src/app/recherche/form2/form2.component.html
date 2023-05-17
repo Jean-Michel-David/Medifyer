@@ -37,7 +37,7 @@
         <h6 class="fw-bold">Langage Naturel (FR)</h6>
         <p *ngIf="($any(secondPart.controls[formGroups[j]]).controls['natural']).length == 0">Vide</p>
         <div *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['natural']).controls; let i=index" class="natural">
-          <input class="form-control" id="termNatural-{{ i }}" type="text" [formControlName]="i" (focusout)="checkEmptyWhenLeaving($event,formGroups[j],'natural',i)" focus>
+          <input class="form-control" id="termNatural-{{ i }}" type="text" formControlName="{{i}}" (focusout)="checkEmptyWhenLeaving($event,formGroups[j],'natural',i)" focus>
           <a href="https://www.hetop.eu/hetop/fr/?q=&home#q={{($any(secondPart.controls[formGroups[j]]).controls['natural']).at(i).value}}" target="_blank" class="btn btn-hetop">
             HeTop
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M384 32c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96C0 60.7 28.7 32 64 32H384zM320 313.4V176c0-8.8-7.2-16-16-16H166.6c-12.5 0-22.6 10.1-22.6 22.6c0 6 2.4 11.8 6.6 16L184 232l-66.3 66.3C114 302 112 306.9 112 312s2 10 5.7 13.7l36.7 36.7c3.6 3.6 8.5 5.7 13.7 5.7s10-2 13.7-5.7L248 296l33.4 33.4c4.2 4.2 10 6.6 16 6.6c12.5 0 22.6-10.1 22.6-22.6z"/></svg>
@@ -49,7 +49,7 @@
         <h6 class="fw-bold">Terme Mesh (EN)</h6>
         <p *ngIf="($any(secondPart.controls[formGroups[j]]).controls['mesh']).length == 0">Vide</p>
         <div class="mesh" *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['mesh']).controls; let i=index">
-          <input class="form-control" id="term-{{ i }}" type="text" [formControlName]="i" (focusout)='checkMeshTerm($event,formGroups[j],i)' #mesh  >
+          <input class="form-control" id="term-{{ i }}" type="text" formControlName="{{i}}" (focusout)='checkMeshTerm($event,formGroups[j],i)' #mesh  >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" *ngIf="mesh.classList.contains('valid')"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>
           <button *ngIf="mesh.classList.contains('notvalid')" (click)="moveTerm($event,formGroups[j],i)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z"/></svg>
@@ -68,7 +68,7 @@
         <h6 class="fw-bold">Synonyme (EN)</h6>
         <p *ngIf="($any(secondPart.controls[formGroups[j]]).controls['synonym']).length == 0">Vide</p>
         <input *ngFor="let term of ($any(secondPart.controls[formGroups[j]]).controls['synonym']).controls; let i=index"
-        class="form-control" id="termSynonym-{{ i }}" type="text" [formControlName]="i" (focusout)='checkEmptyWhenLeaving($event,formGroups[j],"synonym",i)'  >
+        class="form-control" id="termSynonym-{{ i }}" type="text" formControlName="{{i}}" (focusout)='checkEmptyWhenLeaving($event,formGroups[j],"synonym",i)'  >
         <button type="button" class="btn btn-dark" (click)="addTerm(formGroups[j],'synonym')" *ngIf="checkIfEmpty('synonym',formGroups[j])">+ Ajouter un nouveau mot</button>
       </div>
     </div>

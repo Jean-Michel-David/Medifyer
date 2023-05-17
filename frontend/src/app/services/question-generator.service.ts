@@ -20,7 +20,7 @@ export class QuestionGeneratorService {
 
     var question:Question = {
       id :0,
-      acces:1,
+      acces:((form as FormGroup).controls["firstPart"] as FormGroup).controls["privacy"].value == "private" ? 0:1,
       commentaires:"",
       coWorker : [],
       Question : ((form as FormGroup).controls["firstPart"] as FormGroup).controls["question"].value ?? "" ,

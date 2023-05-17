@@ -187,6 +187,17 @@ function getSharedSearches($con, $authorization){
         }
         foreach ($recherches as &$recherche) 
             $recherche['question'] = json_decode($recherche['question']);
+            
+// Fonction de comparaison basée sur la clé 'laDate'
+        function compareByDate($a, $b) {
+            $dateA = strtotime($a['laDate']);
+            $dateB = strtotime($b['laDate']);
+            // b - a pour avoir le résultat en mode DESC
+            return $dateB - $dateA;
+        }
+
+        // Tri du tableau en utilisant la fonction de comparaison
+        usort($recherches, 'compareByDate');
 
         return $recherches;
     
@@ -221,28 +232,32 @@ function getQuestion($id,$con, $authorization){
 
         $res = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $question->setId(json_decode($res["recherche_id"]))
-    ->setAcces(json_decode($res["public_rech"]))
-    ->setCommentaires(json_decode($res["commentaire_rech"]))
-    ->setCoWorkers(json_decode($res["user_id"]))
-    ->setQuestion(json_decode($res["question_rech"]))
-    ->setPatient_Pop_Path(json_decode($res["population_rech"]))
-    ->setIntervention_Traitement(json_decode($res["traitement_rech"]))
-    ->setRésultats(json_decode($res["resultat_rech"]))
-    ->setPatient_Language_Naturel(json_decode($res["termesFrancaisPopulation"]))
-    ->setPatient_Terme_Mesh(json_decode($res["termesMeshPopulation"]))
-    ->setPatient_Synonyme(json_decode($res["synonymesPopulation"]))
-    ->setIntervention_Language_Naturel(json_decode($res["termesFrancaisTraitement"]))
-    ->setIntervention_Terme_Mesh(json_decode($res["termesMeshTraitement"]))
-    ->setIntervention_Synonyme(json_decode($res["synonymesTraitement"]))
-    ->setRésultats_Language_Naturel(json_decode($res["termesFrancaisResultat"]))
-    ->setRésultats_Terme_Mesh(json_decode($res["termesMeshResultat"]))
-    ->setRésultats_Synonyme(json_decode($res["synonymesResultat"]))
-    ->setEquations_PatientPopPath(json_decode($res["relationsPopulation"]))
-    ->setEquations_Intervention(json_decode($res["relationsTraitement"]))
-    ->setEquations_Resultats(json_decode($res["relationsResultat"]));
+        if(json_decode($res["public_rech"]) == 1 || json_decode($res["user_id"]) == $credsObj->extractUserId($authorization)) {
+            $question->setId(json_decode($res["recherche_id"]))
+                ->setAcces(json_decode($res["public_rech"]))
+                ->setCommentaires(json_decode($res["commentaire_rech"]))
+                ->setCoWorkers(json_decode($res["user_id"]))
+                ->setQuestion(json_decode($res["question_rech"]))
+                ->setPatient_Pop_Path(json_decode($res["population_rech"]))
+                ->setIntervention_Traitement(json_decode($res["traitement_rech"]))
+                ->setRésultats(json_decode($res["resultat_rech"]))
+                ->setPatient_Language_Naturel(json_decode($res["termesFrancaisPopulation"]))
+                ->setPatient_Terme_Mesh(json_decode($res["termesMeshPopulation"]))
+                ->setPatient_Synonyme(json_decode($res["synonymesPopulation"]))
+                ->setIntervention_Language_Naturel(json_decode($res["termesFrancaisTraitement"]))
+                ->setIntervention_Terme_Mesh(json_decode($res["termesMeshTraitement"]))
+                ->setIntervention_Synonyme(json_decode($res["synonymesTraitement"]))
+                ->setRésultats_Language_Naturel(json_decode($res["termesFrancaisResultat"]))
+                ->setRésultats_Terme_Mesh(json_decode($res["termesMeshResultat"]))
+                ->setRésultats_Synonyme(json_decode($res["synonymesResultat"]))
+                ->setEquations_PatientPopPath(json_decode($res["relationsPopulation"]))
+                ->setEquations_Intervention(json_decode($res["relationsTraitement"]))
+                ->setEquations_Resultats(json_decode($res["relationsResultat"]));
+            return $question;
+        } else {
+            return null;
+        }
 
-        return $question;
     }catch(PDOException $e){
         die($e);
     } finally{

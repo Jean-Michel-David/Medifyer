@@ -34,6 +34,7 @@ import { DragDropModule } from 'primeng/dragdrop';
 import { RippleModule  } from 'primeng/ripple';
 import { ClipboardModule } from 'ngx-clipboard';
 import { SidebarModule } from 'primeng/sidebar';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 import { AuthHeaderInterceptor } from './auth-header.interceptor';
@@ -87,7 +88,9 @@ import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
     ConfirmDialogModule,
     DialogModule,
     ToastModule,
-    MessagesModule
+    MessagesModule,
+    SelectButtonModule,
+
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
