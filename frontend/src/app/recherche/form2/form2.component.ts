@@ -75,9 +75,6 @@ export class Form2Component implements OnInit{
 
   }
 
-  checkTimer(event:Event){
-  }
-
   moveTerm(event:Event,group:string,term:number){
     let synonym = ((this.secondPart.controls[group] as FormGroup).controls['synonym'] as FormArray);
     let mesh = ((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray);
@@ -104,5 +101,11 @@ export class Form2Component implements OnInit{
     } else {
       return false;
     }
+  }
+
+  loseFocus(event:Event){
+    event.preventDefault();
+    event.stopPropagation();
+    (event.target as HTMLInputElement).blur();
   }
 }
