@@ -326,15 +326,19 @@ export class FormulairesComponent implements OnInit{
   }
 
   checkConnection(){
-    let sub = this.userInfos.getInfos().subscribe({
-      next : response => {
-        this.isConnected = response.isConnected??false;
-        this.isAdmin = response.isAdmin??false;
-        sub.unsubscribe();
-      }, error : () => {
-        this.isConnected = this.isAdmin = false;
-        sub.unsubscribe();
-      }
-    });
+    if(localStorage.getItem("authenticationToken") != null){
+      let sub = this.userInfos.getInfos().subscribe({
+        next : response => {
+          this.isConnected = response.isConnected;
+          this.isAdmin = response.isAdmin;
+          sub.unsubscribe();
+        }, error : () => {
+          this.isConnected = this.isAdmin = false;
+          sub.unsubscribe();
+        }
+      });
+    } else {
+      this.isConnected = this.isAdmin = false;
+    }
   }
 }

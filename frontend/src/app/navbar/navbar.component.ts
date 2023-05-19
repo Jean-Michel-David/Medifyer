@@ -36,17 +36,21 @@ export class NavbarComponent implements OnInit {
   }
 
   checkConnection(){
-    let sub = this.userInfos.getInfos().subscribe({
-      next : (response) => {
-        this.isConnected = response.isConnected??false;
-        this.isAdmin = response.isAdmin??false;
-        this.initials = response.initials??false;
-        sub.unsubscribe();
-      }, error : () => {
-          this.isConnected = this.isAdmin = false;
-          this.initials = "";
-      }
-    });
+    if(localStorage.getItem("authenticationToken") != null){
+      let sub = this.userInfos.getInfos().subscribe({
+        next : (response) => {
+          this.isConnected = response.isConnected??false;
+          this.isAdmin = response.isAdmin??false;
+          this.initials = response.initials??false;
+          sub.unsubscribe();
+        }, error : () => {
+            this.isConnected = this.isAdmin = false;
+            this.initials = "";
+        }
+      });
+    } else {
+      this.isConnected = this.isAdmin = false;
+    }
   }
 
   disconnect(){
