@@ -4,7 +4,7 @@ import { Operateurs } from "./operateurs";
 export interface Question {
   id : number;
   acces : number; //1 pour public 0 pour privé
-  coWorker : number[]; //will contain the id of the co-workers
+  coWorker : string[]; //will contain the id of the co-workers
   commentaires : string;
 
   Question : string;

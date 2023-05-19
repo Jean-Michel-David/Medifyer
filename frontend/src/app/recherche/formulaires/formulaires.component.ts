@@ -12,6 +12,7 @@ import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -42,6 +43,11 @@ import { MessageService } from 'primeng/api';
         style({ opacity: 0 , transform: 'translateX(-100%)'}),
         animate('100ms 450ms', style({ opacity: 1 , transform: 'translateX(0%)'})),
       ])
+    ]),trigger('insertTrigger4', [
+      transition(':enter', [
+        style({ opacity: 0 , transform: 'translateX(-100%)'}),
+        animate('100ms 600ms', style({ opacity: 1 , transform: 'translateX(0%)'})),
+      ])
     ]),
   ]
 })
@@ -56,8 +62,10 @@ export class FormulairesComponent implements OnInit{
     private route:ActivatedRoute,
     private router:Router,
     private message : MessageService
+    
     ){}
 
+  inviteUsersFormVisible = false;
   form2Visible = false;
   form3Visible = false;
   equationVisible = false;
@@ -77,6 +85,8 @@ export class FormulairesComponent implements OnInit{
     "intervention",
     "resultats"
   ]
+
+  coworkers? : string[];
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(
@@ -215,7 +225,8 @@ export class FormulairesComponent implements OnInit{
         (thirdPartResultats.controls['includeNone'] as FormArray).push(this.fb.control(element));
       });
 
-
+      //Filling the coworkers list
+      this.coworkers = question.coWorker;
   }
 
   emptyForm():FormGroup{
@@ -284,10 +295,10 @@ export class FormulairesComponent implements OnInit{
     this.ex.exportData(question);
   }
 
-  save(){
+  save(coworkers? : string[]){
     const req = this.route.queryParams.subscribe(
       params => {
-        let question = this.qu.toQuestion(this.form);
+        let question =(coworkers) ? this.qu.toQuestion(this.form, coworkers) : this.qu.toQuestion(this.form);
 
         if(params['id']){
           question.id = params['id'];
@@ -316,5 +327,41 @@ export class FormulairesComponent implements OnInit{
         });
       });
       req.unsubscribe();
+  }
+
+
+  /**********************
+  Added by Daniel for sharing the search to other users
+  **********************/
+  displayInviteUser() {
+    this.inviteUsersFormVisible = true;
+  }
+
+  onDeleteUser(searchId : string) {
+    console.log("deleting user : " + searchId);
+  }
+
+  userChosen(user : string, event : Event) {
+    event.preventDefault();
+    
+    this.route.queryParams.subscribe(params => {
+      if (! params["id"]) {
+        this.inviteUsersFormVisible = false;  
+        this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez d\'abord sauvegarder la recherche' });
+        this.isMessageVisible = true;
+        const messageTimer = setTimeout(() => {
+          this.message.clear();
+          this.isMessageVisible = false;
+          clearTimeout(messageTimer);
+        }, 2000);
+      }
+
+      else {
+
+        this.save();
+      }
+
+    });
+
   }
 }

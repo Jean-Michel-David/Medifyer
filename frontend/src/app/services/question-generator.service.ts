@@ -16,13 +16,13 @@ export class QuestionGeneratorService {
    *
    * @param form The form needed to generate the question
    */
-  toQuestion(form:FormGroup):Question{
+  toQuestion(form:FormGroup, coworkers? : string[]):Question{
 
     var question:Question = {
       id :0,
       acces:((form as FormGroup).controls["firstPart"] as FormGroup).controls["privacy"].value == "private" ? 0:1,
       commentaires:"",
-      coWorker : [],
+      coWorker : (coworkers) ? coworkers : [],
       Question : ((form as FormGroup).controls["firstPart"] as FormGroup).controls["question"].value ?? "" ,
       Patient_Pop_Path : ((form as FormGroup).controls["firstPart"] as FormGroup).controls["patient"].value ?? "",
       Intervention_Traitement : ((form as FormGroup).controls["firstPart"] as FormGroup).controls["intervention"].value ?? "",

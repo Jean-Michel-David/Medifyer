@@ -3,10 +3,10 @@ require_once(dirname(__FILE__) . '/../credentials.php');
 class QuestionManager{
 /**
   @Description insert a question into the db
-   If the id of the question is already set we update the db.
-   Parameters : the question to save, the connection to the db, the authorization header
+  If the id of the question is already set we update the db.
+  Parameters : the question to save, the connection to the db, the authorization header
   **/
-    public function saveQuestion(Question $question,$con,$authorization){
+  public function saveQuestion(Question $question,$con,$authorization){
         $paramUpdate = array();
         $paramsInsert = array();
         $credsObj = new Credentials();
@@ -87,10 +87,10 @@ class QuestionManager{
     }
 
 
-/**
+  /**
   @Description set the new question's id. And set the coworkers for the question
   **/
-    function insertCoWorkers($con, $question,$authorization,$credsObj) {
+  function insertCoWorkers($con, Question $question,$authorization,$credsObj) {
         if($question->getId() <= 0){
             //si c'était une nouvelle question alors on récupère son id et on le met dans l'obj question
             $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
@@ -126,11 +126,15 @@ class QuestionManager{
             }
         }
     }
-/**
+  /**
   @Description return the questions of the connected user
   **/
   function getUserSearches($con, $authorization) {
     $credsObj = new Credentials();
+    $userId = $credsObj->extractUserId($authorization);
+    if (!$userId)
+        return false;
+
     try {
     //récupère les recherches du user connecté
         $sqlQuery = "SELECT recherche_id as id, question_rech as question, lastUpdate as laDate 
@@ -140,7 +144,7 @@ class QuestionManager{
 
         $statement = $con->prepare($sqlQuery);
 
-        $statement->bindValue('userId', $credsObj->extractUserId($authorization));
+        $statement->bindValue('userId', $userId);
         $statement->execute();
 
         $recherches = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -207,22 +211,45 @@ function getSharedSearches($con, $authorization){
         $statement->closeCursor();
     }
 }
-/** 
+
+    /**
+     * @param $id the ID of the user
+     * @param PDO $con a PDO connection
+     * @return string the email of the selected user
+     */
+function getEmailFromId(int $id, PDO $con) : string {
+    $sqlQuery = "SELECT email_user FROM users WHERE user_id = :userId";
+
+    $statement = $con->prepare($sqlQuery);
+    $statement->bindValue('userId', $id);
+    $statement->execute();
+
+    return $statement->fetch(PDO::FETCH_ASSOC)['email_user'];
+}
+
+function getIdFromEmail(string $email, PDO $con) : int{
+    $sqlQuery = "SELECT user_id FROM users WHERE email_user = :email";
+
+    return 0;
+}
+
+/**
 @Description Fetch a question based on its id
 Parameters : the id of the question to fetch, the connection to the db, the authorization header
 return the question
 **/
-function getQuestion($id,$con, $authorization){
+function getQuestion($id ,PDO $con, $authorization){
     $credsObj = new Credentials();
     $question = new Question();
     try {
         $sqlQuery = "SELECT r.recherche_id, r.public_rech,r.commentaire_rech,r.user_id,r.question_rech,r.population_rech,
         r.traitement_rech,r.resultat_rech,t.termesFrancaisPopulation,t.termesFrancaisResultat,t.termesFrancaisTraitement,
         t.termesMeshPopulation,t.termesMeshResultat,t.termesMeshTraitement,t.synonymesPopulation,t.synonymesResultat,
-        t.synonymesTraitement,e.relationsPopulation,e.relationsTraitement,e.relationsResultat
+        t.synonymesTraitement,e.relationsPopulation,e.relationsTraitement,e.relationsResultat, acc.user_id as coworker
         FROM recherches r 
         INNER JOIN termes t ON r.recherche_id = t.recherche_id
-        INNER JOIN equation e ON e.terme_id = t.terme_id 
+        INNER JOIN equation e ON e.terme_id = t.terme_id
+        LEFT JOIN aaccesa acc ON acc.recherche_id = r.recherche_id
         WHERE r.recherche_id=:recherche_id;";
 
         $statement = $con->prepare($sqlQuery);
@@ -230,7 +257,8 @@ function getQuestion($id,$con, $authorization){
         $statement->bindValue('recherche_id', $id);
         $statement->execute();
 
-        $res = $statement->fetch(PDO::FETCH_ASSOC);
+        $resultSet = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $res = $resultSet[0];
 
         if(json_decode($res["public_rech"]) == 1 || json_decode($res["user_id"]) == $credsObj->extractUserId($authorization)) {
             $question->setId(json_decode($res["recherche_id"]))
@@ -253,6 +281,14 @@ function getQuestion($id,$con, $authorization){
                 ->setEquations_PatientPopPath(json_decode($res["relationsPopulation"]))
                 ->setEquations_Intervention(json_decode($res["relationsTraitement"]))
                 ->setEquations_Resultats(json_decode($res["relationsResultat"]));
+
+            //Adding the coworkers to the result
+            $coworkersSet = [];
+            foreach ($resultSet as $result)
+                $coworkersSet[] = $this->getEmailFromId($result['coworker'], $con);
+
+            $question->setCoWorkers($coworkersSet);
+
             return $question;
         } else {
             return null;
@@ -264,12 +300,13 @@ function getQuestion($id,$con, $authorization){
         $statement->closeCursor();
     }
  }
+
 /** 
 @Description Delete a question based on its id
 Parameters : the id of the question to fetch, the connection to the db, the authorization header
 return the question
 **/
- function deleteQuestion($id,$con, $authorization){
+ function deleteQuestion($id ,$con, $authorization){
     $credsObj = new Credentials();
 
     try{
