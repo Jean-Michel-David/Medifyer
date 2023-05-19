@@ -18,9 +18,9 @@ class UserInfos implements JsonSerializable{
      */
     public function setIsConnected($authorization, $credentials) {
         if ($credentials->extractUserId($authorization) !== null) {
-          $this->isConnected = "true";
+          $this->isConnected = true;
         } else {
-          $this->isConnected = "false";
+          $this->isConnected = false;
         }
     }
 
@@ -29,9 +29,9 @@ class UserInfos implements JsonSerializable{
      */
     public function setIsAdmin($authorization, $credentials) {
         if ($credentials->hasAdminCredentials($authorization)) {
-          $this->isAdmin = "true";
+          $this->isAdmin = true;
         } else {
-          $this->isAdmin = "false";
+          $this->isAdmin = false;
         }
     }
 

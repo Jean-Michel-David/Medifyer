@@ -12,6 +12,8 @@ import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { UserInfos } from '../user-infos';
+import { UserInfosService } from 'src/app/services/user-infos.service';
 
 
 @Component({
@@ -55,7 +57,8 @@ export class FormulairesComponent implements OnInit{
     private userRecherche:UserRechercheService,
     private route:ActivatedRoute,
     private router:Router,
-    private message : MessageService
+    private message : MessageService,
+    private userInfos : UserInfosService
     ){}
 
   form2Visible = false;
@@ -63,6 +66,9 @@ export class FormulairesComponent implements OnInit{
   equationVisible = false;
   sidebarVisible = false;
   isMessageVisible = false;
+
+  isConnected=false;
+  isAdmin=false;
 
   form = this.emptyForm();
 
@@ -79,6 +85,7 @@ export class FormulairesComponent implements OnInit{
   ]
 
   ngOnInit(): void {
+    this.checkConnection();
     this.route.queryParams.subscribe(
       params => {
         if(params['id']){
@@ -316,5 +323,18 @@ export class FormulairesComponent implements OnInit{
         });
       });
       req.unsubscribe();
+  }
+
+  checkConnection(){
+    let sub = this.userInfos.getInfos().subscribe({
+      next : response => {
+        this.isConnected = response.isConnected??false;
+        this.isAdmin = response.isAdmin??false;
+        sub.unsubscribe();
+      }, error : () => {
+        this.isConnected = this.isAdmin = false;
+        sub.unsubscribe();
+      }
+    });
   }
 }
