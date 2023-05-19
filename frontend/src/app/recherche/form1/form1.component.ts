@@ -37,6 +37,9 @@ export class Form1Component{
   @Input()
   firstPart!:FormGroup;
 
+  @Input()
+  isConnected!:boolean;
+
   isNew!:boolean;
 
   constructor(

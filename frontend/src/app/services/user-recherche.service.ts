@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Question } from '../recherche/question';
 import { QuestionShort } from '../recherche/question-short';
 import { environment } from 'src/environments/environment';
@@ -8,10 +8,9 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UserRechercheService {
-  
+export class UserRechercheService {  
   private userRecherche = environment.backendUrl + "/question/userRecherche.php";
-  
+
   constructor(private http : HttpClient) { }
 /**
    * This function save a function into the db

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TimeInterval } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -48,7 +48,8 @@ export class Form2Component implements OnInit{
 
   checkMeshTerm(event:Event,group:string,term:number){
     if(this.checkEmptyWhenLeaving(event,group,"mesh",term)){
-      let meshTerm = (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term).value);
+      let input = ((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term);
+      let meshTerm = input.value;
       if(meshTerm.length > 1){
         let req = this.http.get('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=mesh&term='
         + meshTerm
@@ -61,6 +62,13 @@ export class Form2Component implements OnInit{
             if(count>0){
               (event.target as HTMLElement).classList.add('valid');
               (event.target as HTMLElement).classList.remove('notvalid');
+
+              let correctMeshTerm = xml.getElementsByTagName('eSearchResult')[0]
+              .getElementsByTagName('TranslationSet')[0]
+              .getElementsByTagName('Translation')[0]
+              .getElementsByTagName('To')[0].innerHTML;
+
+              (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term) as FormControl).patchValue(correctMeshTerm.substring(1,correctMeshTerm.lastIndexOf("\"")));
             } else {
               (event.target as HTMLElement).classList.add('notvalid');
               (event.target as HTMLElement).classList.remove('valid');
@@ -73,9 +81,6 @@ export class Form2Component implements OnInit{
       }
     }
 
-  }
-
-  checkTimer(event:Event){
   }
 
   moveTerm(event:Event,group:string,term:number){
@@ -104,5 +109,11 @@ export class Form2Component implements OnInit{
     } else {
       return false;
     }
+  }
+
+  loseFocus(event:Event){
+    event.preventDefault();
+    event.stopPropagation();
+    (event.target as HTMLInputElement).blur();
   }
 }
