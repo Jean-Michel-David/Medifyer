@@ -31,16 +31,15 @@ $options = [
 ];
 $userInfos = new UserInfos();
 
-if (empty($headers['Authorization'])) {
-  http_response_code(401);
-  exit();
-}
-
 // Récupération des informations de l'utilisateur
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+  if (empty($headers['Authorization'])) {
+    http_response_code(401);
+    exit();
+  }
   $userInfos->setIsConnected($headers['Authorization'], $credentials);
   $userInfos->setIsAdmin($headers['Authorization'], $credentials);
-  $userInfos->setInitials($headers['Authorization'], $credentials, $cnx);
+  $userInfos->setNames($headers['Authorization'], $credentials, $cnx);
   echo json_encode($userInfos);
 }
 // Inscription de l'utilisateur
@@ -77,6 +76,10 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   echo $credentials->createToken($user);
   // Deleting a User
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+  if (empty($headers['Authorization'])) {
+    http_response_code(401);
+    exit();
+  }  
   $succes = $userManager->deleteUser($headers['Authorization']);
   if ($succes == false) {
     http_response_code(400);

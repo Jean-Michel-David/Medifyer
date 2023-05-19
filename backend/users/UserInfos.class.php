@@ -4,13 +4,13 @@ class UserInfos implements JsonSerializable{
   
     private $isConnected;
     private $isAdmin;
-    private $initials;
+    private $names;
 
     public function __construct()
     {
         $this->isConnected = false;
         $this->isAdmin = false;
-        $this->initials = "";
+        $this->names = "";
     }
 
     /**
@@ -36,18 +36,18 @@ class UserInfos implements JsonSerializable{
     }
 
     /**
-     * This function return the initials of a user
+     * This function return the names of a user
      */
-    public function setInitials($authorization, $credentials, $cnx) {
+    public function setNames($authorization, $credentials, $cnx) {
         $id = $credentials->extractUserId($authorization);
         $sql = "SELECT nom_user ,prenom_user FROM users WHERE user_id=:user_id";
         $stmnt = $cnx->prepare($sql);
         $stmnt->bindValue('user_id', $id);
         $stmnt->execute();
         $res = $stmnt->fetch(PDO::FETCH_ASSOC);
-        $firstnameInitial = substr($res["prenom_user"],0,1);
-        $lastnameInitial = substr($res["nom_user"],0,1);
-        $this->initials = $firstnameInitial." ".$lastnameInitial;
+        $firstname = $res["prenom_user"];
+        $lastname = $res["nom_user"];
+        $this->names = $firstname." ".$lastname;
     }
 
     public function getIsConnected() {
@@ -58,15 +58,15 @@ class UserInfos implements JsonSerializable{
       return $this->isAdmin;
     }
 
-    public function getInitials() {
-      return $this->initials;
+    public function getNames() {
+      return $this->names;
     }
 
     public function jsonSerialize(): mixed {
       return array(
       'isConnected' => $this->getIsConnected(),
       'isAdmin' => $this->getIsAdmin(),
-      'initials' => $this->getInitials()
+      'names' => $this->getNames()
       );
     }
 }
