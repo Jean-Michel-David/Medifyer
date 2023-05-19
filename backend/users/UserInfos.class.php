@@ -4,13 +4,15 @@ class UserInfos implements JsonSerializable{
   
     private $isConnected;
     private $isAdmin;
-    private $names;
+    private $firstname;
+    private $lastname;
 
     public function __construct()
     {
         $this->isConnected = false;
         $this->isAdmin = false;
-        $this->names = "";
+        $this->firstname = "";
+        $this->lastname = "";
     }
 
     /**
@@ -45,9 +47,8 @@ class UserInfos implements JsonSerializable{
         $stmnt->bindValue('user_id', $id);
         $stmnt->execute();
         $res = $stmnt->fetch(PDO::FETCH_ASSOC);
-        $firstname = $res["prenom_user"];
-        $lastname = $res["nom_user"];
-        $this->names = $firstname." ".$lastname;
+        $this->firstname = $res["prenom_user"];
+        $this->lastname = $res["nom_user"];
     }
 
     public function getIsConnected() {
@@ -58,15 +59,21 @@ class UserInfos implements JsonSerializable{
       return $this->isAdmin;
     }
 
-    public function getNames() {
-      return $this->names;
+    public function getFirstname() {
+      return $this->firstname;
+    }
+
+    
+    public function getLastname() {
+      return $this->lastname;
     }
 
     public function jsonSerialize(): mixed {
       return array(
       'isConnected' => $this->getIsConnected(),
       'isAdmin' => $this->getIsAdmin(),
-      'names' => $this->getNames()
+      'firstname' => $this->getFirstname(),
+      'lastname' => $this->getLastname()
       );
     }
 }
