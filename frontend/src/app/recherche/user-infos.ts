@@ -1,5 +1,5 @@
 export interface UserInfos {
     isConnected : boolean;
     isAdmin : boolean;
-    initials : string;
+    names : string;
 }
