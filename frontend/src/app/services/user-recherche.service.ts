@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Question } from '../recherche/question';
 import { QuestionShort } from '../recherche/question-short';
-import { of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserRechercheService {
 
-  private backendUrl = "http://localhost/Medifyer/backend/question/userRecherche.php";
+  private backendUrl = environment.backendUrl + "/question/userRecherche.php";
   constructor(private http : HttpClient) { }
 /**
    * This function save a function into the db
