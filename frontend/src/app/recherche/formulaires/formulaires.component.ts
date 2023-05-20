@@ -108,11 +108,13 @@ export class FormulairesComponent implements OnInit{
                 this.isSavedQuestion = true;
               } else {
                 this.router.navigateByUrl("/recherche");
+                this.isSavedQuestion = false;
               }
               questionRequest.unsubscribe();
             });
         } else {
             this.form = this.emptyForm();
+            this.isSavedQuestion = false;
         }
       }
     );
@@ -406,5 +408,5 @@ export class FormulairesComponent implements OnInit{
 
     });
   }
-  
+
 }
