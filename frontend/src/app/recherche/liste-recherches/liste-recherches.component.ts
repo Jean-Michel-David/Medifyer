@@ -53,6 +53,10 @@ export class ListeRecherchesComponent implements OnInit{
     this.confirmation.confirm({
       message: 'Etes-vous certain de vouloir supprimer cette question?',
       header: 'Confirmation',
+      acceptLabel: 'Supprimer',
+      rejectLabel: 'Annuler',
+      acceptButtonStyleClass: 'custom-accept-button',
+      rejectButtonStyleClass: 'custom-reject-button',
       accept:()=>{
         const sub = this.api.supprimer(id).subscribe(() => {
           this.getQuestions();

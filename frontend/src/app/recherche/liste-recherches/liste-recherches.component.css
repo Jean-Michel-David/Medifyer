@@ -77,3 +77,29 @@ button:hover{
 .dialog{
   width: '60vw';
 }
+
+::ng-deep .custom-accept-button{
+  background-color: rgb(226, 18, 18);
+  border: none;
+  outline: red;
+  box-shadow:
+    0 0 0 2px white, /* Espace non coloré */
+    0 0 0 4px red !important;
+}
+
+::ng-deep .custom-accept-button:hover {
+  background-color: rgb(255, 0, 0) !important;
+  transition: all ease-in-out 150ms;
+  transform: scale(1.05);
+}
+
+::ng-deep .custom-reject-button{
+  background-color: #989898 !important;
+  border: none;
+}
+
+::ng-deep .custom-reject-button:hover {
+  background-color: #989898 !important;
+  transition: all ease-in-out 150ms;
+  transform: scale(1.05);
+}
