@@ -76,6 +76,7 @@ export class FormulairesComponent implements OnInit{
 
   isConnected=false;
   isAdmin=false;
+  isSavedQuestion=false;
 
   form = this.emptyForm();
 
@@ -100,11 +101,14 @@ export class FormulairesComponent implements OnInit{
         if(params['id']){
           let questionRequest = this.userRecherche.developper(params['id']).subscribe(
             question => {
-              if(question) this.fillForm(question);
-              else this.router.navigateByUrl("/recherche");
+              if(question) {
+                this.fillForm(question);
+                this.isSavedQuestion = true;
+              } else {
+                this.router.navigateByUrl("/recherche");
+              }
               questionRequest.unsubscribe();
-            }
-            );
+            });
         } else {
             this.form = this.emptyForm();
         }
@@ -348,10 +352,10 @@ export class FormulairesComponent implements OnInit{
 
   userChosen(user : string, event : Event) {
     event.preventDefault();
-    
+
     this.route.queryParams.subscribe(params => {
       if (! params["id"]) {
-        this.inviteUsersFormVisible = false;  
+        this.inviteUsersFormVisible = false;
         this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez d\'abord sauvegarder la recherche' });
         this.isMessageVisible = true;
         const messageTimer = setTimeout(() => {
