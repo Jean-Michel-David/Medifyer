@@ -6,9 +6,8 @@ class QuestionManager{
   If the id of the question is already set we update the db.
   Parameters : the question to save, the connection to the db, the authorization header
   **/
-  public function saveQuestion(Question $question,$con,$authorization){
+  public function saveQuestion(Question $question,PDO $con,string $authorization){
         $paramUpdate = array();
-        $paramsInsert = array();
         $credsObj = new Credentials();
 
         if ($question->getId() > 0) {   //si la question est déjà présente dans la db
@@ -74,6 +73,11 @@ class QuestionManager{
 
             $params = array_merge($paramUpdate,$paramsInsert);
             $insert->execute($params); //return true si le query a bien été exécuté
+
+            $lastInsert = $con->lastInsertId();
+            if ($lastInsert != 0)
+                $question->setId($lastInsert);
+
             $insert->closeCursor();
             $this->insertCoWorkers($con,$question,$authorization,$credsObj);
             
@@ -90,42 +94,39 @@ class QuestionManager{
   /**
   @Description set the new question's id. And set the coworkers for the question
   **/
-  function insertCoWorkers($con, Question $question,$authorization,$credsObj) {
-        if($question->getId() <= 0){
-            //si c'était une nouvelle question alors on récupère son id et on le met dans l'obj question
-            $sql = ("SELECT recherche_id FROM recherches WHERE user_id = :user_id ORDER BY recherche_id DESC LIMIT 1");
-            $insert = $con->prepare($sql);
-        $params = array ('user_id' => $credsObj->extractUserId($authorization)); 
-            $insert->execute($params);
-            $result = $insert->fetch(PDO::FETCH_ASSOC);
-            $question ->setId($result["recherche_id"]);
-            
-            //on vient ensuite insérer les CoWorkers en db
-            $id_array = $question->getCoWorkers();
-            foreach ($id_array as $id) {
-                $sql = ("INSERT INTO aaccesa(recherche_id,user_id) VALUES(:recherche_id,:CoWorkers)");
-                $params = array ('recherche_id' => $question->getId(),'CoWorkers' => $id);
-                $insert = $con->prepare($sql);
-                $insert->execute($params);
-            }
-        } else {
-            //si la question existe déjà on regarde la différence entre les nouveaux et anciens users et on les rajoute
-            $sql = "SELECT user_id FROM aaccesa WHERE recherche_id = :recherche_id";
-            $params = array ('recherche_id' => $question->getId());
-            $insert = $con->prepare($sql);
-            $insert->execute($params);
-            
-            $result = $insert->fetchAll(PDO::FETCH_COLUMN);
-            
-            $toInsert = array_diff($question->getCoWorkers(), $result);
-            foreach($toInsert as $id) {
-                $sql = ("INSERT INTO aaccesa(recherche_id,user_id) VALUES(:recherche_id,:CoWorkers)");
-                $params = array ('recherche_id' => $question->getId(),'CoWorkers' => $id);
-                $insert = $con->prepare($sql);
-                $insert->execute($params);
-            }
-        }
+  function insertCoWorkers(PDO $con, Question $question, string $authorization, Credentials $credsObj) {
+    $sql = "SELECT user_id FROM aaccesa WHERE recherche_id = :recherche_id";
+    $params = array ('recherche_id' => $question->getId());
+    $insert = $con->prepare($sql);
+    $insert->execute($params);
+
+    $result = $insert->fetchAll(PDO::FETCH_COLUMN);
+
+    $idToAdd = [];
+    foreach ($question->getCoWorkers() as $email)
+        $idToAdd[] = $this->getIdFromEmail($email, $con);
+
+    $toInsert = array_diff($idToAdd, $result);
+    $toDelete = array_diff($result, $idToAdd);
+
+    foreach($toInsert as $id) {
+        $sql = "INSERT INTO aaccesa(recherche_id,user_id) VALUES(:recherche_id,:CoWorkers)";
+        $params = array ('recherche_id' => $question->getId(),'CoWorkers' => $id);
+        $insert = $con->prepare($sql);
+        $insert->execute($params);
     }
+
+    foreach ($toDelete as $item) {
+        $sql = "DELETE FROM aaccesa WHERE recherche_id = :rechId AND user_id = :userId";
+        $params = [
+          'rechId' => $question->getId(),
+          'userId' => $item
+        ];
+        $del = $con->prepare($sql);
+        $del->execute($params);
+    }
+
+}
   /**
   @Description return the questions of the connected user
   **/
@@ -218,6 +219,8 @@ function getSharedSearches($con, $authorization){
      * @return string the email of the selected user
      */
 function getEmailFromId(int $id, PDO $con) : string {
+    if ($id == null)
+        return "";
     $sqlQuery = "SELECT email_user FROM users WHERE user_id = :userId";
 
     $statement = $con->prepare($sqlQuery);
@@ -228,9 +231,14 @@ function getEmailFromId(int $id, PDO $con) : string {
 }
 
 function getIdFromEmail(string $email, PDO $con) : int{
-    $sqlQuery = "SELECT user_id FROM users WHERE email_user = :email";
+    if (empty($email))
+        return 0;
 
-    return 0;
+    $sqlQuery = "SELECT user_id FROM users WHERE email_user = :email";
+    $statement = $con->prepare($sqlQuery);
+    $statement->execute([':email' => $email]);
+
+    return $statement->fetch(PDO::FETCH_ASSOC)['user_id'];
 }
 
 /**

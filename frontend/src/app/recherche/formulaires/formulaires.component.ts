@@ -92,7 +92,7 @@ export class FormulairesComponent implements OnInit{
     "resultats"
   ]
 
-  coworkers? : string[];
+  coworkers : string[] = [];
 
   ngOnInit(): void {
     this.checkConnection();
@@ -305,10 +305,10 @@ export class FormulairesComponent implements OnInit{
     this.ex.exportData(question);
   }
 
-  save(coworkers? : string[]){
+  save(){
     const req = this.route.queryParams.subscribe(
       params => {
-        let question =(coworkers) ? this.qu.toQuestion(this.form, coworkers) : this.qu.toQuestion(this.form);
+        let question = this.qu.toQuestion(this.form, this.coworkers);
 
         if(params['id']){
           question.id = params['id'];
@@ -339,6 +339,23 @@ export class FormulairesComponent implements OnInit{
       req.unsubscribe();
   }
 
+  checkConnection(){
+    if(localStorage.getItem("authenticationToken") != null){
+      let sub = this.userInfos.getInfos().subscribe({
+        next : response => {
+          this.isConnected = response.isConnected;
+          this.isAdmin = response.isAdmin;
+          sub.unsubscribe();
+        }, error : () => {
+          this.isConnected = this.isAdmin = false;
+          sub.unsubscribe();
+        }
+      });
+    } else {
+      this.isConnected = this.isAdmin = false;
+    }
+  }
+
   /**********************
   Added by Daniel for sharing the search to other users
   **********************/
@@ -346,8 +363,8 @@ export class FormulairesComponent implements OnInit{
     this.inviteUsersFormVisible = true;
   }
 
-  onDeleteUser(searchId : string) {
-    console.log("deleting user : " + searchId);
+  onDeleteUser(userId : string) {
+    this.coworkers.splice(this.coworkers.indexOf(userId), 1);
   }
 
   userChosen(user : string, event : Event) {
@@ -371,21 +388,6 @@ export class FormulairesComponent implements OnInit{
       }
 
     });
-}
-  checkConnection(){
-    if(localStorage.getItem("authenticationToken") != null){
-      let sub = this.userInfos.getInfos().subscribe({
-        next : response => {
-          this.isConnected = response.isConnected;
-          this.isAdmin = response.isAdmin;
-          sub.unsubscribe();
-        }, error : () => {
-          this.isConnected = this.isAdmin = false;
-          sub.unsubscribe();
-        }
-      });
-    } else {
-      this.isConnected = this.isAdmin = false;
-    }
   }
+  
 }
