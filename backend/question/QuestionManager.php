@@ -284,8 +284,10 @@ function getQuestion($id ,PDO $con, $authorization){
 
             //Adding the coworkers to the result
             $coworkersSet = [];
-            foreach ($resultSet as $result)
-                $coworkersSet[] = $this->getEmailFromId($result['coworker'], $con);
+
+            if ($resultSet[0]['coworker'] != null)
+                foreach ($resultSet as $result)
+                    $coworkersSet[] = $this->getEmailFromId($result['coworker'], $con);
 
             $question->setCoWorkers($coworkersSet);
 
