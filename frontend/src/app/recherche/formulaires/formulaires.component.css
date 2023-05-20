@@ -96,4 +96,10 @@ Added by Daniel for sharing the research
 
 .btnDelete {
   cursor: pointer;
+  width: 2.7rem;
+}
+
+.notSavedCoworker {
+  text-align: right;
+  color: rgb(145, 0, 0);
 }

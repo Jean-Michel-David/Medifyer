@@ -51,4 +51,9 @@ export class UserRechercheService {
   supprimer(id : number): Observable<Boolean>{
     return this.http.delete<Boolean>(this.userRecherche + "?id=" + id);
   }
+
+  
+  userExist(email : string) : Observable<Boolean> {
+    return this.http.get<Boolean>(this.userRecherche + "?userExist=" + email);
+  }
 }

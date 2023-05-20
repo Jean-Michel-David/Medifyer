@@ -103,8 +103,15 @@ class QuestionManager{
     $result = $insert->fetchAll(PDO::FETCH_COLUMN);
 
     $idToAdd = [];
-    foreach ($question->getCoWorkers() as $email)
-        $idToAdd[] = $this->getIdFromEmail($email, $con);
+    foreach ($question->getCoWorkers() as $email) {
+        if ($this->userExist($email, $con))
+            $idToAdd[] = $this->getIdFromEmail($email, $con);
+
+        else {
+            $array =  array_filter($question->getCoWorkers(), static function ($element) use ($email) {return $element != $email;});
+            $question->setCoWorkers($array);
+        }
+    }
 
     $toInsert = array_diff($idToAdd, $result);
     $toDelete = array_diff($result, $idToAdd);
@@ -230,6 +237,11 @@ function getEmailFromId(int $id, PDO $con) : string {
     return $statement->fetch(PDO::FETCH_ASSOC)['email_user'];
 }
 
+    /**
+     * @param string $email the email of the user
+     * @param PDO $con a PDO connection
+     * @return int The ID of the user
+     */
 function getIdFromEmail(string $email, PDO $con) : int{
     if (empty($email))
         return 0;
@@ -237,8 +249,18 @@ function getIdFromEmail(string $email, PDO $con) : int{
     $sqlQuery = "SELECT user_id FROM users WHERE email_user = :email";
     $statement = $con->prepare($sqlQuery);
     $statement->execute([':email' => $email]);
-
+    if ($statement->rowCount() == 0)
+        return 0;
     return $statement->fetch(PDO::FETCH_ASSOC)['user_id'];
+}
+
+function userExist(string $email, PDO $conn) : bool {
+    $sql = "SELECT user_id FROM users WHERE email_user = :email";
+
+    $statement = $conn->prepare($sql);
+    $statement->execute([':email' => $email]);
+
+    return ($statement->rowCount() == 1);
 }
 
 /**

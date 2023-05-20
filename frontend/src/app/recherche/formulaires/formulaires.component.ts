@@ -93,6 +93,8 @@ export class FormulairesComponent implements OnInit{
   ]
 
   coworkers : string[] = [];
+  unsavedCoworkers : string[] = [];
+  coworkerSpin = false;
 
   ngOnInit(): void {
     this.checkConnection();
@@ -323,6 +325,8 @@ export class FormulairesComponent implements OnInit{
               this.isMessageVisible = false;
               clearTimeout(messageTimer);
             }, 2000);
+
+            this.coworkers = newQuestion.coWorker;
           }
           this.router.navigate(
             [],
@@ -337,6 +341,8 @@ export class FormulairesComponent implements OnInit{
         });
       });
       req.unsubscribe();
+
+      this.unsavedCoworkers = [];
   }
 
   checkConnection(){
@@ -369,9 +375,12 @@ export class FormulairesComponent implements OnInit{
 
   userChosen(user : string, event : Event) {
     event.preventDefault();
+    if (this.coworkers.indexOf(user) !== -1)
+      return;
 
     this.route.queryParams.subscribe(params => {
       if (! params["id"]) {
+        //Si la recherche n'est pas sauvegardée
         this.inviteUsersFormVisible = false;
         this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez d\'abord sauvegarder la recherche' });
         this.isMessageVisible = true;
@@ -383,8 +392,16 @@ export class FormulairesComponent implements OnInit{
       }
 
       else {
+        this.coworkerSpin = true;
+        
+        let userExist : Boolean = false;
+        this.userRecherche.userExist(user).subscribe(response => {
+          userExist = response;
+          this.coworkers.push(user);
+          this.unsavedCoworkers.push(user);
 
-        this.save();
+
+        });
       }
 
     });

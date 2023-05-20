@@ -6,7 +6,7 @@ header('Access-Control-Allow-Origin: ' . $authorizedURL);
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 // If this is a preflight request, respond with the appropriate headers and exit
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
     header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -27,7 +27,7 @@ if (empty($headers['Authorization'])) {
 }
 
 //quand on sauvegarde une question
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $question = new Question();
   
@@ -60,7 +60,7 @@ $questionManager->saveQuestion($question,$con,$headers['Authorization']);
 
 // Quand on récupère les recherches d'un user
 
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && !isset($_GET["shared"])){
+else if($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET["id"]) && !isset($_GET["shared"])){
   $recherches = $questionManager->getUserSearches($con,$headers['Authorization']);
 
     //Error, bad request
@@ -83,7 +83,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && !isset($_
 
 //Quand on récupère les questions partagées d'un user
 
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && isset($_GET["shared"])){
+else if($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET["id"]) && isset($_GET["shared"])){
   $question = $questionManager->getSharedSearches($con,$headers['Authorization']);
 
   //Error, bad request
@@ -105,7 +105,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && !isset($_GET["id"]) && isset($_G
 
 //Quand on récupère les données d'une question
 
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
+else if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["id"])){
   $question = $questionManager->getQuestion($_GET["id"],$con,$headers['Authorization']);
 
   //Error, bad request
@@ -124,23 +124,29 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET["id"])){
 
 // Quand on delete une question
 
-else if($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET["id"])){
-$question = $questionManager->deleteQuestion($_GET["id"],$con,$headers['Authorization']);
+else if($_SERVER['REQUEST_METHOD'] == 'DELETE' && isset($_GET["id"])){
+    $question = $questionManager->deleteQuestion($_GET["id"], $con, $headers['Authorization']);
 
-//Error, bad request
-if ($question == false) {
-  http_response_code(400);
-  exit();
+    //Error, bad request
+    if ($question == false) {
+      http_response_code(400);
+      exit();
+    }
+
+    //HTTP RESPONSE no content
+    if (gettype($question) == "array" && !$question) {
+      http_response_code(204);
+    }
+
+    //Success
+    http_response_code(200);
+    echo json_encode($question);
+    exit();
 }
 
-//HTTP RESPONSE no content
-if (gettype($question) == "array" && !$question) {
-  http_response_code(204);
-}
+// If you want to know whether a user exists
 
-//Success
-http_response_code(200);
-echo json_encode($question);
-exit();
+else if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['userExist'])) {
+    $exists = $questionManager->userExist($_GET['uesrExist'], $con);
+    echo $exists;
 }
-?>
