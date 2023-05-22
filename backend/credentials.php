@@ -35,7 +35,7 @@ class Credentials {
     /**
      * This function checks if the credentials belong to an admin
      */
-    public function hasAdminCredentials($authorizationHeader) : bool {
+    public function hasAdminCredentials(string $authorizationHeader) : bool {
         $userId = $this->extractUserId($authorizationHeader);
         if ($userId == null)
             return false;

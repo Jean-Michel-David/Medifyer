@@ -116,7 +116,7 @@ class AdminManager {
      * @param string $text The new text for the info
      * @return int The number of affected rows (1 if it worked, 0 if it didn't) -Can be treated as boolean-
      */
-    public static function setInfobulles(string $label, string $text) {
+    public static function setInfobulles(string $label, string $text) : int {
         //include class dbConnection (PDO connection to the database)
         require_once(dirname(__FILE__) . '/../database/dbConnection.php');
         $db = new DBConnection();
@@ -138,7 +138,13 @@ class AdminManager {
         return $count;
     }
 
-    public static function setAdminStatus(int $id, int $user, bool $status) : string{
+    /**
+     * @param int $id the ID of the admin
+     * @param int $user the ID of the user
+     * @param bool $isAdmin true or false
+     * @return string the error message (empty string if no error)
+     */
+    public static function setAdminStatus(int $id, int $user, bool $isAdmin) : string{
         //Check if admin can modify admin status of the second admin
         if ($id == $user)
             return "Vous ne pouvez pas modifier votre propre status";
@@ -148,7 +154,7 @@ class AdminManager {
         $db = new DBConnection();
 
         //Check for the count of admins in case we remove one :
-        if (!$status) {
+        if (!$isAdmin) {
             $sqlQuery = "SELECT COUNT(*) as adminsCount FROM users WHERE admin_user = 1";
 
             $statement = $db->connect()->prepare($sqlQuery);
@@ -164,7 +170,7 @@ class AdminManager {
         $sqlQuery = "UPDATE users SET admin_user = :status WHERE user_id = :user";
         $statement = $db->connect()->prepare($sqlQuery);
 
-        $statement->bindValue(":status", $status, PDO::PARAM_INT);
+        $statement->bindValue(":status", $isAdmin, PDO::PARAM_INT);
         $statement->bindValue(":user", $user, PDO::PARAM_INT);
 
         $statement->execute();
@@ -174,4 +180,29 @@ class AdminManager {
             return "Something went wrong...";
         return "";
     }
+
+    /**
+     * @param string $comment the comment to insert in the question
+     * @param int $questionId the ID of the question to comment
+     * @return bool true if it was a success
+     */
+    public static function commentQuestion(string $comment, int $questionId) : bool {
+        //include class dbConnection (PDO connection to the database)
+        require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+        $db = new DBConnection();
+
+        $sqlQuery = "   UPDATE `recherches` 
+                        SET commentaire_rech = :comment 
+                        WHERE recherche_id = :questId;";
+
+        $statement = $db->connect()->prepare($sqlQuery);
+
+        $statement->bindValue(':comment', json_encode($comment));
+        $statement->bindValue(':questId', $questionId, PDO::PARAM_INT);
+
+        $statement->execute();
+
+        return ($statement->rowCount() == 1);
+    }
+
 }

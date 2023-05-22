@@ -1,20 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {FormControl, FormGroup, FormGroupDirective, NgForm} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { Operateurs } from '../operateurs';
 import { EquationGeneratorService } from 'src/app/services/equation-generator.service';
 import { Question } from '../question';
 import { ExporterService } from 'src/app/services/exporter.service';
 import { QuestionGeneratorService } from 'src/app/services/question-generator.service';
-import { UserService } from 'src/app/services/user.service';
 import { UserRechercheService } from 'src/app/services/user-recherche.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { UserInfos } from '../user-infos';
 import { UserInfosService } from 'src/app/services/user-infos.service';
+import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
 
 
 @Component({
@@ -64,8 +61,9 @@ export class FormulairesComponent implements OnInit{
     private route:ActivatedRoute,
     private router:Router,
     private message : MessageService,
-    private userInfos : UserInfosService
-    ){}
+    private userInfos : UserInfosService,
+    private adminService : AdminManageUserAndRechercheService
+  ){}
 
   inviteUsersFormVisible = false;
   form2Visible = false;
@@ -75,8 +73,10 @@ export class FormulairesComponent implements OnInit{
   isMessageVisible = false;
 
   isConnected=false;
-  isAdmin=false;
+  isAdmin? : boolean;
   isSavedQuestion=false;
+
+  commentControl : FormControl = this.fb.control("");
 
   form = this.emptyForm();
 
@@ -94,7 +94,7 @@ export class FormulairesComponent implements OnInit{
 
   coworkers : string[] = [];
   unsavedCoworkers : string[] = [];
-  coworkerSpin = false;
+  isDataReady = false;
 
   ngOnInit(): void {
     this.checkConnection();
@@ -199,7 +199,7 @@ export class FormulairesComponent implements OnInit{
         (thirdPartPatient.controls['includeNone'] as FormArray).push(this.fb.control(element));
       });
 
-      let thirdPartTraitement =  thirdPart.controls['intervention'] as FormGroup;
+      let thirdPartTraitement = thirdPart.controls['intervention'] as FormGroup;
 
       question.Equations_Intervention.inclureTous.forEach( element =>{
         (thirdPartTraitement.controls['includeAll'] as FormArray).push(this.fb.control(element));
@@ -239,8 +239,10 @@ export class FormulairesComponent implements OnInit{
         (thirdPartResultats.controls['includeNone'] as FormArray).push(this.fb.control(element));
       });
 
-      //Filling the coworkers list
+      //Filling the coworkers list and comment section
       this.coworkers = question.coWorker;
+      this.commentControl = this.fb.control(question.commentaires);
+      console.log(question.commentaires);
   }
 
   emptyForm():FormGroup{
@@ -353,19 +355,23 @@ export class FormulairesComponent implements OnInit{
         next : response => {
           this.isConnected = response.isConnected;
           this.isAdmin = response.isAdmin;
+          
+          this.isDataReady = true;
           sub.unsubscribe();
         }, error : () => {
           this.isConnected = this.isAdmin = false;
+          this.isDataReady = true;
           sub.unsubscribe();
         }
       });
     } else {
       this.isConnected = this.isAdmin = false;
+      this.isDataReady = true;
     }
   }
 
   /**********************
-  Added by Daniel for sharing the search to other users
+  Added by Daniel for sharing the search to other users and comment
   **********************/
   displayInviteUser() {
     this.inviteUsersFormVisible = true;
@@ -394,19 +400,24 @@ export class FormulairesComponent implements OnInit{
       }
 
       else {
-        this.coworkerSpin = true;
-        
+        //Si la recherche est bien déja sauvegardée
         let userExist : Boolean = false;
         this.userRecherche.userExist(user).subscribe(response => {
           userExist = response;
           this.coworkers.push(user);
           this.unsavedCoworkers.push(user);
-
-
         });
       }
-
     });
   }
 
+  onComment() {
+    const req = this.route.queryParams.subscribe(
+      params => {
+        if(params['id']){
+          this.adminService.setComment(params['id'], this.commentControl?.value).subscribe();
+        }
+      }
+    );
+  }
 }

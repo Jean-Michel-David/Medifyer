@@ -51,4 +51,8 @@ export class AdminManageUserAndRechercheService {
       setAdminStatus : user.isAdmin
     }));
   }
+
+  setComment(questionId : number, comment : string) {
+    return this.http.post(this.backendUrl, JSON.stringify({comment : comment, questionId : questionId}));
+  }
 }

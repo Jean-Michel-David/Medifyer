@@ -1,7 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component,Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TimeInterval } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 

@@ -1,8 +1,15 @@
 <form class="forms" [formGroup]="form">
-  <p-sidebar [(visible)]="sidebarVisible">
+  <p-sidebar [(visible)]="sidebarVisible" *ngIf="isDataReady">
     <ng-template pTemplate="header">Commentaires</ng-template>
-    <ng-template pTemplate="content"></ng-template>
-    <ng-template pTemplate="footer"></ng-template>
+
+    <ng-template pTemplate="content" *ngIf="! isAdmin"> {{ commentControl.value }} </ng-template>
+    <ng-template pTemplate="content" *ngIf="isAdmin">
+      <textarea name="comment" id="comment" cols="35" rows="22" [formControl]="commentControl">{{ commentControl.value }}</textarea>
+    </ng-template>
+    
+    <ng-template pTemplate="footer" *ngIf="isAdmin">
+      <button class="btn btn-helha" style="color: white;" (click)="onComment()">Sauvegarder le commentaire</button>
+    </ng-template>
   </p-sidebar>
 
 <!-- Added by Daniel for sharing -->

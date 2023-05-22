@@ -6,7 +6,7 @@ class DBConnection
     private $user = "root";
     private $psw = "";
 
-  function connect()
+  function connect() : PDO
   {
     try {
         $this->db = new PDO(
@@ -25,7 +25,7 @@ class DBConnection
     return $this->db;
   }
 
-  function disconnect()
+  function disconnect() : void
   {
     $this->db = null;
   }

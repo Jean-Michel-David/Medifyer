@@ -91,6 +91,9 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         exit();
     }
 
+    /**
+     * Setting the admin status of a user
+     */
     if (!empty($json_obj['user']) && isset($json_obj['setAdminStatus'])) {
         $msg = AdminManager::setAdminStatus($adminId, $json_obj['user'], $json_obj['setAdminStatus']);
         $success = (strlen($msg) == 0);
@@ -100,6 +103,21 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
         ]);
 
         exit();
+    }
+
+    /**
+     * Commenting on a question
+     */
+    if (!empty($json_obj['comment']) && !empty($json_obj['questionId'])) {
+        if (AdminManager::commentQuestion($json_obj['comment'], $json_obj['questionId'])) {
+            echo true;
+            exit();
+        }
+        else {
+            http_response_code(400);
+            exit();
+        }
+
     }
 }
 

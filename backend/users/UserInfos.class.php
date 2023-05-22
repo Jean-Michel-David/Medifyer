@@ -29,7 +29,7 @@ class UserInfos implements JsonSerializable{
     /**
      * This function checks if the user is an admin or not, an send a boolean to the isAdmin object variable
      */
-    public function setIsAdmin($authorization, $credentials) {
+    public function setIsAdmin(string $authorization, Credentials $credentials) : void{
         if ($credentials->hasAdminCredentials($authorization)) {
           $this->isAdmin = true;
         } else {
