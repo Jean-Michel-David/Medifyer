@@ -97,4 +97,22 @@ class UserManager
       die($e);
     }
   }
+
+  public function getUserByID($authorization)
+  {
+    $userCreds = new Credentials();
+    $sql="SELECT user_id, nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user from users WHERE user_id=:id";
+    $result = array();
+    $user_id = $userCreds->extractUserId($authorization);
+    try {
+      $select = $this->db->prepare($sql);
+      $select->execute(array('id'=>$user_id));
+      $result = $select->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      die($e);
+    } finally {
+      $select->closeCursor();
+    }
+    return $result;
+  }
 }
