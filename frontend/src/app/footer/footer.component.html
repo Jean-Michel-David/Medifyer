@@ -5,6 +5,15 @@
         Medifyer
       </a>
       <span class="mb-3 mb-md-0 text-muted"> © 2023 Helha</span>
+      <p-button (click)="display()" label="Mentions légales" class="btnFooter"></p-button>
+      <p-dialog header="Mentions légales" [(visible)]="visible" [style]="{width: '50vw'}">
+            <p>Adresse de l'établissement :</p>
+            <p> Forme juridique :</p>
+            <p> Hébergeur :</p>
+            <p> Responsable de la publication :</p>
+            <p> Informations complémentaires :</p>
+            <p> En vous inscrivant sur notre site, vos données personnelles seront utilisées exclusivement pour le bon fonctionnement du site. Nous accordons une grande importance à la confidentialité et à la protection de vos informations. Nous ne partagerons pas vos données avec des tiers. Vos données seront sécurisées et conservées aussi longtemps que nécessaire. Si vous souhaitez supprimer votre compte ou modifier vos informations, vous pouvez le faire en accédant à votre profil. En utilisant notre site, vous acceptez notre politique de confidentialité. </p>
+      </p-dialog>
     </div>
   </footer>
 </div>

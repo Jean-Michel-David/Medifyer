@@ -4,3 +4,21 @@
   font-size: 24px;
   margin-right: 5px;
 }
+::ng-deep .btnFooter{
+  background-color: none;
+  border: none;
+  outline: none;
+  box-shadow:none;
+}
+::ng-deep .p-button{
+  font-family: 'Source Sans Pro',sans-serif;
+  color: #6c757d!important;
+  background-color:transparent;
+  border: none;
+}
+::ng-deep .p-button-label {
+  font-weight: normal;
+}
+::ng-deep .p-button:hover{
+  background-color: transparent !important;
+}
