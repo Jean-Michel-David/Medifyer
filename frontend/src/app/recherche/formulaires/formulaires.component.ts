@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
@@ -12,6 +12,7 @@ import {ActivatedRoute,Router} from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { UserInfosService } from 'src/app/services/user-infos.service';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -77,6 +78,7 @@ export class FormulairesComponent implements OnInit{
   isSavedQuestion=false;
 
   commentControl : FormControl = this.fb.control("");
+  isDataReady = false;
 
   form = this.emptyForm();
 
@@ -94,7 +96,6 @@ export class FormulairesComponent implements OnInit{
 
   coworkers : string[] = [];
   unsavedCoworkers : string[] = [];
-  isDataReady = false;
 
   ngOnInit(): void {
     this.checkConnection();
@@ -242,7 +243,6 @@ export class FormulairesComponent implements OnInit{
       //Filling the coworkers list and comment section
       this.coworkers = question.coWorker;
       this.commentControl = this.fb.control(question.commentaires);
-      console.log(question.commentaires);
   }
 
   emptyForm():FormGroup{
@@ -385,39 +385,68 @@ export class FormulairesComponent implements OnInit{
     event.preventDefault();
     if (this.coworkers.indexOf(user) !== -1)
       return;
-
-    this.route.queryParams.subscribe(params => {
-      if (! params["id"]) {
-        //Si la recherche n'est pas sauvegardée
-        this.inviteUsersFormVisible = false;
-        this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez d\'abord sauvegarder la recherche' });
-        this.isMessageVisible = true;
-        const messageTimer = setTimeout(() => {
-          this.message.clear();
-          this.isMessageVisible = false;
-          clearTimeout(messageTimer);
-        }, 2000);
-      }
-
-      else {
-        //Si la recherche est bien déja sauvegardée
-        let userExist : Boolean = false;
-        this.userRecherche.userExist(user).subscribe(response => {
+      
+      this.route.queryParams.subscribe(params => {
+        if (! params["id"]) {
+          //Si la recherche n'est pas sauvegardée
+          this.inviteUsersFormVisible = false;
+          this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Veuillez d\'abord sauvegarder la recherche' });
+          this.isMessageVisible = true;
+          const messageTimer = setTimeout(() => {
+            this.message.clear();
+            this.isMessageVisible = false;
+            clearTimeout(messageTimer);
+          }, 2000);
+        }
+        
+        else {
+          //Si la recherche est bien déja sauvegardée
+          let userExist : Boolean = false;
+        let req = this.userRecherche.userExist(user).subscribe(response => {
           userExist = response;
-          this.coworkers.push(user);
-          this.unsavedCoworkers.push(user);
+          if (userExist) {
+            this.coworkers.push(user);
+            this.unsavedCoworkers.push(user);
+          }
+          else {
+            this.message.add({ severity: 'error', summary: 'Erreur', detail: 'Cet utilisateur n\'est pas dans notre base de données'});
+            this.isMessageVisible = true;
+            const messageTimer = setTimeout(() => {
+              this.message.clear();
+              this.isMessageVisible = false;
+              clearTimeout(messageTimer);
+            }, 2000);
+          }
+
+          req.unsubscribe();
         });
       }
     });
   }
 
   onComment() {
-    const req = this.route.queryParams.subscribe(
+    this.route.queryParams.subscribe(
       params => {
         if(params['id']){
-          this.adminService.setComment(params['id'], this.commentControl?.value).subscribe();
+          this.adminService.setComment(params['id'], this.commentControl?.value).subscribe(response => {
+            if (response) {
+              this.message.add({ severity: 'success', summary: 'Succès', detail: 'Commentaire sauvegardé' });
+              this.isMessageVisible = true;
+              const messageTimer = setTimeout(() => {
+                this.message.clear();
+                this.isMessageVisible = false;
+                clearTimeout(messageTimer);
+              }, 2000);
+            }
+          });
         }
       }
     );
+  }
+  
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (!this.isSavedQuestion || this.unsavedCoworkers.length > 0)
+      $event.returnValue = true; // Display the confirmation message
   }
 }

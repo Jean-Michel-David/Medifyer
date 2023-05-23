@@ -25,7 +25,7 @@ export class UserRechercheService {
    * @returns The list of short questions (only ID and question) - all the questions of the current user
    */
   afficher():Observable<QuestionShort[]>{
-    return this.http.get<QuestionShort[]>(this.userRecherche)
+    return this.http.get<QuestionShort[]>(this.userRecherche + '?getRecherches=');
   }
 /**
    * This function fetches the question that are shared with the current user
