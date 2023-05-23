@@ -30,7 +30,6 @@ export class InscriptionComponent implements OnInit{
     email: '',
     pwd: '',
     cpwd: '',
-    photo: ''
   };
 
 

@@ -27,7 +27,6 @@ export class ConnexionComponent {
     email: '',
     pwd: '',
     cpwd: '',
-    photo: ''
   }
 
   @Input()
