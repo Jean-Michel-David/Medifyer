@@ -110,7 +110,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == "POST") {
      */
     if (!empty($json_obj['comment']) && !empty($json_obj['questionId'])) {
         if (AdminManager::commentQuestion($json_obj['comment'], $json_obj['questionId'])) {
-            echo true;
+            echo "true";
             exit();
         }
         else {

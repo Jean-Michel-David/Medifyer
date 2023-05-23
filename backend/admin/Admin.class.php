@@ -202,7 +202,7 @@ class AdminManager {
 
         $statement->execute();
 
-        return ($statement->rowCount() == 1);
+        return ($statement->rowCount() <= 1);
     }
 
 }

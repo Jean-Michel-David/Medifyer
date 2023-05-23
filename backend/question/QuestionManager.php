@@ -255,7 +255,7 @@ function getIdFromEmail(string $email, PDO $con) : int{
 }
 
 function userExist(string $email, PDO $conn) : bool {
-    $sql = "SELECT user_id FROM users WHERE email_user = :email";
+    $sql = "SELECT user_id FROM users WHERE LOWER(email_user) = LOWER(:email)";
 
     $statement = $conn->prepare($sql);
     $statement->execute([':email' => $email]);

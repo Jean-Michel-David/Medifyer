@@ -60,7 +60,7 @@ $questionManager->saveQuestion($question,$con,$headers['Authorization']);
 
 // Quand on récupère les recherches d'un user
 
-else if($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_GET["id"]) && !isset($_GET["shared"])){
+else if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['getRecherches']) && !isset($_GET["id"]) && !isset($_GET["shared"])){
   $recherches = $questionManager->getUserSearches($con,$headers['Authorization']);
 
     //Error, bad request
@@ -147,6 +147,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'DELETE' && isset($_GET["id"])){
 // If you want to know whether a user exists
 
 else if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET['userExist'])) {
-    $exists = $questionManager->userExist($_GET['uesrExist'], $con);
-    echo $exists;
+    $exists = $questionManager->userExist($_GET['userExist'], $con);
+    echo ($exists) ? "true" : "false";
+    exit();
 }
