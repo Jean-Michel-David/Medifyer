@@ -29,6 +29,8 @@ export class EquationDisplayComponent implements AfterViewInit{
   form!:FormGroup;
   @ViewChild('equationInput')
   input!:ElementRef<HTMLTextAreaElement>;
+  @ViewChild('equationTraduiteInput')
+  inputTraduit!:ElementRef<HTMLTextAreaElement>;
 
   counter:Number = 0;
 
@@ -45,11 +47,11 @@ export class EquationDisplayComponent implements AfterViewInit{
         let parser = new DOMParser();
         let xml = parser.parseFromString(response, 'text/xml');
         if(xml.getElementsByTagName('eSearchResult')[0].getElementsByTagName('Count').length > 0){
+          this.inputTraduit.nativeElement.value = xml.getElementsByTagName('eSearchResult')[0].getElementsByTagName('QueryTranslation')[0].innerHTML ?? '';
           this.counter = parseInt(xml.getElementsByTagName('eSearchResult')[0].getElementsByTagName('Count')[0].innerHTML ?? '0');
         } else {
           this.counter = 0;
         }
-
 
         req.unsubscribe();
       }

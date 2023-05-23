@@ -61,13 +61,6 @@ export class Form2Component implements OnInit{
             if(count>0){
               (event.target as HTMLElement).classList.add('valid');
               (event.target as HTMLElement).classList.remove('notvalid');
-
-              let correctMeshTerm = xml.getElementsByTagName('eSearchResult')[0]
-              .getElementsByTagName('TranslationSet')[0]
-              .getElementsByTagName('Translation')[0]
-              .getElementsByTagName('To')[0].innerHTML;
-
-              (((this.secondPart.controls[group] as FormGroup).controls['mesh'] as FormArray).at(term) as FormControl).patchValue(correctMeshTerm.substring(1,correctMeshTerm.lastIndexOf("\"")));
             } else {
               (event.target as HTMLElement).classList.add('notvalid');
               (event.target as HTMLElement).classList.remove('valid');
