@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { UserInfosService } from 'src/app/services/user-infos.service';
 import { AdminManageUserAndRechercheService } from 'src/app/services/admin-manage-users-and-recherche.service';
 import { HttpResponse } from '@angular/common/http';
+import { QuestionResponse } from '../questionResponse';
 
 
 @Component({
@@ -76,7 +77,7 @@ export class FormulairesComponent implements OnInit{
   isConnected=false;
   isAdmin? : boolean;
   isSavedQuestion=false;
-  isOwner=false;
+  canEdit = false;
 
   commentControl : FormControl = this.fb.control("");
   isDataReady = false;
@@ -104,9 +105,10 @@ export class FormulairesComponent implements OnInit{
       next : (params => {
         if(params['id']){
           let questionRequest = this.userRecherche.developper(params['id']).subscribe({
-            next : question => {
-              if(question) {
-                this.fillForm(question);
+            next : (response) => {
+              this.canEdit = response.canEdit??false;
+              if(response) {
+                this.fillForm(response.question);
                 this.isSavedQuestion = true;
               } else {
                 this.router.navigateByUrl("/recherche");

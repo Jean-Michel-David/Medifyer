@@ -43,8 +43,8 @@ export class ListeRecherchesComponent implements OnInit{
 
   onDevelopQuestion(e : any, id : number) : void {
     const sub = this.api.developper(id).subscribe((question) => {
-      question.Equation_Recherche = this.api2.generateEquation(question).text;
-      this.router.navigate(['recherche'],{queryParams:{id : question.id}});
+      question.question.Equation_Recherche = this.api2.generateEquation(question.question).text;
+      this.router.navigate(['recherche'],{queryParams:{id : question.question.id}});
       sub.unsubscribe();
     });
   }

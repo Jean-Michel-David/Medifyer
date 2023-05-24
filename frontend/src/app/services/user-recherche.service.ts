@@ -4,11 +4,12 @@ import { Observable } from 'rxjs';
 import { Question } from '../recherche/question';
 import { QuestionShort } from '../recherche/question-short';
 import { environment } from 'src/environments/environment';
+import { QuestionResponse } from '../recherche/questionResponse';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserRechercheService {  
+export class UserRechercheService {
   private userRecherche = environment.backendUrl + "/question/userRecherche.php";
 
   constructor(private http : HttpClient) { }
@@ -39,8 +40,8 @@ export class UserRechercheService {
    * @param id the id of the question selected
    * @returns The question selected for developpement
    */
-  developper(id: number): Observable<Question> {
-    return this.http.get<Question>(this.userRecherche + '?id=' + id);
+  developper(id: number): Observable<QuestionResponse> {
+    return this.http.get<QuestionResponse>(this.userRecherche + '?id=' + id);
   }
 
 /**
@@ -52,7 +53,7 @@ export class UserRechercheService {
     return this.http.delete<Boolean>(this.userRecherche + "?id=" + id);
   }
 
-  
+
   userExist(email : string) : Observable<Boolean> {
     return this.http.get<Boolean>(this.userRecherche + "?userExist=" + email);
   }

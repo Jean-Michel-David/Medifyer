@@ -314,7 +314,7 @@ function getQuestion($id ,PDO $con, $authorization){
 
             //Adding the coworkers to the result
             $coworkersSet = [];
-            $coworkersSet[] = json_decode($res["user_id"]);
+            $coworkersSet[] = $this->getEmailFromId(json_decode($res["user_id"]), $con);
 
             if ($resultSet[0]['coworker'] != null)
                 foreach ($resultSet as $result)
@@ -322,7 +322,13 @@ function getQuestion($id ,PDO $con, $authorization){
 
             $question->setCoWorkers($coworkersSet);
 
-            return $question;
+            $response = array(
+                "canEdit" => false,
+                "question" => $question
+            );
+
+            $response["canEdit"] = in_array($this->getEmailFromId($credsObj->extractUserId($authorization), $con),$coworkersSet,false);
+            return $response;
         } else {
             return null;
         }
