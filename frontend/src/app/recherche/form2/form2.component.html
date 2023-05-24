@@ -5,23 +5,7 @@
   <div class="collapse" id="collapseForm2">
     <div class="card card-body bg-dark text-white d-block">
       <button class="btn-close btn-close-white float-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm2" aria-expanded="false" aria-controls="collapse"></button>
-      Nous allons maintenant nous servir des reponses aux precedentes question afin de determiner quels mots cles nous devrons utiliser afin de trouver des articles correspondants a notre question de recherche. <br>
-      <br>
-      Commencons par ajouter un nouveau mot en francais dans "Langage Naturel" de la partie Patient / Population / Pathologie. <br>
-      <br>
-      Une fois le mot entre, appuyez sur le bouton "HeTop" afin de chercher la traduction en terme Mesh de ce mot. <br>
-      <br>
-      Ajoutez un nouveau mot a "Termes Mesh" de la partie Patient / Population / Pathologie. <br>
-      <br>
-      Apres avoir cliquer en dehors du champ texte, si le mot est bien un terme Mesh, une icone vous confirmera sa validite. <br>
-      <br>
-      Si un symbole rouge apparait, le mot ne fait pas partie des termes Mesh de PubMed. <br>
-      <br>
-      Vous pouvez corriger cette erreur ou alors, si vous voulez garder ce mot, vous pouvez appuyer sur la fleche afin de l'ajouter aux Synonymes. <br>
-      <br>
-      Repetez l'operation pour les autres parties.<br>
-      <br>
-      Apres avoir rempli tous vos termes, passez a la partie suivante.<br>
+      <span [innerHTML]="info"></span>
     </div>
   </div>
   <div class="form-group" *ngFor="let group of groups; let j=index;">

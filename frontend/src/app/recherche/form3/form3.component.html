@@ -10,9 +10,9 @@
   </div>
 
   <div class="collapse" id="collapseForm3">
-    <div class="card card-body bg-dark text-white d-block">
+    <div class="card card-body bg-dark text-white d-block" >
       <button class="btn-close btn-close-white float-end "  type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm3" aria-expanded="false" aria-controls="collapse"></button>
-      Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+      <span [innerHTML]="info"></span>
     </div>
   </div>
   <div class="form-group d-flex flex-column align-items-center " *ngFor="let group of formGroups; index as g">

@@ -29,6 +29,7 @@ export class Form1Component{
   infoTraitementText = '';
   infoResultatLabel = 'Résultats';
   infoResultatText = '';
+  infoFirstPartText='';
 
   stateOptions: any[] = [{label: 'Privée', value: 'private'}, {label: 'Publique', value: 'public'}];
 
@@ -51,6 +52,12 @@ export class Form1Component{
         } else {
           this.isNew=true;
         }
+      });
+
+      //Initializing First Infobulle
+      let infoReqFirstPart = this.infoBulle.getInfo('infobulle_firstPart').subscribe(response => {
+        if(response) this.infoFirstPartText = response.text.replace('\r','<br>');
+        infoReqFirstPart.unsubscribe();
       });
 
       //Initializing Question Infobulle

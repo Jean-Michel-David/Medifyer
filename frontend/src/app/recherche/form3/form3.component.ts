@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { InfosService } from 'src/app/services/infos.service';
 
 @Component({
   selector: 'app-form3',
@@ -18,9 +19,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class Form3Component implements OnInit{
 
-  constructor(private fb: FormBuilder,
-    private route:ActivatedRoute) {}
-
   @Input()
   formGlobal!:FormGroup;
   @Input()
@@ -34,6 +32,19 @@ export class Form3Component implements OnInit{
   selectedControlOrigin!:FormArray;
   selectedControlOriginIndex!:number;
   selectedControl:FormControl | null = null;
+
+  info:String = "";
+
+  constructor(
+    private fb: FormBuilder,
+    private route:ActivatedRoute,
+    private infoBulle:InfosService,
+    ) {
+      let infoReq = this.infoBulle.getInfo('infobulle_thirdPart').subscribe(response => {
+        if(response) this.info = response.text.replace('\r','<br>');
+        infoReq.unsubscribe();
+      });
+    }
 
   ngOnInit(): void {
     this.secondPart = this.formGlobal.controls['secondPart'] as FormGroup;

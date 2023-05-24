@@ -11,19 +11,7 @@
   <div class="collapse {{isNew?'show':''}}" id="collapseForm1">
     <div class="card card-body bg-dark text-white">
       <button class="btn-close btn-close-white float-end" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm1" aria-expanded="false" aria-controls="collapse"></button>
-      ----------- Exemple de texte --------------- <br>
-      Pour utiliser au mieux les moteurs de recherche disponibles, la question de recherche doit être clairement formulée. <br>
-      L’acronyme <span style="color: #00b9b0;">PICO</span> vous aide à la formuler :<br>
-      <br>
-      <span style="color: #00b9b0;">P</span>atient : à qui s’adresse l’intervention, la méthode à appliquer ? Hommes, femmes, d’une certaine tranche d’âge, ayant telle caractéristique, telle pathologie?<br>
-      <span style="color: #00b9b0;">I</span>ntervention : cherche-t-on des renseignements sur un traitement médicamenteux, un traitement physique, une action d’éducation à la santé ?<br>
-      <span style="color: #00b9b0;">C</span>omparaison : à quoi éventuellement doit être comparée l’intervention décrite ci-avant ? Méthode de référence, alternative ?<br>
-      <span style="color: #00b9b0;">O</span>utcome : issue clinique, pratique recherchée ?<br>
-      Ayant répondu à ces 4 questions, vous êtes en mesure de rechercher vos mots-clés (NB : la question concernant la comparaison ne s’applique pas dans chaque cas).<br>
-      <br>
-      <span style="color: #00b9b0;">Exemple. Y a-t-il un intérêt (O) à vacciner contre la varicelle (I) les enfants d’âge préscolaire (P) plutôt que de laisser se développer spontanément les épidémies en milieu scolaire (C) ?</span><br>
-      <br>
-      Source : <a href="http://www.mgtfe.be/guide-de-redaction/5-recherche-bibliographique/5-3-la-question-de-recherche-methode-pico/" target="_blank">mgtfe.be</a> <br>
+      <span [innerHTML]="infoFirstPartText"></span>
     </div>
   </div>
   <div class="form-group">
@@ -36,9 +24,6 @@
           <div class="card-body">
             <h5 class="card-title" [innerHTML]="infoQuestionLabel"></h5>
             <p class="card-text" [innerHTML]="infoQuestionText"></p>
-          </div>
-          <div class="card-body" *ngIf="admin">
-            <button class="btn btn-light">éditer</button>
           </div>
       </div>
   </div>

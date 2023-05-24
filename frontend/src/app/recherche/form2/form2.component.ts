@@ -2,6 +2,7 @@ import { Component,Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { InfosService } from 'src/app/services/infos.service';
 
 
 @Component({
@@ -25,7 +26,18 @@ export class Form2Component implements OnInit{
   @Input()
   groups!:string[];
 
-  constructor(private fb : FormBuilder,private http:HttpClient){}
+  info:String = "";
+
+  constructor(
+    private fb : FormBuilder,
+    private http:HttpClient,
+    private infoBulle:InfosService,
+    ){
+      let infoReq = this.infoBulle.getInfo('infobulle_secondPart').subscribe(response => {
+        if(response) this.info = response.text.replace('\r','<br>');
+        infoReq.unsubscribe();
+      });
+    }
 
   ngOnInit(): void {
 
