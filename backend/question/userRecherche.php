@@ -53,7 +53,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     ->setEquations_Resultats($json_obj["Equations_Resultats"]);
 
 
-$questionManager->saveQuestion($question,$con,$headers['Authorization']);
+    if(($questionManager->saveQuestion($question,$con,$headers['Authorization'])) == false){
+      http_response_code(403);
+      exit();
+    } else {
+      http_response_code(200);
+      exit();
+    }
 
 } 
 

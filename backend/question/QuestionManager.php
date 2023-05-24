@@ -11,6 +11,10 @@ class QuestionManager{
         $credsObj = new Credentials();
 
         if ($question->getId() > 0) {   //si la question est déjà présente dans la db
+             //s'il n'est pas coworkers et qu'il n'est pas proprio
+             if (!in_array($this->getEmailFromId($credsObj->extractUserId($authorization),$con), $question->getCoWorkers()) && $this->isQuestionOwner($question->getId(), $con, $authorization) == false)
+                return false;
+            
             $sql="UPDATE recherches SET `question_rech`=:question_rech,`population_rech`=:population_rech,`traitement_rech`=:traitement_rech,`resultat_rech`=:resultat_rech,
             `public_rech`=:public_rech,`commentaire_rech`=:commentaire_rech 
             WHERE recherche_id=:recherche_id;
@@ -82,7 +86,7 @@ class QuestionManager{
             $this->insertCoWorkers($con,$question,$authorization,$credsObj);
             
             echo json_encode($question);
-            
+            return true;
         }catch(PDOException $e){
             die($e);
         }finally{
@@ -290,11 +294,22 @@ function getQuestion($id ,PDO $con, $authorization){
         $resultSet = $statement->fetchAll(PDO::FETCH_ASSOC);
         $res = $resultSet[0];
 
-        if(json_decode($res["public_rech"]) == 1 || json_decode($res["user_id"]) == $credsObj->extractUserId($authorization)) {
+        //Adding the coworkers to the result
+        $coworkersSet = [];
+
+        if ($resultSet[0]['coworker'] != null)
+            foreach ($resultSet as $result)
+                $coworkersSet[] = $this->getEmailFromId($result['coworker'], $con);
+
+        if(json_decode($res["public_rech"]) == 1 
+        || json_decode($res["user_id"]) == $credsObj->extractUserId($authorization) 
+        || in_array($this->getEmailFromId($credsObj->extractUserId($authorization),$con), $coworkersSet)
+        || json_decode($credsObj->hasAdminCredentials($authorization))) {
+
             $question->setId(json_decode($res["recherche_id"]))
                 ->setAcces(json_decode($res["public_rech"]))
                 ->setCommentaires(json_decode($res["commentaire_rech"]))
-                ->setCoWorkers(json_decode($res["user_id"]))
+                ->setCoWorkers($coworkersSet)
                 ->setQuestion(json_decode($res["question_rech"]))
                 ->setPatient_Pop_Path(json_decode($res["population_rech"]))
                 ->setIntervention_Traitement(json_decode($res["traitement_rech"]))
@@ -312,14 +327,8 @@ function getQuestion($id ,PDO $con, $authorization){
                 ->setEquations_Intervention(json_decode($res["relationsTraitement"]))
                 ->setEquations_Resultats(json_decode($res["relationsResultat"]));
 
-            //Adding the coworkers to the result
-            $coworkersSet = [];
 
-            if ($resultSet[0]['coworker'] != null)
-                foreach ($resultSet as $result)
-                    $coworkersSet[] = $this->getEmailFromId($result['coworker'], $con);
-
-            $question->setCoWorkers($coworkersSet);
+            
 
             $response = array(
                 "canEdit" => false,
@@ -374,5 +383,39 @@ return the question
         $statement->closeCursor();
     }
 
+ }
+
+ /**
+@Description Fetch the owner of a question based on its id
+Parameters : the id of the question to fetch, the connection to the db, the authorization header
+return true if the auth header is from the owner of the question, return false otherwise
+**/
+function isQuestionOwner($id, $con, $authorization){
+    $credsObj = new Credentials();
+    $question = new Question();
+    try {
+        $sqlQuery = "SELECT r.user_id,acc.user_id as coworker
+        FROM recherches r 
+        INNER JOIN termes t ON r.recherche_id = t.recherche_id
+        INNER JOIN equation e ON e.terme_id = t.terme_id
+        LEFT JOIN aaccesa acc ON acc.recherche_id = r.recherche_id
+        WHERE r.recherche_id=:recherche_id;";
+
+        $statement = $con->prepare($sqlQuery);
+
+        $statement->bindValue('recherche_id', $id);
+        $statement->execute();
+
+        $resultSet = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $res = $resultSet[0];
+
+        if(json_decode($res["user_id"]) == $credsObj->extractUserId($authorization))
+           return true;
+        return false;
+    } catch(PDOException $e){
+        die($e);
+    } finally{
+        $statement->closeCursor();
+    }
  }
 }
