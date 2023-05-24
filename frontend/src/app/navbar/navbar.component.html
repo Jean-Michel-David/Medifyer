@@ -30,7 +30,7 @@
         <div class="dropdown-menu dropdown-menu-end border-0 bg-transparent" aria-labelledby="navbarDropdownMenuConnectedLink">
             <div class="bubble bg-dark"></div>
             <a class="dropdown-item py-2 mb-1" routerLink="/mon-compte" >Mon Compte</a>
-            <a class="dropdown-item py-2" (click)="disconnect()">Se deconnecter</a>
+            <a class="dropdown-item py-2" (click)="disconnect()" routerLink="/">Se deconnecter</a>
         </div>
       </li>
       <li class="nav-item dropdown" *ngIf="!isConnected">
