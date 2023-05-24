@@ -76,6 +76,7 @@ export class FormulairesComponent implements OnInit{
   isConnected=false;
   isAdmin? : boolean;
   isSavedQuestion=false;
+  isOwner=false;
 
   commentControl : FormControl = this.fb.control("");
   isDataReady = false;
@@ -99,11 +100,11 @@ export class FormulairesComponent implements OnInit{
 
   ngOnInit(): void {
     this.checkConnection();
-    this.route.queryParams.subscribe(
-      params => {
+    this.route.queryParams.subscribe({
+      next : (params => {
         if(params['id']){
-          let questionRequest = this.userRecherche.developper(params['id']).subscribe(
-            question => {
+          let questionRequest = this.userRecherche.developper(params['id']).subscribe({
+            next : question => {
               if(question) {
                 this.fillForm(question);
                 this.isSavedQuestion = true;
@@ -111,14 +112,25 @@ export class FormulairesComponent implements OnInit{
                 this.router.navigateByUrl("/recherche");
                 this.isSavedQuestion = false;
               }
-              questionRequest.unsubscribe();
+                questionRequest.unsubscribe();
+              },
+              error : () => {
+                this.router.navigateByUrl("/recherche");
+                this.isSavedQuestion = false;
+              }
             });
         } else {
-            this.form = this.emptyForm();
-            this.isSavedQuestion = false;
+          this.form = this.emptyForm();
+          this.isSavedQuestion = false;
         }
+          }
+
+      ),
+      error :  error => {
+        this.router.navigateByUrl("/recherche");
+        this.isSavedQuestion = false;
       }
-    );
+    });
   }
 
   displayForm2(){
@@ -355,7 +367,7 @@ export class FormulairesComponent implements OnInit{
         next : response => {
           this.isConnected = response.isConnected;
           this.isAdmin = response.isAdmin;
-          
+
           this.isDataReady = true;
           sub.unsubscribe();
         }, error : () => {
@@ -385,7 +397,7 @@ export class FormulairesComponent implements OnInit{
     event.preventDefault();
     if (this.coworkers.indexOf(user) !== -1)
       return;
-      
+
       this.route.queryParams.subscribe(params => {
         if (! params["id"]) {
           //Si la recherche n'est pas sauvegardée
@@ -398,7 +410,7 @@ export class FormulairesComponent implements OnInit{
             clearTimeout(messageTimer);
           }, 2000);
         }
-        
+
         else {
           //Si la recherche est bien déja sauvegardée
           let userExist : Boolean = false;
@@ -443,7 +455,7 @@ export class FormulairesComponent implements OnInit{
       }
     );
   }
-  
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (!this.isSavedQuestion || this.unsavedCoworkers.length > 0)

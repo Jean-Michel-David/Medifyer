@@ -314,6 +314,7 @@ function getQuestion($id ,PDO $con, $authorization){
 
             //Adding the coworkers to the result
             $coworkersSet = [];
+            $coworkersSet[] = json_decode($res["user_id"]);
 
             if ($resultSet[0]['coworker'] != null)
                 foreach ($resultSet as $result)
