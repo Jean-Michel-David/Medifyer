@@ -106,8 +106,9 @@ export class FormulairesComponent implements OnInit{
         if(params['id']){
           let questionRequest = this.userRecherche.developper(params['id']).subscribe({
             next : (response) => {
-              this.canEdit = response.canEdit??false;
               if(response) {
+                this.canEdit = response.canEdit??false;
+                console.log("hello");
                 this.fillForm(response.question);
                 this.isSavedQuestion = true;
               } else {
