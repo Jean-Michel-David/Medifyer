@@ -98,6 +98,9 @@ class UserManager
     }
   }
 
+  /**
+  @Description Function that get users data from the database, using the user ID
+   */
   public function getUserByID($authorization)
   {
     $userCreds = new Credentials();
@@ -114,5 +117,28 @@ class UserManager
       $select->closeCursor();
     }
     return $result;
+  }
+
+  /**
+   @Description : Function modifying the user in the database
+   */
+  public function modifyUser(User $user) {
+    $sql="UPDATE users SET user_id =:user_id, nom_user=:nom_user, prenom_user=:prenom_user, psw_user=:psw_user, pfp_user=:pfp_user, admin_user=:admin_user,email_user=:email_user WHERE user_id=:user_id";
+    try {
+      $insert = $this->db->prepare($sql);
+      $params = array (
+        'nom_user' => $user->getLastname(),
+        'prenom_user' => $user->getFirstname(),
+        'psw_user' => $user->getPwd(),
+        'pfp_user' => $user->getPhoto(),
+        'admin_user' => false,
+        'email_user' => $user->getEmail(),
+      );
+      $insert->execute($params);
+    } catch(PDOException $e) {
+      die($e);
+    } finally {
+      $insert->closeCursor();
+    }
   }
 }

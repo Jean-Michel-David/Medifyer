@@ -21,8 +21,8 @@ export class MonCompteComponent implements OnInit{
     email: '',
     pwd: '',
     cpwd: '',
+    photo: ''
   }
-
   @Input()
   monCompteForm: FormGroup = new FormGroup({
     firstname: new FormControl(''),
@@ -56,8 +56,21 @@ export class MonCompteComponent implements OnInit{
     return this.monCompteForm.controls;
   }
 
-  getInformation(){
+  setNewInfos() {
+    this.user.firstname = this.monCompteForm.controls['firstname'].value;
+    this.user.lastname = this.monCompteForm.controls['lastname'].value;
+    this.user.email = this.monCompteForm.controls['email'].value;
+    if (this.monCompteForm.controls['pwd'].value != null || this.monCompteForm.controls['pwd'].value != '') {
+      this.user.pwd = this.monCompteForm.controls['pwd'].value;
+    }
+  }
 
+  sendInfos(){
+    this.setNewInfos();
+    let sub = this.apiAccount.sendUserInfos(this.user).subscribe(()=>{
+      alert("Modification réalisée avec succès");
+      sub.unsubscribe();
+    })
   }
 
   deleteUser(): void {
@@ -70,11 +83,12 @@ export class MonCompteComponent implements OnInit{
   }
 
   getInfos(){
-    let sub = this.apiAccount.getUserInfos().subscribe(() =>{
-      
-      sub.unsubscribe();
+    let sub = this.apiAccount.getUserInfos().subscribe({
+      next : (response) => {
+       this.user = response;
+       sub.unsubscribe();
+      }
     })
-
   }
 
 }
