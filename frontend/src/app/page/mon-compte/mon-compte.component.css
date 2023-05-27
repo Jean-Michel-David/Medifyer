@@ -43,7 +43,7 @@ form{
     text-align: center;
 }
 .deleteButton{
-    background-color: #9702;
+    background-color: #DC3545;
     color: white;
     font-weight: 600;
     font-size: large;
@@ -70,7 +70,11 @@ form{
     margin-top: 2%;
     margin-bottom: 2%;
 }
-.deleteButton:hover{
+.sendButton:hover{
     background-color: #00645f;
+    transform: scale(1.05);
+}
+.deleteButton:hover{
+    background-color: #A53545;
     transform: scale(1.05);
 }

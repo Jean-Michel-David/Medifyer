@@ -24,6 +24,8 @@ export class MonCompteComponent implements OnInit {
     photo: ''
   };
 
+  submitted = false;
+
   monCompteForm: FormGroup = new FormGroup({
     firstname: new FormControl(),
     lastname: new FormControl(),
@@ -64,6 +66,7 @@ export class MonCompteComponent implements OnInit {
   }
 
   sendInfos() {
+    this.submitted = false;
     this.setNewInfos();
     const sub = this.apiAccount.sendUserInfos(this.user).subscribe(() => {
       alert('Modification réalisée avec succès');
@@ -92,5 +95,9 @@ export class MonCompteComponent implements OnInit {
         sub.unsubscribe();
       }
     );
+  }
+  
+  onSubmit() {
+    this.submitted = true;
   }
 }

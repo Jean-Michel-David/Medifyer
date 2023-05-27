@@ -1,6 +1,76 @@
 
 <div class="groupContainer">
-    <form [formGroup]="monCompteForm">
+    <form [formGroup]="monCompteForm" (ngSubmit)="onSubmit()">
+        <div class="inputContainer">
+            <div *ngIf="submitted && f['firstname'].invalid && (f['firstname'].dirty || f['firstname'].touched)">
+                <div
+                    *ngIf="f['firstname'].errors?.['required']"
+                    class="card text-white bg-danger p-1"
+                >
+                    Veuillez entrer votre prénom
+                </div>
+                <div
+                    ngIf="f['firstname'].errors?.['minlength']"
+                    class="card text-white bg-danger p-1"
+                >
+                    Votre prénom doit faire plus de 2 caractères
+                </div>
+                <div
+                    *ngIf="f['firstname'].errors?.['maxlength']"
+                    class="card text-white bg-danger p-1"
+                >
+                    Votre prénom ne peut pas dépasser 50 caractères
+                </div>
+            </div>
+            <div *ngIf="submitted && f['lastname'].invalid && (f['lastname'].dirty || f['lastname'].touched)" class="">
+                <div
+                  *ngIf="f['lastname'].errors?.['required']"
+                  class="card text-white bg-danger p-1"
+                >
+                  Veuillez entrer votre nom
+                </div>
+                <div
+                  *ngIf="f['lastname'].errors?.['minlength']"
+                  class="card text-white bg-danger p-1"
+                >
+                  Votre nom doit faire plus de 2 caractères
+                </div>
+                <div
+                  *ngIf="f['lastname'].errors?.['maxlength']"
+                  class="card text-white bg-danger p-1"
+                >
+                  Votre nom ne peut pas dépasser 50 caractères
+                </div>
+            </div>
+            <div *ngIf="submitted && f['pwd'].invalid && (f['pwd'].dirty || f['pwd'].touched)">
+                <div
+                  *ngIf="f['pwd'].errors?.['required']"
+                  class="card text-white bg-danger p-1"
+                >
+                  Veuillez entrer votre mot de passe
+                </div>
+                <div
+                  *ngIf="f['pwd'].errors?.['minlength']"
+                  class="card text-white bg-danger p-1"
+                >
+                  Votre mot de passe est trop court (minimum 9 caractères)
+                </div>
+                </div>
+            <div *ngIf="submitted && f['cpwd'].invalid && (f['cpwd'].dirty || f['cpwd'].touched)">
+                <div
+                    *ngIf="f['cpwd'].errors?.['required']"
+                    class="card text-white bg-danger p-1"
+                >
+                    Veuillez entrer votre confirmation de mot de passe
+                </div>
+                <div *ngIf="f['cpwd'].errors?.['miength']">
+                    La confirmation de mot de passe est trop courte (minimum 9 caractères)
+                </div>
+                <div *ngIf="f['cpwd'].errors?.['matching']">
+                    Les mots de passes ne correspondent pas
+                </div>
+            </div>
+        </div>
         <div class="inputContainer">
             <div class="inputGroup">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="primary-svg"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
