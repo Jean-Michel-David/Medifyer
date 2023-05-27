@@ -5,5 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class EmailSenderService {
 
-  constructor() { }
+  constructor() {}
+
+  sendVerificationEmail() {
+    
+  }
 }
