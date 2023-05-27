@@ -43,6 +43,20 @@ form{
     text-align: center;
 }
 .deleteButton{
+    background-color: #9702;
+    color: white;
+    font-weight: 600;
+    font-size: large;
+    padding: 10px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.30) 0 3px 3px;
+    transition: all ease-in-out 100ms;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.sendButton{
     background-color: #029791;
     color: white;
     font-weight: 600;
@@ -53,7 +67,9 @@ form{
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.30) 0 3px 3px;
     transition: all ease-in-out 100ms;
-  }
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
 .deleteButton:hover{
     background-color: #00645f;
     transform: scale(1.05);

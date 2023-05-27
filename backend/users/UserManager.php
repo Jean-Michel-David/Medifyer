@@ -127,14 +127,20 @@ class UserManager
     try {
       $insert = $this->db->prepare($sql);
       $params = array (
+        'user_id' => $user->getId(),
         'nom_user' => $user->getLastname(),
         'prenom_user' => $user->getFirstname(),
         'psw_user' => $user->getPwd(),
         'pfp_user' => $user->getPhoto(),
-        'admin_user' => false,
+        'admin_user' => $user->isAdmin(),
         'email_user' => $user->getEmail(),
       );
-      $insert->execute($params);
+      if($insert->execute($params)){
+        return true;
+      } else {
+        return false;
+      }
+
     } catch(PDOException $e) {
       die($e);
     } finally {

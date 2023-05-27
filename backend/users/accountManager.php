@@ -1,8 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__) . '/./User.class.php');
+require_once(dirname(__FILE__) . '/User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
-require_once(dirname(__FILE__) . '/./UserManager.php');
+require_once(dirname(__FILE__) . '/UserManager.php');
 require_once(dirname(__FILE__) . '/../credentials.php');
 
 global $authorizedURL;
@@ -23,8 +23,11 @@ $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
 $res = array();
+$options = [
+    'cost' => 12,
+];
 
-// on récupère les informations stockée en base de données
+// on récupère les informations stockées en base de données
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (empty($headers['Authorization'])) {
         http_response_code(401);
@@ -39,50 +42,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $user->setAdminStatus(($res['admin_user']));
     $user->setEmail($res['email_user']);
     echo json_encode($user);
+}
 // On envoie les informations modifiées au serveur
-} else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($headers['Authorization'])) {
-        http_response_code(401);
-        exit();
-    }  
+else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json_obj = json_decode(file_get_contents('php://input'), true);
-    $user->setId($json_obj['id']);
-    if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {
-        http_response_code(400);
-        "Prénom Invalide ! ";
-        exit;
+    // on va d'abord rechercher dans la base de données, l'utilisateur courant, pour reprendre ses données
+    $compareUser = $userManager->getUserByID($headers['Authorization']);
+    // on set les paramètres invariables (id, email, ...) dans un $user
+    $user->setId($compareUser['user_id']);
+    $user->setEmail($compareUser['email_user']);
+    $user->setAdminStatus($compareUser['admin_user']);
+    $user->setPhoto($compareUser['pfp_user']);
+    // on va ensuite regarder si les paramètres modifiables : firstname, lastname et pwd, ont été modifiés
+    // firstname
+    if ($json_obj['firstname'] === $compareUser['prenom_user']) {
+        // dans le cas où ils sont similaires, on insère la variable du compareUser dans le user
+        $user->setFirstname($compareUser['prenom_user']);
+    } else {
+        // sinon, on set le nouveau prénom dans la variable user
+        $user->setFirstname($json_obj['firstname']);
     }
-    if ($json_obj['lastname'] == null || strlen($json_obj['lastname'])>50) {
-        http_response_code(400);
-        echo "Nom Invalide ! ";
-        exit;
+    // pareil pour le lastname
+    if ($json_obj['lastname'] === $compareUser['nom_user']) {
+        $user->setLastname($compareUser['nom_user']);
+    } else {
+        $user->setLastname($json_obj['lastname']);
     }
-    if($json_obj['pwd'] == null){
-        http_response_code(400);
-        echo "Mot de passe Invalide";
-        exit;
+    // pour le mdp, on vérifie si le mdp renvoyé est null ou vide
+    if ($json_obj['pwd'] === "") {
+        // si c'est le cas, on insère la valeur pwd du compareUser dans user
+        $user->setPwd($compareUser['psw_user']);
+    } else {
+        // sinon, on vérifie si le mot de passe entré est valide, on le hash et on l'attribue à l'utilisateur
+        if (strlen($json_obj['pwd']) >= 9) {
+            $pwdhashed = password_hash($json_obj['pwd'], PASSWORD_BCRYPT, $options);
+            $user->setPwd($pwdhashed);
+        }
     }
-    // on doit vérifier si le mot de passe a été modifié, si oui il faut le hacher à nouveau
-    if ($json_obj['pwd'] !== $user->getPwd()) {
-        // le mdp est différent, on le hache de nouveau
-        $pwdhashed = password_hash($json_obj['pwd'], PASSWORD_BCRYPT, $options);
-    }else {
-        // sinon on le mets tel dans la variable
-        $pwdhashed = $json_obj['pwd'];
-    }
-    // on set les nouvelles variable dans $user
-    $user->setFirstname($json_obj['firstname']);
-    $user->setLastname($json_obj['lastname']);
-    $user->setEmail($json_obj['email']);
-    $user->setPwd($pwdhashed);
-    $user->setPhoto($json_obj['photo']);
-    $succes = $userManager->modifyUser($user);
-    if ($succes == false) {
+    // ensuite, on peut modifier l'utilisateur dans la base de données
+    echo json_encode($compareUser);
+    $success = $userManager->modifyUser($user);
+    if ($success === false) {
         http_response_code(400);
+        echo "Updating failed";
         exit();
     } else {
         http_response_code(200);
-        echo "User modified with Succes";
+        echo "User modified with Success";
         exit();
     }
 }

@@ -12,7 +12,7 @@ import { GestionCompteService } from 'src/app/services/gestion-compte.service';
   templateUrl: './mon-compte.component.html',
   styleUrls: ['./mon-compte.component.css']
 })
-export class MonCompteComponent implements OnInit{
+export class MonCompteComponent implements OnInit {
 
   user: User = {
     id: -1,
@@ -22,73 +22,75 @@ export class MonCompteComponent implements OnInit{
     pwd: '',
     cpwd: '',
     photo: ''
-  }
-  @Input()
+  };
+
   monCompteForm: FormGroup = new FormGroup({
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    email: new FormControl(''),
-    pwd: new FormControl(''),
-    cpwd: new FormControl('')
+    firstname: new FormControl(),
+    lastname: new FormControl(),
+    email: new FormControl(),
+    pwd: new FormControl(),
+    cpwd: new FormControl()
   });
 
   constructor(
     private apiAccount: GestionCompteService,
     private apiUser: UserService,
     private fb: FormBuilder
-  ){}
+  ) {}
 
   ngOnInit(): void {
-      this.getInfos();
-      this.monCompteForm = this.fb.group({
-      firstname: [this.user.firstname, [Validators.minLength(2), Validators.maxLength(50)]],
-      lastname: [this.user.lastname, [Validators.minLength(2), Validators.maxLength(50)]],
-      email: [this.user.email],
+    this.monCompteForm = this.fb.group({
+      firstname: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      lastname: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      email: [''],
       pwd: ['', [Validators.minLength(9)]],
       cpwd: ['', [Validators.minLength(9)]]
-    },
-    {
-      Validators: [CustomValidators.passwordsMatching('pwd', 'cpwd')]
+    }, {
+      validators: [CustomValidators.passwordsMatching('pwd', 'cpwd')]
     });
+    this.getInfos();
+    console.log(this.user)
   }
 
-  get f(): {[Key: string]: AbstractControl} {
+  get f(): { [key: string]: AbstractControl } {
     return this.monCompteForm.controls;
   }
 
   setNewInfos() {
-    this.user.firstname = this.monCompteForm.controls['firstname'].value;
-    this.user.lastname = this.monCompteForm.controls['lastname'].value;
-    this.user.email = this.monCompteForm.controls['email'].value;
-    if (this.monCompteForm.controls['pwd'].value != null || this.monCompteForm.controls['pwd'].value != '') {
-      this.user.pwd = this.monCompteForm.controls['pwd'].value;
-    }
+    this.user.firstname = this.monCompteForm.value.firstname;
+    this.user.lastname = this.monCompteForm.value.lastname;
+    this.user.email = this.monCompteForm.value.email;
+    this.user.pwd = this.monCompteForm.value.pwd;
   }
 
-  sendInfos(){
+  sendInfos() {
     this.setNewInfos();
-    let sub = this.apiAccount.sendUserInfos(this.user).subscribe(()=>{
-      alert("Modification réalisée avec succès");
+    const sub = this.apiAccount.sendUserInfos(this.user).subscribe(() => {
+      alert('Modification réalisée avec succès');
       sub.unsubscribe();
-    })
+    });
   }
 
   deleteUser(): void {
-    if (confirm("Etes vous certain de vouloir supprimer votre compte? Cette action est irréversible")) {
-      let sub = this.apiUser.deleteUser().subscribe(() =>{
-        console.log("User delete with succes");
+    if (confirm('Êtes-vous certain de vouloir supprimer votre compte? Cette action est irréversible.')) {
+      const sub = this.apiUser.deleteUser().subscribe(() => {
+        console.log('User deleted successfully');
         sub.unsubscribe();
-      })
+      });
     }
   }
 
-  getInfos(){
-    let sub = this.apiAccount.getUserInfos().subscribe({
-      next : (response) => {
-       this.user = response;
-       sub.unsubscribe();
+  getInfos() {
+    const sub = this.apiAccount.getUserInfos().subscribe(
+      (response: User) => {
+        this.user = response;
+        this.monCompteForm.patchValue({
+          firstname: this.user.firstname,
+          lastname: this.user.lastname,
+          email: this.user.email
+        });
+        sub.unsubscribe();
       }
-    })
+    );
   }
-
 }

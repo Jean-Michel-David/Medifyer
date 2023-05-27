@@ -17,7 +17,7 @@ export class GestionCompteService {
     return this.http.get<User>(this.accountManagerUrl);
   }
 
-  sendUserInfos(user: User) {
+  sendUserInfos(user: User): Observable<string>{
     return this.http.post(this.accountManagerUrl, JSON.stringify(user), {responseType : 'text'})
   } 
   
