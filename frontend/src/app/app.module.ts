@@ -43,6 +43,7 @@ import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.compo
 import { EquationDisplayComponent } from './recherche/equation-display/equation-display.component';
 import { FooterComponent } from './footer/footer.component';
 import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
+import { VerifEmailComponent } from './page/verif-email/verif-email.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
     EquationDisplayComponent,
     FooterComponent,
     EditInfosComponent,
+    VerifEmailComponent,
 
   ],
   imports: [
