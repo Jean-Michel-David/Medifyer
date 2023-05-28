@@ -14,7 +14,7 @@ class UserManager
    */
   public function getUser($email)
   {
-    $sql="SELECT user_id, nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user from users WHERE email_user=:email";
+    $sql="SELECT * from users WHERE email_user=:email";
     $result = array();
     try {
       $select = $this->db->prepare($sql);
@@ -104,7 +104,7 @@ class UserManager
   public function getUserByID($authorization)
   {
     $userCreds = new Credentials();
-    $sql="SELECT user_id, nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user from users WHERE user_id=:id";
+    $sql="SELECT * from users WHERE user_id=:id";
     $result = array();
     $user_id = $userCreds->extractUserId($authorization);
     try {
@@ -142,6 +142,26 @@ class UserManager
       }
 
     } catch(PDOException $e) {
+      die($e);
+    } finally {
+      $insert->closeCursor();
+    }
+  }
+
+  public function sendVerificationCode(User $user, $code) {
+    $sql = "UPDATE users SET code_user = :code_user WHERE user_id = :user_id";
+    try {
+      $insert = $this->db->prepare($sql);
+      $params = array (
+        'user_id' => $user->getId(),
+        'code_user' => $code
+      );
+      if($insert->execute($params)) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (PDOException $e) {
       die($e);
     } finally {
       $insert->closeCursor();
