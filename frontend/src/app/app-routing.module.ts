@@ -11,6 +11,7 @@ import { EditInfobullesComponent } from './admin/edit-infobulles/edit-infobulles
 import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.component';
 import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
 import { MonCompteComponent } from './page/mon-compte/mon-compte.component';
+import { VerifEmailComponent } from './page/verif-email/verif-email.component';
 
 const routes: Routes = [
   { path : 'index', component: IndexComponent},
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path : 'admin/edit-infobulles', component : EditInfobullesComponent},
   { path : 'admin/manage-admins', component : ManageAdminsComponent },
   { path : 'admin/edit-infos', component : EditInfosComponent },
-  {path : 'mon-compte', component : MonCompteComponent}
+  {path : 'mon-compte', component : MonCompteComponent},
+  {path : 'verif-email', component : VerifEmailComponent}
 ];
 
 @NgModule({

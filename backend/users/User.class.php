@@ -9,6 +9,8 @@ class User implements JsonSerializable
   private $pwd;
   private $photo;
   private $adminStatus;
+  private $actif_user;
+  private $code_user;
 
   /**
    * Get the value of id
@@ -134,6 +136,44 @@ class User implements JsonSerializable
     return $this;
   }
 
+   /**
+   * Get the value of actif_user
+   */
+  public function getActifUser()
+  {
+    return $this->actif_user;
+  }
+  /**
+   * Set the value of actif_user
+   *
+   * @return  self
+   */
+  public function setActifUser($actif_user)
+  {
+    $this->actif_user = $actif_user;
+
+    return $this;
+  }
+  
+   /**
+   * Get the value of code_user
+   */
+  public function getCodeUser()
+  {
+    return $this->code_user;
+  }
+  /**
+   * Set the value of code_user
+   *
+   * @return  self
+   */
+  public function setCodeUser($code)
+  {
+    $this->code_user = $code;
+
+    return $this;
+  }
+
   public function jsonSerialize(): mixed
   {
     return array(
@@ -143,7 +183,9 @@ class User implements JsonSerializable
       'email' => $this->getEmail(),
       'pwd' => $this->getPwd(),
       'photo' => $this->getPhoto(),
-      'adminStatus' => $this->isAdmin()
+      'adminStatus' => $this->isAdmin(),
+      'actif_user' => $this->getActifUser(),
+      'code_user' => $this->getCodeUser()
     );
   }
 }

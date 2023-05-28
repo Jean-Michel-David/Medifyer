@@ -44,6 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 }
 // Inscription de l'utilisateur
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (empty($headers['Authorization'])) {
+    http_response_code(401);
+    exit();
+  }
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $user->setId($json_obj['id']);
   if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {

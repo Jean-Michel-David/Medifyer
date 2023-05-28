@@ -30,6 +30,7 @@ export class InscriptionComponent implements OnInit{
     email: '',
     pwd: '',
     cpwd: '',
+    photo: ''
   };
 
 
@@ -79,7 +80,7 @@ export class InscriptionComponent implements OnInit{
       this.submitted = false;
       this.register();
       const sub = this.api.addUser(this.newUser).subscribe(() => {
-        this.router.navigate(['index']);
+        this.router.navigate(['verif-email']);
         sub.unsubscribe();
       })
   }

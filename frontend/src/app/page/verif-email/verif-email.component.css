@@ -10,51 +10,22 @@ form{
 }
 .groupContainer{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-left: 40%;
     margin-right: 40%;
  }
 .inputGroup{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: white;
     align-items: center;
     padding: 10px;
-  }
-.primary-svg{
-    fill: #515151;
-    height: 30px;
-    margin-right: 20px;
-}
-.secondary-svg{
-    fill: #afafaf;
-    height: 30px;
-    margin-right: 20px;
 }
 .inputContainer{
     border-radius: 5px;
     overflow: hidden;
     box-shadow: rgba(0, 0, 0,0.30) 0 3px 3px;
     margin-bottom: 10px;
-}
-.editButton{
-    background-color: white;
-    border: none;
-    text-align: center;
-}
-.deleteButton{
-    background-color: #DC3545;
-    color: white;
-    font-weight: 600;
-    font-size: large;
-    padding: 10px;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.30) 0 3px 3px;
-    transition: all ease-in-out 100ms;
-    margin-top: 2%;
-    margin-bottom: 2%;
 }
 .sendButton{
     background-color: #029791;
@@ -74,7 +45,7 @@ form{
     background-color: #00645f;
     transform: scale(1.05);
 }
-.deleteButton:hover{
-    background-color: #A53545;
-    transform: scale(1.05);
+.bigText {
+    font-size: 24px;
+    text-align: center;
 }
