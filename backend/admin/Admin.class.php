@@ -176,7 +176,7 @@ class AdminManager {
         $statement->execute();
 
         $result = $statement->rowCount();
-        if ($result != 1)
+        if ($result > 1)
             return "Something went wrong...";
         return "";
     }
