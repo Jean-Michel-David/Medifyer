@@ -19,7 +19,11 @@ p{
 .connexion{
   flex-wrap: wrap;
 }
- .brand{
+.brand{
   color: #01bdb6;
   font-weight: 600;
- }
+}
+
+.notConnected{
+  width: fit-content;
+}

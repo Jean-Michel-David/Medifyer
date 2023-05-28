@@ -1,3 +1,23 @@
 .btn {
-    background-color: rgb(236, 236, 236);
+    background-color: rgba(0, 0, 0, 0.301);
+    color: white;
+    font-weight: 700;
+    height: 100px;
+    padding-left: 20px;
+    transition: all ease-in-out 150ms;
+}
+.btn:hover{
+  background-color: #00777186;
+  font-size: 1.4rem;
+}
+.btn::before {
+  content:'» ';
+  opacity: 0;
+  position: relative;
+  left: -20px;
+  transition: all ease-in-out 150ms;
+}
+.btn:hover::before {
+  left: 0px;
+  opacity: 1;
 }

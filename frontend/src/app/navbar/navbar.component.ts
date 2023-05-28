@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
         next : (response) => {
           this.isConnected = response.isConnected??false;
           this.isAdmin = response.isAdmin;
-          this.initials = response.firstname;
+          this.initials = response.firstname.charAt(0) + response.lastname.charAt(0);
           sub.unsubscribe();
         }, error : () => {
             this.isConnected = this.isAdmin = false;
