@@ -67,8 +67,9 @@ class UserManager
      $stmnt1->bindValue('user_id', $user_id);
      $stmnt1->execute();
      $recherches = $stmnt1->fetchAll(PDO::FETCH_ASSOC);
+     $stmnt1->closeCursor();
      // suppressions de toutes les recherches
-      foreach($recherches as $recherche_id){
+      foreach($recherches as $res){
         $sqlDeleteSearches = "DELETE FROM equation
         WHERE terme_id IN (
           SELECT terme_id
@@ -81,16 +82,19 @@ class UserManager
         DELETE FROM recherches WHERE recherche_id = :recherche_id;";
 
         $stmnt2 = $this->db->prepare($sqlDeleteSearches);
-        $stmnt2->bindValue('recherche_id', $recherche_id);
+        $stmnt2->bindValue('recherche_id', $res['recherche_id']);
         $stmnt2->execute();
+        $stmnt2->closeCursor();
       }
       // Suppression de l'utilisateur
       $sqlDeleteUser = "DELETE FROM users WHERE user_id = :user_id;";
       $stmnt3 = $this->db->prepare($sqlDeleteUser);
       $stmnt3->bindValue('user_id', $user_id);
       if ($stmnt3->execute()) {
+        $stmnt3->closeCursor();
         return true;
       } else {
+        $stmnt3->closeCursor();
         return false;
       }
     } catch (PDOException $e) {

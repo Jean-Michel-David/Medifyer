@@ -37,7 +37,8 @@ export class MonCompteComponent implements OnInit {
   constructor(
     private apiAccount: GestionCompteService,
     private apiUser: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +81,7 @@ export class MonCompteComponent implements OnInit {
         sub.unsubscribe();
       });
     }
+    this.router.navigate(['index']);
   }
 
   getInfos() {
