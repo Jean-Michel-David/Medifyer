@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmailSenderService } from 'src/app/email-sender.service';
 
 @Component({
@@ -9,18 +9,30 @@ import { EmailSenderService } from 'src/app/email-sender.service';
 })
 export class VerifEmailComponent implements OnInit {
  
-  submitted = false
+  submitted = false;
+  isEmailSent = false;
 
   verifForm: FormGroup = new FormGroup({
     verifCode: new FormControl()
   })
 
   constructor(
-    private api: EmailSenderService
+    private api: EmailSenderService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.verifForm = this.fb.group({
+      verifCode: ['', [Validators.required]]
+    })
+    this.sendEmail();
+  }
+
+  sendEmail() {
+    const sub = this.api.sendVerificationEmail().subscribe( () => {
+      sub.unsubscribe();
+    }
+    )
   }
 
   verifyCode() {

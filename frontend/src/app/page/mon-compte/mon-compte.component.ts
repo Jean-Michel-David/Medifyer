@@ -51,7 +51,6 @@ export class MonCompteComponent implements OnInit {
       validators: [CustomValidators.passwordsMatching('pwd', 'cpwd')]
     });
     this.getInfos();
-    console.log(this.user)
   }
 
   get f(): { [key: string]: AbstractControl } {
