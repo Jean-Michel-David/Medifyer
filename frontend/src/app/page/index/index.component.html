@@ -1,9 +1,11 @@
 <div class="d-flex flex-column text-light justify-content-center align-items-center text-center mt-5">
   <h1 class="font-weight-light mb-5">Bienvenue sur <span class="ff-Nunito brand">Medifyer</span> !</h1>
   <p class="width-500px mb-5">Votre outil de création d’équations de recherche dans le cadre de vos recherches documentaires dans les bases de données médicales.</p>
-  <h2 class="mb-3 ">Tu étudies à la Helha ?</h2>
-  <div class="d-flex justify-content-between width-300px w-75 connexion">
-    <a class="btn btn-light font-weight-bold btn-lg" routerLink="/inscription">S'inscrire</a>
-    <a class="btn btn-outline-light font-weight-bold btn-lg" routerLink="/connexion">Se connecter</a>
+  <div class="notConnected width-300px w-75" *ngIf="!isConnected">
+    <h2 class="mb-3 ">Tu étudies à la Helha ?</h2>
+    <div class="d-flex justify-content-between  connexion">
+      <a class="btn btn-light font-weight-bold btn-lg" routerLink="/inscription">S'inscrire</a>
+      <a class="btn btn-outline-light font-weight-bold btn-lg" routerLink="/connexion">Se connecter</a>
+    </div>
   </div>
 </div>

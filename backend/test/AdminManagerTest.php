@@ -8,11 +8,13 @@ require_once (dirname(__FILE__) . '/../database/dbConnection.php');
 
 class AdminManagerTest extends TestCase
 {
-    private int $testUserId = 0;
+    private int $testUserId;
+    private int $adminId;
+
+    private $questionId;
     private QuestionManager $qu;
     private DBConnection $db;
     private array $usersToCreate;
-    private int $adminId;
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -24,9 +26,18 @@ class AdminManagerTest extends TestCase
         ];
     }
 
+    private function hasQuestionUser(int $id, PDO $conn) : bool {
+        $conn = $this->db->connect();
+
+        $statement = $conn->prepare("SELECT * FROM recherches WHERE user_id = :userId");
+        $statement->execute(["userId" => $id]);
+
+        return ($statement->rowCount() > 0);
+
+    }
+
     public function testBefore()
     {
-
         $conn = $this->db->connect();
 
         foreach ($this->usersToCreate as $user) {
@@ -50,11 +61,28 @@ class AdminManagerTest extends TestCase
         $this->testUserId = $this->qu->getIdFromEmail($this->usersToCreate[0], $conn);
         $this->adminId = $this->qu->getIdFromEmail($this->usersToCreate[1], $conn);
 
+        if (!$this->hasQuestionUser($this->testUserId, $conn)) {
+            $statement = $conn->prepare("INSERT INTO `recherches` (`recherche_id`, `question_rech`, `population_rech`, `traitement_rech`, `resultat_rech`, `public_rech`, `commentaire_rech`, `lastUpdate`, `user_id`) 
+                                                                VALUES  (NULL, 'Test question', NULL, NULL, NULL, NULL, NULL, current_timestamp(), :userId);");
+            $statement->execute(['userId' => $this->testUserId]);
+        }
+        $this->assertTrue($this->hasQuestionUser($this->testUserId, $conn));
+
+        $statement = $conn->prepare("SELECT recherche_id FROM recherches WHERE user_id = :userId");
+        $statement->execute(['userId' => $this->testUserId]);
+        $this->questionId = $statement->fetch()['recherche_id'];
+
         $this->db->disconnect();
     }
 
     public function testAfter() {
         $conn = $this->db->connect();
+
+        if ($this->hasQuestionUser($this->testUserId, $conn)) {
+            $statement = $conn->prepare("DELETE FROM recherches WHERE user_id = :userId");
+            $statement->execute([':userId' => $this->testUserId]);
+        }
+        $this->assertFalse($this->hasQuestionUser($this->testUserId, $conn));
 
         foreach ($this->usersToCreate as $user) {
             if (! $this->qu->userExist($user, $conn)) {
@@ -71,6 +99,7 @@ class AdminManagerTest extends TestCase
 
         $this->db->disconnect();
     }
+
     public function testSetAdminStatus()
     {
         $this->testBefore();
@@ -84,28 +113,37 @@ class AdminManagerTest extends TestCase
         $this->testAfter();
     }
 
-    public function testGetUserList()
+    function testCommentQuestion()
     {
-        
-    }
+        $this->testBefore();
+;
+        $this->assertTrue(AdminManager::commentQuestion("commentaire test", $this->questionId));
 
-    public function testGetUserSearches()
-    {
-
-    }
-
-    public function testCommentQuestion()
-    {
-
+        $this->testAfter();
     }
 
     public function testSetInfobulles()
     {
+        $this->testBefore();
 
-    }
+        $conn = $this->db->connect();
 
-    public function testGetSharedUserSearches()
-    {
+        $statement = $conn->prepare("DELETE FROM infos WHERE libelle_info = 'info_test'");
+        $statement->execute();
+        
+        $statement = $conn->prepare("INSERT INTO `infos` (`Id_Info`, `libelle_info`, `texte_info`) 
+                                                        VALUES (NULL, 'info_test', NULL);");
+        $statement->execute();
 
+        AdminManager::setInfobulles('info_test', 'testInfobulle');
+        $statement = $conn->prepare("SELECT * FROM infos WHERE libelle_info = 'info_test'");
+        $statement->execute();
+        $this->assertEquals("testInfobulle", $statement->fetch()['texte_info']);
+
+        $statement = $conn->prepare("DELETE FROM infos WHERE libelle_info = 'info_test'");
+        $statement->execute();
+
+
+        $this->testAfter();
     }
 }
