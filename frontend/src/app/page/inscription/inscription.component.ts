@@ -57,7 +57,7 @@ export class InscriptionComponent implements OnInit{
     this.inscriptionForm = this.fb.group({
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.pattern(/^la[0-9]{6}@student\.helha\.be$/i)]],
+      email: ['', [Validators.required, Validators.pattern(/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i)]],
       pwd: ['', [Validators.required, Validators.minLength(9)]],
       cpwd: ['',[ Validators.required, Validators.minLength(9)]]
     },

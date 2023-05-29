@@ -22,7 +22,6 @@ export class UserService {
           return false;
         }
         console.log("received token : " + res);
-        localStorage.setItem('authenticationToken', res);
         return true;
     }))
 

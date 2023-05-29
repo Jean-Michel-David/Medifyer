@@ -48,7 +48,7 @@ export class ConnexionComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(/^la[0-9]{6}@student\.helha\.be$/i)]],
+      email: ['', [Validators.required, Validators.pattern(/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i)]],
       pwd: ['', [Validators.required, Validators.minLength(9)]]
     });
   }

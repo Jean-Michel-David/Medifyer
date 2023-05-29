@@ -32,8 +32,7 @@ $headers = getallheaders();
 $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
-$regexStudent = '/^la[0-9]{6}@student\.helha\.be$/i';
-// $regexTeacher = '/\w+@helha\.be$/i';
+$regex = '/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i';
 $pwdhashed = '';
 $options = [
   'cost' => 12,
@@ -66,7 +65,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Nom Invalide ! ";
     exit;
   }
-  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regexStudent, $json_obj['email'])) {
+  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
     http_response_code(400);
     echo "Email Invalide !";
     exit;
@@ -108,7 +107,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     die($e);
     exit;
   } finally {
-    echo $credentials->createToken($user);
+    echo "Success";
   }
   
   // Deleting a User
