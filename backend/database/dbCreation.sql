@@ -74,6 +74,6 @@
             (NULL, 'infobulle_PatientPopPath', 'Qui est concerné ? Quelle pathologie ? Quelle population ?\r\nExemple : '), 
             (NULL, 'infobulle_interventionTraitement', 'Quel est le traitement appliqué ?\r\nExemple : '), 
             (NULL, 'infobulle_resultat', 'Que va t\'on mesurer ? (douleur, périmètre de marche,...)\r\nExemple : '),
-            (NULL, 'infobulle_secondPart', 'Choix de la question de recherche'),
+            (NULL, 'infobulle_firstPart', 'Choix de la question de recherche'),
             (NULL, 'infobulle_secondPart', 'Choix des termes Mesh'),
             (NULL, 'infobulle_thirdPart', 'Choix des operateurs');
