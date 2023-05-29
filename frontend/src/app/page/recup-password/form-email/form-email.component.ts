@@ -43,6 +43,7 @@ export class FormEmailComponent implements OnInit{
         console.log(response)
         if (response.success) {
           alert(response.message);
+          localStorage.setItem('email',this.email);
           this.router.navigate(['password-code']);
         } else {
           alert(response.message)
