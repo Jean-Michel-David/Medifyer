@@ -36,7 +36,7 @@ class AdminManagerTest extends TestCase
 
     }
 
-    public function testBefore()
+    public function setUp() : void
     {
         $conn = $this->db->connect();
 
@@ -75,7 +75,7 @@ class AdminManagerTest extends TestCase
         $this->db->disconnect();
     }
 
-    public function testAfter() {
+    public function tearDown() : void {
         $conn = $this->db->connect();
 
         if ($this->hasQuestionUser($this->testUserId, $conn)) {
@@ -102,30 +102,20 @@ class AdminManagerTest extends TestCase
 
     public function testSetAdminStatus()
     {
-        $this->testBefore();
-
         $strError = AdminManager::setAdminStatus($this->adminId, $this->testUserId, true);
         $this->assertEmpty($strError);
 
         $strError = AdminManager::setAdminStatus($this->adminId, $this->testUserId, false);
         $this->assertEmpty($strError);
-
-        $this->testAfter();
     }
 
     function testCommentQuestion()
     {
-        $this->testBefore();
-;
         $this->assertTrue(AdminManager::commentQuestion("commentaire test", $this->questionId));
-
-        $this->testAfter();
     }
 
     public function testSetInfobulles()
     {
-        $this->testBefore();
-
         $conn = $this->db->connect();
 
         $statement = $conn->prepare("DELETE FROM infos WHERE libelle_info = 'info_test'");
@@ -142,8 +132,5 @@ class AdminManagerTest extends TestCase
 
         $statement = $conn->prepare("DELETE FROM infos WHERE libelle_info = 'info_test'");
         $statement->execute();
-
-
-        $this->testAfter();
     }
 }
