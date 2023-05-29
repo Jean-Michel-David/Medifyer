@@ -1,4 +1,7 @@
 <?php
+
+use SebastianBergmann\CodeCoverage\Driver\Selector;
+
 require_once(dirname(__FILE__) . '/../credentials.php');
 class UserManager
 {
@@ -127,7 +130,7 @@ class UserManager
    @Description : Function modifying the user in the database
    */
   public function modifyUser(User $user) {
-    $sql="UPDATE users SET user_id =:user_id, nom_user=:nom_user, prenom_user=:prenom_user, psw_user=:psw_user, pfp_user=:pfp_user, admin_user=:admin_user,email_user=:email_user WHERE user_id=:user_id";
+    $sql="UPDATE users SET user_id =:user_id, nom_user=:nom_user, prenom_user=:prenom_user, psw_user=:psw_user, pfp_user=:pfp_user, admin_user=:admin_user,email_user=:email_user, actif_user=:actif_user WHERE user_id=:user_id";
     try {
       $insert = $this->db->prepare($sql);
       $params = array (
@@ -138,6 +141,8 @@ class UserManager
         'pfp_user' => $user->getPhoto(),
         'admin_user' => $user->isAdmin(),
         'email_user' => $user->getEmail(),
+        'actif_user' => $user->getActifUser()
+
       );
       if($insert->execute($params)){
         return true;
@@ -153,11 +158,11 @@ class UserManager
   }
 
   public function sendVerificationCode(User $user, $code) {
-    $sql = "UPDATE users SET code_user = :code_user WHERE user_id = :user_id";
+    $sql = "UPDATE users SET code_user = :code_user WHERE email_user = :email_user";
     try {
       $insert = $this->db->prepare($sql);
       $params = array (
-        'user_id' => $user->getId(),
+        'email_user' => $user->getEmail(),
         'code_user' => $code
       );
       if($insert->execute($params)) {
@@ -171,4 +176,22 @@ class UserManager
       $insert->closeCursor();
     }
   }
+
+  public function checkVerificationCode($code) {
+    $sql = "SELECT * FROM `users` WHERE code_user = :code_user";
+    try {
+      $insert = $this->db->prepare($sql);
+      $params = array (
+        'code_user' => $code
+      );
+      $insert->execute($params);
+      $result = $insert->fetch(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+      die($e);
+      exit;
+    } finally {
+      return $result;
+    }
+  }
+  
 }
