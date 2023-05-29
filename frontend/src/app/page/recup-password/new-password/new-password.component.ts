@@ -48,7 +48,7 @@ export class NewPasswordComponent implements OnInit{
   }
 
   setNewPassword() {
-    this.user.email = localStorage.getItem('email') as string;
+    this.user.email = this.api.email;
     this.user.pwd = this.newPasswordForm.value.pwd;
   }
 
@@ -56,7 +56,6 @@ export class NewPasswordComponent implements OnInit{
     this.submitted = false;
     this.setNewPassword();
     const sub = this.api.modifyPassword(this.user).subscribe(() => {
-      
       alert('Modification réalisée avec succès');
       this.router.navigate(['connexion']);
       sub.unsubscribe();

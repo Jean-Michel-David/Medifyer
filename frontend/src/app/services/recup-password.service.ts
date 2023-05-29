@@ -9,8 +9,9 @@ import { User } from '../userInscription';
 })
 export class RecupPasswordService {
 
+  email: any;
   emailURL = environment.backendUrl + "/recup-password/sendEmail.php";
-  modifyURl = environment.backendUrl + "/users/accountManager.php";
+  modifyURl = environment.backendUrl + "/recup-password/password.php";
 
   constructor(private http: HttpClient) { }
 

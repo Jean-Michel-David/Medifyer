@@ -38,12 +38,12 @@ export class FormEmailComponent implements OnInit{
   send() {
     this.submitted = false;
     this.email = this.emailForm.controls['email'].value
+    this.api.email = this.email;
     const sub = this.api.sendEmail(this.email).subscribe(
       (response)=>{
         console.log(response)
         if (response.success) {
           alert(response.message);
-          localStorage.setItem('email',this.email);
           this.router.navigate(['password-code']);
         } else {
           alert(response.message)

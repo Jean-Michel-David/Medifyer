@@ -1,0 +1,17 @@
+
+<div class="groupContainer">
+    <form [formGroup]="verifForm" ngOnSubmit="onSubmit()">
+        <div class="inputContainer">
+            <div class="inputGroup">
+                <p class="bigText">Vous avez reçu par email un code de confirmation, veuillez l'entrer si dessous afin de vérifier votre compte</p>
+                <input 
+                type="text"
+                id="verificationCode"
+                placeholder="Code de vérification"
+                formControlName="verifCode"
+                >
+            </div>
+        </div>
+        <button type="submit" (click)="verifyCode()" class="sendButton">Vérifier le code</button>
+    </form>  
+</div>
