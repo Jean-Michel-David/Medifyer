@@ -53,7 +53,6 @@ export class FindSearchComponent {
    */
   fetchQuestions(user : number) : void{
     this.showUserList = false;
-    console.log('fetching questions for user with ID : ' + user);
     this.userSearches = this.service.getUserSearches(user);
     this.userSharedSearches = this.service.getUserSharedSearches(user);
   }
