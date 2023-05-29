@@ -77,11 +77,21 @@
           >
             Veuillez entrer votre confirmation de mot de passe
           </div>
-          <div *ngIf="f['cpwd'].errors?.['miength']">
+          <div
+          *ngIf="f['cpwd'].errors?.['minlength']"
+            class = "card text-white bg-danger p-1">
             La confirmation de mot de passe est trop courte (minimum 9 caractères)
           </div>
-          <div *ngIf="f['cpwd'].errors?.['matching']">
+          <div
+          *ngIf="f['cpwd'].errors?.['matching']"
+          class = "card text-white bg-danger p-1">
             Les mots de passes ne correspondent pas
+          </div>
+          <div
+          *ngIf="f['check'].invalid && f['check'].touched"
+          class = "card text-white bg-danger p-1"
+          >
+
           </div>
         </div>
       </div>
