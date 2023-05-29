@@ -41,9 +41,6 @@ export class VerifEmailComponent implements OnInit {
           alert(response.message);
         }
         sub.unsubscribe();
-      },
-      (error) => {
-        console.error(error);
       }
     );
   }
