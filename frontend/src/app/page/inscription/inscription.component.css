@@ -127,3 +127,12 @@ h2{
   transform: scale(1.05);
 }
 
+.checkbox{
+  margin: 0%;
+  padding: 0px;
+}
+
+.littleText{
+  font-size: 12px;
+}
+

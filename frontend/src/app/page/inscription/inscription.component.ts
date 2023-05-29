@@ -42,7 +42,8 @@ export class InscriptionComponent implements OnInit{
     firstname: new FormControl(''),
     email: new FormControl(''),
     pwd: new FormControl(''),
-    cpwd: new FormControl('')
+    cpwd: new FormControl(''),
+    check: new FormControl('')
   });
   
   submitted = false;
@@ -59,7 +60,8 @@ export class InscriptionComponent implements OnInit{
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.pattern(/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i)]],
       pwd: ['', [Validators.required, Validators.minLength(9)]],
-      cpwd: ['',[ Validators.required, Validators.minLength(9)]]
+      cpwd: ['',[ Validators.required, Validators.minLength(9)]],
+      check: ['', [Validators.required]]
     },
     {
       validators: [CustomValidators.passwordsMatching('pwd', 'cpwd')]
