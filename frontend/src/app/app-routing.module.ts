@@ -32,7 +32,7 @@ const routes: Routes = [
   {path : 'verif-email', component : VerifEmailComponent},
   {path : 'form-email', component : FormEmailComponent},
   {path : 'new-password', component : NewPasswordComponent},
-  {path : 'password', component : PasswordCodeComponent}
+  {path : 'password-code', component : PasswordCodeComponent}
 ];
 
 @NgModule({
