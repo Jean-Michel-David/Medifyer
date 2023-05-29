@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -38,7 +39,7 @@ export class FormEmailComponent implements OnInit{
   send() {
     this.submitted = false;
     this.email = this.emailForm.controls['email'].value
-    this.api.email = this.email;
+    RecupPasswordService.userMail = this.email;
     const sub = this.api.sendEmail(this.email).subscribe(
       (response)=>{
         console.log(response)

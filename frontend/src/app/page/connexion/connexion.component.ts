@@ -5,6 +5,10 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from '../inscription/userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
+<<<<<<< HEAD
+=======
+import { EmailSenderService } from 'src/app/services/email-sender.service';
+>>>>>>> 832683f1bebb77cb316f78d0d6a702c6a837eacf
 
 @Component({
   selector: 'app-connexion',
@@ -47,7 +51,7 @@ export class ConnexionComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.pattern(/^la[0-9]{6}@student\.helha\.be$/i)]],
+      email: ['', [Validators.required, Validators.pattern(/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i)]],
       pwd: ['', [Validators.required, Validators.minLength(9)]]
     });
   }
@@ -60,14 +64,19 @@ export class ConnexionComponent {
     this.submitted=false;
     this.loggedUser.email = this.loginForm.controls['email'].value;
     this.loggedUser.pwd = this.loginForm.controls['pwd'].value;
+    EmailSenderService.emailUser = this.loggedUser.email;
     const sub = this.api.login(this.loggedUser).subscribe(() => {
       this.router.navigate(['index']);
       sub.unsubscribe();
     }, (error) => {
+      alert(error.error);
       console.log(error);
-    })
+      if (error.status === 409) {
+        alert("Veuillez vérifier votre compte");
+        this.router.navigate(["verif-email"]);
+      }
+    });
   }
-
   onSubmit(){
     this.submitted = true;
   }

@@ -6,6 +6,7 @@ import { CustomValidators } from './CustomValidators';
 import { User } from './userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Message } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-inscription-form',
@@ -56,7 +57,7 @@ export class InscriptionComponent implements OnInit{
     this.inscriptionForm = this.fb.group({
       lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.pattern(/^la[0-9]{6}@student\.helha\.be$/i), Validators.pattern(/^\w+@helha\.be$/i)]],
+      email: ['', [Validators.required, Validators.pattern(/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i)]],
       pwd: ['', [Validators.required, Validators.minLength(9)]],
       cpwd: ['',[ Validators.required, Validators.minLength(9)]]
     },
@@ -83,7 +84,11 @@ export class InscriptionComponent implements OnInit{
       const sub = this.api.addUser(this.newUser).subscribe(() => {
         this.router.navigate(['verif-email']);
         sub.unsubscribe();
-      })
+      }, (error) => {
+        alert(error.error);
+        console.log(error);
+        console.log(error.error);      
+      });
   }
 
   onSubmit() {

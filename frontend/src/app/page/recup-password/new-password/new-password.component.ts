@@ -48,7 +48,7 @@ export class NewPasswordComponent implements OnInit{
   }
 
   setNewPassword() {
-    this.user.email = this.api.email;
+    this.user.email = RecupPasswordService.userMail;
     this.user.pwd = this.newPasswordForm.value.pwd;
   }
 
