@@ -52,10 +52,11 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $compareUser = $userManager->getUserByID($headers['Authorization']);
     // on set les paramètres invariables (id, email, ...) dans un $user
     if ($compareUser) {
-        $user->setId($compareUser['user_id']);
+    $user->setId($compareUser['user_id']);
     $user->setEmail($compareUser['email_user']);
     $user->setAdminStatus($compareUser['admin_user']);
     $user->setPhoto($compareUser['pfp_user']);
+    $user->setActifUser($compareUser['actif_user']);
     // on va ensuite regarder si les paramètres modifiables : firstname, lastname et pwd, ont été modifiés
     // firstname
     if ($json_obj['firstname'] === $compareUser['prenom_user']) {
