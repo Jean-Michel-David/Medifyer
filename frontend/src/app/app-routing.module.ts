@@ -12,6 +12,9 @@ import { ManageAdminsComponent } from './admin/manage-admins/manage-admins.compo
 import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
 import { MonCompteComponent } from './page/mon-compte/mon-compte.component';
 import { VerifEmailComponent } from './page/verif-email/verif-email.component';
+import { FormEmailComponent } from './page/recup-password/form-email/form-email.component';
+import { NewPasswordComponent } from './page/recup-password/new-password/new-password.component';
+import { PasswordCodeComponent } from './page/recup-password/password-code/password-code.component';
 
 const routes: Routes = [
   { path : 'index', component: IndexComponent},
@@ -26,7 +29,10 @@ const routes: Routes = [
   { path : 'admin/manage-admins', component : ManageAdminsComponent },
   { path : 'admin/edit-infos', component : EditInfosComponent },
   {path : 'mon-compte', component : MonCompteComponent},
-  {path : 'verif-email', component : VerifEmailComponent}
+  {path : 'verif-email', component : VerifEmailComponent},
+  {path : 'form-email', component : FormEmailComponent},
+  {path : 'new-password', component : NewPasswordComponent},
+  {path : 'password', component : PasswordCodeComponent}
 ];
 
 @NgModule({

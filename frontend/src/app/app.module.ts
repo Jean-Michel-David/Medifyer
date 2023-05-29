@@ -44,6 +44,9 @@ import { EquationDisplayComponent } from './recherche/equation-display/equation-
 import { FooterComponent } from './footer/footer.component';
 import { EditInfosComponent } from './admin/edit-infos/edit-infos.component';
 import { VerifEmailComponent } from './page/verif-email/verif-email.component';
+import { FormEmailComponent } from './page/recup-password/form-email/form-email.component';
+import { NewPasswordComponent } from './page/recup-password/new-password/new-password.component';
+import { PasswordCodeComponent } from './page/recup-password/password-code/password-code.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +73,9 @@ import { VerifEmailComponent } from './page/verif-email/verif-email.component';
     FooterComponent,
     EditInfosComponent,
     VerifEmailComponent,
+    FormEmailComponent,
+    NewPasswordComponent,
+    PasswordCodeComponent,
 
   ],
   imports: [
