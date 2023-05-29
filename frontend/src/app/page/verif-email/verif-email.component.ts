@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EmailSenderService } from 'src/app/email-sender.service';
+import { Router } from '@angular/router';
+import { EmailSenderService } from 'src/app/services/email-sender.service';
 
 @Component({
   selector: 'app-verif-email',
@@ -10,7 +11,7 @@ import { EmailSenderService } from 'src/app/email-sender.service';
 export class VerifEmailComponent implements OnInit {
  
   submitted = false;
-  isEmailSent = false;
+  verifCode = "";
 
   verifForm: FormGroup = new FormGroup({
     verifCode: new FormControl()
@@ -18,24 +19,33 @@ export class VerifEmailComponent implements OnInit {
 
   constructor(
     private api: EmailSenderService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.verifForm = this.fb.group({
       verifCode: ['', [Validators.required]]
     })
-    this.sendEmail();
-  }
-
-  sendEmail() {
-    const sub = this.api.sendVerificationEmail().subscribe( () => {
-      sub.unsubscribe();
-    }
-    )
   }
 
   verifyCode() {
+    this.submitted = false;
+    this.verifCode = this.verifForm.controls['verifCode'].value;
+    const sub = this.api.checkCode(this.verifCode).subscribe(
+      (response) => {
+        if (response.success) {
+          alert(response.message);
+          this.router.navigate(['index']);
+        }else{
+          alert(response.message);
+        }
+        sub.unsubscribe();
+      }
+    )
+  }
 
+  onSubmit(){
+    this.submitted = true;
   }
 }

@@ -1,6 +1,6 @@
 
 <div class="groupContainer">
-    <form [formGroup]="verifForm">
+    <form [formGroup]="verifForm" ngOnSubmit="onSubmit()">
         <div class="inputContainer">
             <div class="inputGroup">
                 <p class="bigText">Vous avez reçu par email un code de confirmation, veuillez l'entrer si dessous afin de vérifier votre compte</p>
