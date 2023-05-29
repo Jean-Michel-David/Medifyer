@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Paramètres du mail :
         $mail->setFrom('medifyer.test.verif@gmail.com');
         $mail->addAddress($user->getEmail());
-        $mail->Subject ="Code de vérification";
+        $mail->Subject ="Code de verification";
         $mail->Body = 'Votre code de verification est : ' . $verifCode;
         $mail->send();
         $response = array("success" => true, "message" => "E-mail de verification envoye avec succes !");
