@@ -36,7 +36,6 @@ export class PasswordCodeComponent implements OnInit {
       (response) => {
         if (response.success) {
           alert(response.message);
-          localStorage.setItem('pwd-code' ,this.verifCode);
           this.router.navigate(['new-password']);
         } else {
           alert(response.message);
