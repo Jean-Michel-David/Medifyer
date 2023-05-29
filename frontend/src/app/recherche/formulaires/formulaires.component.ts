@@ -108,7 +108,6 @@ export class FormulairesComponent implements OnInit{
             next : (response) => {
               if(response) {
                 this.canEdit = response.canEdit??false;
-                console.log("hello");
                 this.fillForm(response.question);
                 this.isSavedQuestion = true;
               } else {

@@ -67,7 +67,6 @@ export class ConnexionComponent {
       sub.unsubscribe();
     }, (error) => {
       alert(error.error);
-      console.log(error);
       if (error.status === 409) {
         alert("Veuillez vérifier votre compte");
         this.router.navigate(["verif-email"]);

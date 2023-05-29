@@ -54,9 +54,9 @@ export class ManageAdminsComponent implements OnInit{
       this.userList = [...this.userList, ...users];
       if (oldCount == this.userList.length)
         this.showGetMore = false;
-      
+
       sub.unsubscribe();
-    });    
+    });
   }
 
   /**
@@ -65,12 +65,12 @@ export class ManageAdminsComponent implements OnInit{
    */
   manageUser(userID : number) {
     this.selectedUser =  this.userList.find((user) => user.id == userID);
-    
+
     if (typeof this.selectedUser != 'undefined') {
       this.showUserList = false;
     }
   }
-  
+
   /**
    * This function sets the admin status of a user
    * @param status the new status of the user
@@ -79,7 +79,7 @@ export class ManageAdminsComponent implements OnInit{
     if (typeof this.selectedUser != 'undefined') {
       this.charging = true;
       this.selectedUser.isAdmin = status;
-      
+
       let sub = this.adminService.setAdminStatus(this.selectedUser).subscribe((response) => {
         if(! response.success)
           this.selectedUser!.isAdmin = ! status;

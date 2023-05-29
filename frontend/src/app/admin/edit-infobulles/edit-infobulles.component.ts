@@ -14,7 +14,7 @@ export class EditInfobullesComponent implements OnInit{
   editStatus! : string;
 
   constructor(private infoService : InfosService, private adminInfo : AdminInfosManagementService) {}
-  
+
   ngOnInit(): void {
     this.infoService.getAllInfobulles().subscribe((infos) => {
       this.infobulles = infos;
@@ -36,7 +36,6 @@ export class EditInfobullesComponent implements OnInit{
   }
 
   onSave(label : string, text : string) : void {
-    console.log('Trying to put : ' + text +'\nInto ' + label);
     this.adminInfo.setInfo(label, text).subscribe((value) => {
       this.editStatus = "saved";
       const infoToChange = this.infobulles.find(inf => inf.label == label);

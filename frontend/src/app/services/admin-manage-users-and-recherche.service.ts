@@ -21,7 +21,6 @@ export class AdminManageUserAndRechercheService {
   getUserList(userCount : number, search? : string) : Observable<User[]>{
     // TODO : add security token or something
     // TODO : remove any '&' from the search string
-    console.log('Requesting user list');
 
     // Initial list / list with empty search string
     if (typeof(search) === "undefined")

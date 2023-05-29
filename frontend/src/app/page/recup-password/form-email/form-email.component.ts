@@ -11,7 +11,7 @@ import { RecupPasswordService } from 'src/app/services/recup-password.service';
   styleUrls: ['./form-email.component.css']
 })
 export class FormEmailComponent implements OnInit{
-  
+
   submitted = false;
   email = "";
 
@@ -25,7 +25,7 @@ export class FormEmailComponent implements OnInit{
     private fb: FormBuilder,
     private router: Router
   ) {}
-  
+
   ngOnInit(): void {
     this.emailForm = this.fb.group({
       email: ['',[Validators.required, Validators.pattern(/^la[0-9]{6}@student\.helha\.be$/i)]]
@@ -42,7 +42,6 @@ export class FormEmailComponent implements OnInit{
     RecupPasswordService.userMail = this.email;
     const sub = this.api.sendEmail(this.email).subscribe(
       (response)=>{
-        console.log(response)
         if (response.success) {
           alert(response.message);
           this.router.navigate(['password-code']);

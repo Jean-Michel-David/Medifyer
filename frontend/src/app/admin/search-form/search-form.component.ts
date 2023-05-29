@@ -15,7 +15,6 @@ export class SearchFormComponent implements OnInit {
   }
 
   onSearchUser() : void {
-    console.log("searching for : " + this.wantedUser);
     this.searchUser.emit(this.wantedUser);
   }
 }
