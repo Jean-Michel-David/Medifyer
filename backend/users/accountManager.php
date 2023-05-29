@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__) . '/../env.php');
 require_once(dirname(__FILE__) . '/User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
 require_once(dirname(__FILE__) . '/UserManager.php');
@@ -49,7 +50,8 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // on va d'abord rechercher dans la base de données, l'utilisateur courant, pour reprendre ses données
     $compareUser = $userManager->getUserByID($headers['Authorization']);
     // on set les paramètres invariables (id, email, ...) dans un $user
-    $user->setId($compareUser['user_id']);
+    if ($compareUser) {
+        $user->setId($compareUser['user_id']);
     $user->setEmail($compareUser['email_user']);
     $user->setAdminStatus($compareUser['admin_user']);
     $user->setPhoto($compareUser['pfp_user']);
@@ -80,15 +82,15 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     // ensuite, on peut modifier l'utilisateur dans la base de données
-    echo json_encode($compareUser);
     $success = $userManager->modifyUser($user);
-    if ($success === false) {
-        http_response_code(400);
-        echo "Updating failed";
-        exit();
-    } else {
+    if ($success) {
         http_response_code(200);
         echo "User modified with Success";
+        exit();
+    }
+    } else {
+        http_response_code(400);
+        echo "Updating failed";
         exit();
     }
 }

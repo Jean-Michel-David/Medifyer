@@ -5,7 +5,7 @@ use SebastianBergmann\CodeCoverage\Driver\Selector;
 require_once(dirname(__FILE__) . '/../credentials.php');
 class UserManager
 {
-  private $db;
+  private PDO $db;
 
   public function __construct($db)
   {
@@ -35,10 +35,7 @@ class UserManager
   */
   public function saveUser(User $user)
   {
-    $sql="INSERT INTO users(nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user) VALUES (:nom_user, :prenom_user, :psw_user, :pfp_user, :admin_user, :email_user)";
-    if ($user->getId()>0) {
-      echo "Déjà inscrit";
-    }
+    $sql="INSERT IGNORE INTO users(nom_user, prenom_user, psw_user, pfp_user, admin_user, email_user) VALUES (:nom_user, :prenom_user, :psw_user, :pfp_user, :admin_user, :email_user)";
     try {
       $insert = $this->db->prepare($sql);
       $params = array (
@@ -50,8 +47,15 @@ class UserManager
         'email_user' => $user->getEmail(),
       );
       $insert->execute($params);
+      if ($insert->rowCount()<1) {
+        http_response_code(400);
+        echo "Echec de l'insertion en base de données";
+        exit();
+      }
     } catch (PDOException $e) {
-      die($e);
+      http_response_code(400);
+      echo "Erreur lors de la sauvegarde en base de données";
+      exit();
     } finally {
       $insert->closeCursor();
     }

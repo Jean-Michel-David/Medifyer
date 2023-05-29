@@ -1,9 +1,8 @@
 <?php
 
-require_once(dirname(__FILE__) . '/./User.class.php');
+require_once(dirname(__FILE__) . '/../users/User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
-require_once(dirname(__FILE__) . '/./UserManager.php');
-require_once(dirname(__FILE__) . '/../credentials.php');
+require_once(dirname(__FILE__) . '/../users/UserManager.php');
 
 global $authorizedURL;
 header('Access-Control-Allow-Origin: '. $authorizedURL);
@@ -17,48 +16,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $user = new User();
-$credentials = new Credentials();
 $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
 $res = array();
-$regex = '/\w+@helha\.be$|^la[0-9]{6}@student\.helha\.be$/i';
+$options = [
+    'cost' => 12,
+];
 
+//modification du mdp
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Création du user : 
     $json_obj = json_decode(file_get_contents('php://input'), true);
-    if ($json_obj['email'] == null ||strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
-        http_response_code(400);
-        echo "Email invalide !";
-        exit;
-    }
-    if ($json_obj['pwd'] == null) {
-        http_response_code(400);
-        echo "Mot de passe Invalide !";
-        exit;
-    }
+    // on va le rechercher à partir de son adresse mail : 
     $res = $userManager->getUser($json_obj['email']);
-    if (!$res['actif_user']){
-        http_response_code(409);
-        exit();
-    }
-    if(!empty($res)){
-        if (!password_verify($json_obj['pwd'], $res['psw_user'])) {
-            http_response_code(400);
-            echo "Les mots de passe ne correspondent pas";
-            exit;
-        }
+        if ($res) {
+            // on set les valeurs non modifiée
         $user->setId($res['user_id']);
         $user->setLastname($res['nom_user']);
         $user->setFirstname($res['prenom_user']);
-        $user->setPwd($res['psw_user']);
         $user->setPhoto($res['pfp_user']);
         $user->setAdminStatus(($res['admin_user']));
         $user->setEmail($res['email_user']);
-    
-        echo $credentials->createToken($user);
+        $user->setActifUser($res['actif_user']);
+        // on récupère ensuite le mot de passe entré dans le formulaire et on vérifie
+        if ($json_obj['pwd'] != null) {
+            if (strlen($json_obj['pwd']) >= 9) {
+                $pwdhashed = password_hash($json_obj['pwd'], PASSWORD_BCRYPT, $options);
+                $user->setPwd($pwdhashed);
+            }
+            // enfin, on modifie l'utilisateur
+            if ($userManager->modifyUser($user)) {
+                echo "Password modifyed with succes";
+            }else {
+                http_response_code(400);
+                echo "Something went wrong";
+                exit;
+            }
+            } else {
+            http_response_code(400);
+            echo "Entered Password is invalid";
+            exit;
+            }
     } else {
         http_response_code(400);
-        echo "L'utilisateur n'existe pas ";
+        echo "User doesn't exist";
         exit;
     }
 }

@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 import { EmailSenderService } from 'src/app/services/email-sender.service';
 
 @Component({
-  selector: 'app-verif-email',
-  templateUrl: './verif-email.component.html',
-  styleUrls: ['./verif-email.component.css']
+  selector: 'app-password-code',
+  templateUrl: './password-code.component.html',
+  styleUrls: ['./password-code.component.css']
 })
-export class VerifEmailComponent implements OnInit {
+export class PasswordCodeComponent implements OnInit {
  
   submitted = false;
   verifCode = "";
 
-  verifForm: FormGroup = new FormGroup({
+  verifPwdForm: FormGroup = new FormGroup({
     verifCode: new FormControl()
   })
 
@@ -24,32 +24,19 @@ export class VerifEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.verifForm = this.fb.group({
+    this.verifPwdForm = this.fb.group({
       verifCode: ['', [Validators.required]]
     })
   }
 
-  verifyCode() {
+  verifyPwdCode() {
     this.submitted = false;
-    this.verifCode = this.verifForm.controls['verifCode'].value;
+    this.verifCode = this.verifPwdForm.controls['verifCode'].value;
     const sub = this.api.checkCode(this.verifCode).subscribe(
       (response) => {
         if (response.success) {
           alert(response.message);
-          this.router.navigate(['index']);
-        } else {
-          alert(response.message);
-        }
-        sub.unsubscribe();
-      }
-    );
-  }
-
-  sendEmail() {
-    const sub = this.api.sendEmail().subscribe(
-      (response) => {
-        if (response.success) {
-          alert(response.message);
+          this.router.navigate(['new-password']);
         } else {
           alert(response.message);
         }

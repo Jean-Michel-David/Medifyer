@@ -1,0 +1,35 @@
+
+<div class="groupContainer">
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+        <div class="inputContainer">
+            <div
+            *ngIf="submitted && f['email'].invalid && (f['email'].dirty || f['email'].touched)"
+            >
+            <div
+            *ngIf="f['email'].errors?.['required']"
+            class="card text-white bg-danger p-1"
+            >
+            Veuillez entrer une adresse mail
+            </div>
+            <div
+            *ngIf="f['email'].errors?.['pattern']"
+            class="card text-white bg-danger p-1"
+            >
+            Veuillez entrer une adresse mail de la Helha
+            </div>
+            </div>
+        </div>
+        <div class="inputContainer">
+            <div class="inputGroup">
+                <p class="bigText">Veuillez entrer l'e-mail avec lequel vous vous êtes inscrit.</p>
+                <input 
+                type="email"
+                id="email"
+                placeholder="Adresse e-mail"
+                formControlName="email"
+                >
+            </div>
+        </div>
+        <button type="submit" (click)="send()" class="sendButton">Vérifier le code</button>
+    </form>  
+</div>

@@ -7,6 +7,7 @@
         admin_user BOOLEAN,
         email_user VARCHAR(50) NOT NULL UNIQUE,
         actif_user SMALLINT(1) DEFAULT 0,
+        code_user INT(11) DEFAULT NULL,
         PRIMARY KEY(user_id)
     );
 
