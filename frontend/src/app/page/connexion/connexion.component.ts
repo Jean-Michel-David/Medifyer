@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../inscription/userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-connexion',
@@ -62,6 +63,8 @@ export class ConnexionComponent {
     const sub = this.api.login(this.loggedUser).subscribe(() => {
       this.router.navigate(['index']);
       sub.unsubscribe();
+    }, (error) => {
+      console.log(error);
     })
   }
 
