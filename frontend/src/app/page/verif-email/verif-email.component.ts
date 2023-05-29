@@ -37,12 +37,15 @@ export class VerifEmailComponent implements OnInit {
         if (response.success) {
           alert(response.message);
           this.router.navigate(['index']);
-        }else{
+        } else {
           alert(response.message);
         }
         sub.unsubscribe();
+      },
+      (error) => {
+        console.error(error);
       }
-    )
+    );
   }
 
   onSubmit(){
