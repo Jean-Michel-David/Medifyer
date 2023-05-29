@@ -9,14 +9,14 @@ import { User } from '../userInscription';
 })
 export class RecupPasswordService {
 
-  email: any;
+  static userMail: any;
   emailURL = environment.backendUrl + "/recup-password/sendEmail.php";
   modifyURl = environment.backendUrl + "/recup-password/password.php";
 
   constructor(private http: HttpClient) { }
 
   sendEmail(email: string): Observable<any>{
-    return this.http.post(this.emailURL,email,{responseType : 'text'})
+    return this.http.post(this.emailURL,email)
   }
 
   modifyPassword(user: User): Observable<String> {

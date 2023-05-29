@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from '../inscription/userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EmailSenderService } from 'src/app/services/email-sender.service';
 
 @Component({
   selector: 'app-connexion',
@@ -59,12 +61,19 @@ export class ConnexionComponent {
     this.submitted=false;
     this.loggedUser.email = this.loginForm.controls['email'].value;
     this.loggedUser.pwd = this.loginForm.controls['pwd'].value;
+    EmailSenderService.emailUser = this.loggedUser.email;
     const sub = this.api.login(this.loggedUser).subscribe(() => {
       this.router.navigate(['index']);
       sub.unsubscribe();
-    })
+    }, (error) => {
+      alert(error.error);
+      console.log(error);
+      if (error.status === 409) {
+        alert("Veuillez vérifier votre compte");
+        this.router.navigate(["verif-email"]);
+      }
+    });
   }
-
   onSubmit(){
     this.submitted = true;
   }

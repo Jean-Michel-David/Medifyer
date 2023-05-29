@@ -33,7 +33,7 @@ $db = new DBConnection();
 $cnx = $db->connect();
 $userManager = new UserManager($cnx);
 $regexStudent = '/^la[0-9]{6}@student\.helha\.be$/i';
-$regexTeacher = '/^\w+@helha\.be$/i';
+// $regexTeacher = '/\w+@helha\.be$/i';
 $pwdhashed = '';
 $options = [
   'cost' => 12,
@@ -54,10 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 // Inscription de l'utilisateur
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $json_obj = json_decode(file_get_contents('php://input'), true);
+  // 
   $user->setId($json_obj['id']);
   if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {
     http_response_code(400);
-    "Prénom Invalide ! ";
+    echo "Prénom Invalide ! ";
     exit;
   }
   if ($json_obj['lastname'] == null || strlen($json_obj['lastname'])>50) {
@@ -65,7 +66,7 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Nom Invalide ! ";
     exit;
   }
-  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regexStudent, $json_obj['email']) || !preg_match($regexTeacher, $json_obj['email'])) {
+  if ($json_obj['email'] == null || strlen($json_obj['email'])>50 || !preg_match($regexStudent, $json_obj['email'])) {
     http_response_code(400);
     echo "Email Invalide !";
     exit;
@@ -81,9 +82,6 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setEmail($json_obj['email']);
   $user->setPwd($pwdhashed);
   $user->setPhoto($json_obj['photo']);
-  if (preg_match($regexTeacher, $json_obj['email'])) {
-    $user->setAdminStatus(true);
-  }
   $userManager->saveUser($user);
   // une fois l'utilisateur inscrit dans la base de données ,on envoie un mail avec un code de vérification :
   // on génère un code 

@@ -23,6 +23,7 @@ $cnx = $db->connect();
 $userManager = new UserManager($cnx);
 $res = array();
 $regex = '/^la[0-9]{6}@student\.helha\.be$/i';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json_obj = json_decode(file_get_contents('php://input'), true);
     if ($json_obj['email'] == null ||strlen($json_obj['email'])>50 || !preg_match($regex, $json_obj['email'])) {
@@ -36,18 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     $res = $userManager->getUser($json_obj['email']);
-    if (!password_verify($json_obj['pwd'], $res['psw_user'])) {
+    if (!$res['actif_user']){
+        http_response_code(409);
+        exit();
+    }
+    if(!empty($res)){
+        if (!password_verify($json_obj['pwd'], $res['psw_user'])) {
+            http_response_code(400);
+            echo "Les mots de passe ne correspondent pas";
+            exit;
+        }
+        $user->setId($res['user_id']);
+        $user->setLastname($res['nom_user']);
+        $user->setFirstname($res['prenom_user']);
+        $user->setPwd($res['psw_user']);
+        $user->setPhoto($res['pfp_user']);
+        $user->setAdminStatus(($res['admin_user']));
+        $user->setEmail($res['email_user']);
+    
+        echo $credentials->createToken($user);
+    } else {
         http_response_code(400);
-        echo "Les mots de passe ne correspondent pas";
+        echo "L'utilisateur n'existe pas ";
         exit;
     }
-    $user->setId($res['user_id']);
-    $user->setLastname($res['nom_user']);
-    $user->setFirstname($res['prenom_user']);
-    $user->setPwd($res['psw_user']);
-    $user->setPhoto($res['pfp_user']);
-    $user->setAdminStatus(($res['admin_user']));
-    $user->setEmail($res['email_user']);
-
-    echo $credentials->createToken($user);
 }

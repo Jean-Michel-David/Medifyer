@@ -45,6 +45,19 @@ export class VerifEmailComponent implements OnInit {
     );
   }
 
+  sendEmail() {
+    const sub = this.api.sendEmail().subscribe(
+      (response) => {
+        if (response.success) {
+          alert(response.message);
+        } else {
+          alert(response.message);
+        }
+        sub.unsubscribe();
+      }
+    );
+  }
+
   onSubmit(){
     this.submitted = true;
   }

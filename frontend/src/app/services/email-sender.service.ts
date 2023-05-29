@@ -8,11 +8,19 @@ import { environment } from 'src/environments/environment';
 })
 export class EmailSenderService {
 
-  emailVerif = environment.backendUrl + "/email/emailVerification.php"
+  static emailUser: any;
+
+  sendEmailUrl = environment.backendUrl + "/recup-password/sendEmail.php"
+  emailVerifUrl = environment.backendUrl + "/email/emailVerification.php"
+
 
   constructor(private http: HttpClient) {}
 
+  sendEmail(): Observable<any> {
+    return this.http.post(this.sendEmailUrl, EmailSenderService.emailUser)
+  }
+
   checkCode(code: String): Observable<any> {
-    return this.http.post(this.emailVerif, code, {responseType : 'text'})
+    return this.http.post(this.emailVerifUrl, code)
   }
 }
