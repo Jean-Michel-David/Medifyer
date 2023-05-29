@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $user->setPhoto($res['pfp_user']);
     $user->setAdminStatus(($res['admin_user']));
     $user->setEmail($res['email_user']);
+    $user->setActifUser($res['actif_user']);
     echo json_encode($user);
 }
 // On envoie les informations modifiées au serveur
