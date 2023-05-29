@@ -90,7 +90,8 @@ class UserManager
         $stmnt2->closeCursor();
       }
       // Suppression de l'utilisateur
-      $sqlDeleteUser = "DELETE FROM users WHERE user_id = :user_id;";
+      $sqlDeleteUser = " DELETE FROM aaccesa where user_id = :user_id;
+                        DELETE FROM users WHERE user_id = :user_id;";
       $stmnt3 = $this->db->prepare($sqlDeleteUser);
       $stmnt3->bindValue('user_id', $user_id);
       if ($stmnt3->execute()) {
