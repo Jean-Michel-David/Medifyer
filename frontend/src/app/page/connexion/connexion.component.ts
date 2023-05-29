@@ -5,10 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from '../inscription/userInscription';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
-<<<<<<< HEAD
-=======
 import { EmailSenderService } from 'src/app/services/email-sender.service';
->>>>>>> 832683f1bebb77cb316f78d0d6a702c6a837eacf
 
 @Component({
   selector: 'app-connexion',
