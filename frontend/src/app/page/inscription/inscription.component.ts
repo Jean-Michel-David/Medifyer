@@ -43,6 +43,7 @@ export class InscriptionComponent implements OnInit{
     pwd: new FormControl(''),
     cpwd: new FormControl('')
   });
+  
   submitted = false;
 
   constructor(

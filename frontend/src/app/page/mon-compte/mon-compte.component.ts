@@ -77,7 +77,6 @@ export class MonCompteComponent implements OnInit {
   deleteUser(): void {
     if (confirm('Êtes-vous certain de vouloir supprimer votre compte? Cette action est irréversible.')) {
       const sub = this.apiUser.deleteUser().subscribe(() => {
-        console.log('User deleted successfully');
         sub.unsubscribe();
       });
     }
