@@ -1,11 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/./User.class.php');
-require_once(dirname(__FILE__) . '/../database/dbConnection.php');
-require_once(dirname(__FILE__) . '/./UserManager.php');
-require_once(dirname(__FILE__) . '/../credentials.php');
-require_once(dirname(__FILE__) . '/./UserInfos.class.php');
-
+require_once(dirname(__FILE__) . '/../env.php');
 global $authorizedURL;
 header('Access-Control-Allow-Origin: ' . $authorizedURL);
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE');
@@ -18,6 +13,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once(dirname(__FILE__) . '/./User.class.php');
+require_once(dirname(__FILE__) . '/../database/dbConnection.php');
+require_once(dirname(__FILE__) . '/./UserManager.php');
+require_once(dirname(__FILE__) . '/../credentials.php');
+require_once(dirname(__FILE__) . '/./UserInfos.class.php');
+require_once(dirname(__FILE__) . '/../phpmailer/src/Exception.php');
+require_once(dirname(__FILE__) . '/../phpmailer/src/PHPMailer.php');
+require_once(dirname(__FILE__) . '/../phpmailer/src/SMTP.php');
+
+$mail = new PHPMailer(true);
 $user = new User();
 $credentials = new Credentials();
 $headers = getallheaders();
@@ -44,10 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 }
 // Inscription de l'utilisateur
 else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (empty($headers['Authorization'])) {
-    http_response_code(401);
-    exit();
-  }
   $json_obj = json_decode(file_get_contents('php://input'), true);
   $user->setId($json_obj['id']);
   if ($json_obj['firstname'] == null || strlen($json_obj['firstname'])>50) {
@@ -77,7 +81,34 @@ else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $user->setPwd($pwdhashed);
   $user->setPhoto($json_obj['photo']);
   $userManager->saveUser($user);
-  echo $credentials->createToken($user);
+  // une fois l'utilisateur inscrit dans la base de données ,on envoie un mail avec un code de vérification :
+  // on génère un code 
+  $verifCode = rand(100000, 999999);
+  // on l'insère ensuite dans la base de données 
+  $userManager->sendVerificationCode($user, $verifCode);
+  try {
+    // Paramètres SMTP :
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'medifyer.test.verif@gmail.com';
+    $mail->Password = 'edebqmlernwmevye';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
+    // Paramètres du mail :
+    $mail->setFrom('medifyer.test.verif@gmail.com');
+    $mail->addAddress($user->getEmail());
+    $mail->Subject = "Verification de l'email";
+    $mail->Body = 'Votre code de verification est : ' . $verifCode;
+
+    $mail->send();
+  } catch (Exception $e) {
+    die($e);
+    exit;
+  } finally {
+    echo $credentials->createToken($user);
+  }
+  
   // Deleting a User
 } else if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
   if (empty($headers['Authorization'])) {

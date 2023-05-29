@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__) . '/../env.php');
 require_once(dirname(__FILE__) . '/User.class.php');
 require_once(dirname(__FILE__) . '/../database/dbConnection.php');
 require_once(dirname(__FILE__) . '/UserManager.php');
